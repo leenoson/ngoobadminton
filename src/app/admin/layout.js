@@ -24,9 +24,7 @@ export default function AdminLayout({ children }) {
           <Link href="/admin/attendance">
             Điểm danh
           </Link>
-          <Link href="/logout">
-            Logout
-          </Link>
+
         </div>
       </div>
 
