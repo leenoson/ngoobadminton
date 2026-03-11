@@ -12,6 +12,7 @@ export default function Navbar(){
 
   async function logout(){
     await supabase.auth.signOut();
+    router.refresh();
     router.push("/");
   }
 
@@ -26,8 +27,6 @@ export default function Navbar(){
         </Link>
 
         <div className="navbar-nav ms-auto">
-
-
           {isLoggedIn ? (
             <>
               <Link className="nav-link" href="/admin">
