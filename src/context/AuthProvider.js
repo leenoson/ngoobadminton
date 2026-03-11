@@ -34,6 +34,10 @@ export default function AuthProvider({ children }) {
 				if (user && pathname === "/login") {
           router.replace("/admin");
         }
+
+				if (!user && pathname.startsWith("/admin")) {
+          router.replace("/login");
+        }
 			}
 		);
 
