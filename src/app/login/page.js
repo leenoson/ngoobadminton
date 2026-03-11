@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
 
   const supabase = createClient();
-
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,8 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/admin";
+    router.refresh();
+    router.replace("/admin");
   };
 
   return (

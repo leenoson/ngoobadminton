@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request) {
 
-  let response = NextResponse.next();
+  const response = NextResponse.next();
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -24,10 +24,9 @@ export async function middleware(request) {
   );
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const user = session?.user;
   const path = request.nextUrl.pathname;
 
   if (!user && path.startsWith("/admin")) {

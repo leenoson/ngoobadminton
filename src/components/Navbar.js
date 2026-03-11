@@ -13,7 +13,6 @@ export default function Navbar(){
   async function logout(){
     await supabase.auth.signOut();
     router.refresh();
-    router.push("/");
   }
 
   return(
