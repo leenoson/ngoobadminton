@@ -7,7 +7,7 @@ import ImgAvatar from "@/components/ImgAvatar";
 export default function MemberCard({ member, isAdmin }) {
 	const [deleteOpen, setDeleteOpen] = useState(false)
 	const [editOpen, setEditOpen] = useState(false)
-	const attendanceCount = member.attendance?.[0]?.count || 0;
+	const attendanceCount = member.attendance_count ?? 0;
 
 	const joinedDate = member.joined_at
 		? new Date(member.joined_at).toLocaleDateString("vi-VN")

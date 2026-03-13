@@ -15,7 +15,7 @@ export default async function MembersPage({ searchParams }) {
 
   const { count: totalMembers } = await supabase
     .from("members")
-    .select("*", { count: "exact", head: true })
+    .select("id", { count: "exact", head: true })
 
   let query = supabase
     .from("members_with_attendance")
@@ -25,19 +25,15 @@ export default async function MembersPage({ searchParams }) {
     query = query.ilike("name", `%${search}%`)
   }
 
-  if (sort === "name") {
-    query = query.order("name", { ascending })
+  const sortMap = {
+    name: "name",
+    joined: "joined_at",
+    attendance: "attendance_count"
   }
 
-  if (sort === "joined") {
-    query = query.order("joined_at", { ascending })
-  }
+  query = query.order(sortMap[sort] ?? "joined_at", { ascending })
 
   const { data: members } = await query
-
-  if (sort === "attendance" && members) {
-    query = query.order("attendance_count", { ascending })
-  }
 
   const filteredMembers = members?.length || 0
 
