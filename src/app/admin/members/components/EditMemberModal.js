@@ -15,7 +15,7 @@ export default function EditMemberModal({ member, open, onClose }) {
 		: "")
 	const [avatar, setAvatar] = useState(null)
 	const [preview, setPreview] = useState(
-		member.avatar || "https://i.pravatar.cc/200"
+		member.avatar || "https://i.pravatar.cc/50"
 	)
 	if (!open) return null
 	const handleResetAvatar = () => {
@@ -66,7 +66,7 @@ export default function EditMemberModal({ member, open, onClose }) {
 	const handleCancel = () => {
 		if (preview) {
 			URL.revokeObjectURL(preview)
-			setPreview(member.avatar || "https://i.pravatar.cc/200")
+			setPreview(member.avatar || "https://i.pravatar.cc/50")
 		}
 
 		onClose()

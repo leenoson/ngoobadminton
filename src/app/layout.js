@@ -2,12 +2,35 @@ import "./globals.css"
 import Navbar from "@/components/Navbar";
 import AuthProvider from "@/context/AuthProvider";
 
-const title = "N G O O B A D M I N T O N"
+const TITLE = "N G O O B A D M I N T O N"
+const NAME = "NGOO Badminton"
+const KEYWS = ["ngoobadminton", "ngoo", "badminton", "san cau long Thang Loi", "Thang Loi"]
+const URL = "https://ngoobadminton.vercel.app"
 
 export const metadata = {
-  title: title,
-  description: `Đơn giản chúng tôi là ${title}`
-};
+  title: TITLE,
+  description: `Đơn giản chúng tôi là ${TITLE}`,
+  keywords: KEYWS,
+  authors: [
+    { name: "NGOO team" }
+  ],
+  openGraph: {
+    title: NAME,
+    description: "Giới thiệu về nhóm cầu lông lớn thứ 2 Thủ Dầu Một",
+    type: "website",
+    locale: "vi_VN",
+    siteName: NAME,
+  },
+  alternates: {
+    canonical: URL
+  }
+}
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1
+}
 
 export default function RootLayout({ children }) {
   return (

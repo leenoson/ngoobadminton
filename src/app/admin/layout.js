@@ -1,5 +1,14 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "Admin",
+  description: "Danh sách thành viên và điểm danh của CLB cầu lông NGOO Badminton",
+  robots: {
+    index: false,
+    follow: false
+  }
+}
+
 export default function AdminLayout({ children }) {
   return (
     <div className="d-flex">
@@ -28,7 +37,7 @@ export default function AdminLayout({ children }) {
         </div>
       </div>
 
-      <div className="flex-grow-1 p-4">
+      <div className="grow p-4">
         {children}
       </div>
 
