@@ -1,12 +1,12 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useTransition } from "react"
 import useDebounce from "@/hooks/useDebounce"
-
 export default function FilterBar() {
 	const router = useRouter()
 	const params = useSearchParams()
+	const [isPending, startTransition] = useTransition()
 
 	const sort = params.get("sort") || "joined"
 	const order = params.get("order") || "desc"
@@ -30,9 +30,17 @@ export default function FilterBar() {
 
 		debouncedSearch ? newParams.set("search", debouncedSearch) : newParams.delete("search")
 
-		router.replace(`/admin/members?${newParams.toString()}`)
+		const newUrl = `/admin/members?${newParams.toString()}`
+		const currentUrl = `/admin/members?${params.toString()}`
 
-	}, [debouncedSearch, params, router])
+		if (newUrl !== currentUrl) {
+			startTransition(() => {
+				router.replace(newUrl, { scroll: false })
+			})
+		}
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [debouncedSearch])
 
 	return (
 
