@@ -14,14 +14,13 @@ export default function MemberCard({ member, isAdmin }) {
 		: "N/A"
 
 	return (
-		<div className="card h-100 shadow-sm">
+		<div className="card shadow-sm">
 
-			<div className="text-center p-3">
-				<ImgAvatar
-					src={member.avatar}
-					alt={member.name}
-				/>
-			</div>
+			<ImgAvatar
+				src={member.avatar}
+				alt={member.name}
+				classprop="card-img-top"
+			/>
 
 			<div className="card-body text-center">
 
@@ -34,7 +33,7 @@ export default function MemberCard({ member, isAdmin }) {
 				</p>
 
 				<p className="mb-0">
-					🏸 {attendanceCount} buổi tham gia
+					{attendanceCount} buổi tham gia
 				</p>
 
 			</div>

@@ -37,7 +37,7 @@ export default function AdminLayout({ children }) {
         </div>
       </div>
 
-      <div className="grow p-4">
+      <div className="p-4">
         {children}
       </div>
 
