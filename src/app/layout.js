@@ -23,7 +23,10 @@ export const metadata = {
   },
   alternates: {
     canonical: URL
-  }
+  },
+  verification: {
+    google: "2Q9QH2IBDFj1e383A6H3C2jBFZlJU6DPe1nWbknXBlI"
+  },
 }
 
 export const viewport = {
