@@ -18,18 +18,11 @@ export default async function Home() {
     `)
     .order("name")
     .limit(12);
-const handleClick = () => {
-  window.gtag("event", "register_click", {
-    event_category: "engagement",
-    event_label: "register button",
-  })
-}
+
   return (
 
     <div className="container py-5">
-<button onClick={handleClick}>
-  test GA
-</button>
+
       <h2 className="mb-4">Members</h2>
 
       <div className="row">
