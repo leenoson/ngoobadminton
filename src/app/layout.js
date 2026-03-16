@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import AuthProvider from "@/context/AuthProvider";
 import { GoogleAnalytics } from "@next/third-parties/google"
 import AnalyticsTracker from "@/components/AnalyticsTracker"
+import { Suspense } from "react"
 
 const TITLE = "N G O O B A D M I N T O N"
 const NAME = "NGOO Badminton"
@@ -45,7 +46,10 @@ export default function RootLayout({ children }) {
           <Navbar />
 
           <main className="max-w-6xl mx-auto">
-            <AnalyticsTracker />
+            <Suspense fallback={null}>
+              <AnalyticsTracker />
+            </Suspense>
+
             {children}
           </main>
 
