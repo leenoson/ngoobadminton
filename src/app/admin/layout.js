@@ -37,7 +37,7 @@ export default function AdminLayout({ children }) {
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 w-100">
         {children}
       </div>
 

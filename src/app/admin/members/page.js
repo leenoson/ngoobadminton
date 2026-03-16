@@ -39,7 +39,7 @@ export default async function MembersPage({ searchParams }) {
 
   return (
 
-    <div className="container py-5">
+    <div className="py-5">
       <MembersClient members={members} />
       <div className="d-flex justify-content-between align-items-center mb-3">
 
@@ -60,11 +60,9 @@ export default async function MembersPage({ searchParams }) {
         {members && members.length > 0 ? (
 
           members.map(member => (
-
-            <div key={member.id} className="col-md-3 mb-4">
+            <div key={member.id} className="col-3">
               <MemberCard member={member} isAdmin/>
             </div>
-
           ))
 
         ) : (
