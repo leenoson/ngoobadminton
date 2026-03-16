@@ -13,18 +13,9 @@ export default function MemberCard({ member, isAdmin }) {
 		? new Date(member.joined_at).toLocaleDateString("vi-VN")
 		: "N/A"
 
-		const handleClick = () => {
-  window.gtag("event", "register_click", {
-    event_category: "engagement",
-    event_label: "register button",
-  })
-}
-
 	return (
 		<div className="card shadow-sm">
-<button onClick={handleClick}>
-  test GA
-</button>
+
 			<ImgAvatar
 				src={member.avatar}
 				alt={member.name}
