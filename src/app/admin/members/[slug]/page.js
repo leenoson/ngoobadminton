@@ -26,30 +26,42 @@ export async function generateMetadata({ params }) {
   }
 
   const avatarUrl = member.avatar?.startsWith('http')
-    ? member.avatar
-    : `${process.env.NEXT_PUBLIC_SITE_URL}${member.avatar}`
+    ? (member.avatar.startsWith('http')
+      ? member.avatar
+      : `${process.env.NEXT_PUBLIC_BASE_URL}${member.avatar}`)
+    : `${process.env.NEXT_PUBLIC_BASE_URL}/opg.png`
 
-    console.log(member.avatar);
   return {
-    title: `${member.avatar}`,
-    description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
-
+    title: `${member.name}`,
+    description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton. Xem thông tin, lịch sử tham gia và hoạt động.`,
+    alternates: {
+      canonical: `/admin/members/${params.slug}`,
+    },
     openGraph: {
       title: `${member.name} | NGOO BADMINTON`,
-      description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
-      images: {
-        url: avatarUrl,
-        width: 1200,
-        height: 630,
-        alt: `${member.name} | NGOO BADMINTON`
-      },
+      description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton. Xem thông tin, lịch sử tham gia và hoạt động.`,
+      type: "profile",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/admin/members/${params.slug}`,
+      images: [
+        {
+          url: avatarUrl,
+          width: 1200,
+          height: 630,
+          alt: `${member.name} | NGOO BADMINTON`
+        }
+      ],
     },
 
     twitter: {
       card: "summary_large_image",
       title: `${member.name} | NGOO BADMINTON`,
-      description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
-      images: [member.avatar],
+      description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton. Xem thông tin, lịch sử tham gia và hoạt động.`,
+      images: [avatarUrl],
+    },
+
+    robots: {
+      index: false,
+      follow: true,
     }
   }
 }

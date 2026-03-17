@@ -43,6 +43,10 @@ export const metadata = {
     description: `${TITLE} là CLB cầu lông dành cho mọi trình độ, từ người mới đến nâng cao. Tham gia ngay để rèn luyện sức khỏe, giao lưu và phát triển kỹ năng`,
     images: [`${BASE_URL}/opg.png`],
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   authors: [
     { name: "NGOO team" }
   ],
