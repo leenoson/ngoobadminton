@@ -30,15 +30,21 @@ export async function generateMetadata({ params }) {
     description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
 
     openGraph: {
-      title: member.name,
-      description: `Profile ${member.name}`,
-      images: [member.avatar],
+      title: `${member.name} | NGOO BADMINTON`,
+      description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
+      images: {
+        url: member.avatar,
+        widht: 1200,
+        height: 630,
+        alt: `${member.name} | NGOO BADMINTON`
+      },
     },
 
     twitter: {
-      card: 'summary_large_image',
-      title: member.name,
-      images: [member.avatar],
+      card: "summary_large_image",
+      title: `${member.name} | NGOO BADMINTON`,
+      description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
+      images: member.avatar,
     }
   }
 }

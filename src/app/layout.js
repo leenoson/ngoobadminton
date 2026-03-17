@@ -38,7 +38,10 @@ export const metadata = {
     canonical: BASE_URL
   },
   twitter: {
+    card: "summary_large_image",
     title: `${TITLE} - Nhóm cầu lông lớn thứ 2 Thủ Dầu Một`,
+    description: `${TITLE} là CLB cầu lông dành cho mọi trình độ, từ người mới đến nâng cao. Tham gia ngay để rèn luyện sức khỏe, giao lưu và phát triển kỹ năng`,
+    images: `${BASE_URL}/opg.png`,
   },
   authors: [
     { name: "NGOO team" }
