@@ -1,3 +1,5 @@
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+
 export default function robots() {
   return {
     rules: [
@@ -7,6 +9,6 @@ export default function robots() {
         disallow: ["/admin", "/login"]
       },
     ],
-    sitemap: "https://ngoobadminton.vercel.app/sitemap.xml"
+    sitemap: `${BASE_URL}/sitemap.xml`
   }
 }

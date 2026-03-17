@@ -37,6 +37,9 @@ export const metadata = {
   alternates: {
     canonical: BASE_URL
   },
+  twitter: {
+    title: `${TITLE} - Nhóm cầu lông lớn thứ 2 Thủ Dầu Một`,
+  },
   authors: [
     { name: "NGOO team" }
   ],

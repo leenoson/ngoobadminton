@@ -1,8 +1,11 @@
 "use client"
+
 import { useState } from "react"
 import EditMemberModal from "./EditMemberModal";
 import DeleteMemberModal from "./DeleteMemberModal"
 import ImgAvatar from "@/components/ImgAvatar";
+import Link from "next/link";
+import { createMemberSlug } from '@/lib/slugify'
 
 export default function MemberCard({ member, isAdmin }) {
 	const [deleteOpen, setDeleteOpen] = useState(false)
@@ -13,9 +16,8 @@ export default function MemberCard({ member, isAdmin }) {
 		? new Date(member.joined_at).toLocaleDateString("vi-VN")
 		: "N/A"
 
-	return (
-		<div className="card shadow-sm">
-
+	const MemberCardComponent = (
+		<>
 			<ImgAvatar
 				src={member.avatar}
 				alt={member.name}
@@ -69,7 +71,22 @@ export default function MemberCard({ member, isAdmin }) {
 					/>
 				</>
 			)}
-
-		</div>
+		</>
 	)
+
+	if (isAdmin) {
+		return (
+			<div className="card shadow-sm">
+				<Link href={`/admin/members/${createMemberSlug(member.name, member.id)}`}>
+					{MemberCardComponent}
+				</Link>
+			</div>
+		)
+	} else {
+		return (
+			<div className="card shadow-sm">
+				{MemberCardComponent}
+			</div>
+		)
+	}
 }
