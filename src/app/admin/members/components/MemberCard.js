@@ -16,8 +16,10 @@ export default function MemberCard({ member, isAdmin }) {
 		? new Date(member.joined_at).toLocaleDateString("vi-VN")
 		: "N/A"
 
-	const MemberCardComponent = (
+	return (
 		<>
+		<div className="card shadow-sm">
+
 			<ImgAvatar
 				src={member.avatar}
 				alt={member.name}
@@ -37,7 +39,11 @@ export default function MemberCard({ member, isAdmin }) {
 				<p className="mb-0">
 					{attendanceCount} buổi tham gia
 				</p>
-
+			{isAdmin && (
+				<Link href={`/admin/members/${createMemberSlug(member.name, member.id)}`} className="btn btn-primary">
+					Chi tiết
+				</Link>
+			)}
 			</div>
 			{isAdmin && (
 				<>
@@ -71,22 +77,7 @@ export default function MemberCard({ member, isAdmin }) {
 					/>
 				</>
 			)}
+			</div>
 		</>
 	)
-
-	if (isAdmin) {
-		return (
-			<div className="card shadow-sm">
-				<Link href={`/admin/members/${createMemberSlug(member.name, member.id)}`}>
-					{MemberCardComponent}
-				</Link>
-			</div>
-		)
-	} else {
-		return (
-			<div className="card shadow-sm">
-				{MemberCardComponent}
-			</div>
-		)
-	}
 }
