@@ -16,12 +16,21 @@ export async function addMember(formData) {
 
 	if (avatar && avatar.size > 0) {
 
-		 const fileExt = avatar.name.split(".").pop()
+    const mimeType = avatar.type || "image/jpeg"
+    let fileExt = mimeType.split("/")[1]
+
+    const allowedTypes = ["jpeg", "jpg", "png", "webp"]
+    if (!allowedTypes.includes(fileExt)) {
+      fileExt = "jpg"
+    }
+
     const fileName = `${randomUUID()}.${fileExt}`
 
     const { error: uploadError } = await supabase.storage
       .from("avatars")
-      .upload(fileName, avatar)
+      .upload(fileName, avatar, {
+        contentType: mimeType,
+      })
 
     if(uploadError){
       console.error(uploadError)
@@ -71,22 +80,47 @@ export async function updateMember(formData) {
 	const joined_at = formData.get("joined_at")
 	const avatarFile = formData.get("avatar")
 
+   const { data: oldMember } = await supabase
+    .from("members")
+    .select("avatar")
+    .eq("id", id)
+    .single()
+
   let avatarUrl = null
 
   if(avatarFile && avatarFile.size > 0){
 
-    const fileExt = avatarFile.name.split(".").pop()
+    const mimeType = avatarFile.type || "image/jpeg"
+    let fileExt = mimeType.split("/")[1]
+
+    const allowedTypes = ["jpeg", "jpg", "png", "webp"]
+    if (!allowedTypes.includes(fileExt)) {
+      fileExt = "jpg"
+    }
+
     const fileName = `${randomUUID()}.${fileExt}`
 
     await supabase.storage
       .from("avatars")
-      .upload(fileName, avatarFile)
+      .upload(fileName, avatarFile, {
+        contentType: mimeType,
+      })
 
     const { data } = supabase.storage
       .from("avatars")
       .getPublicUrl(fileName)
 
     avatarUrl = data.publicUrl
+
+    if (oldMember?.avatar) {
+      const oldPath = oldMember.avatar.split("/avatars/")[1]
+
+      if (oldPath) {
+        await supabase.storage
+          .from("avatars")
+          .remove([oldPath])
+      }
+    }
   }
 
   const updateData = {

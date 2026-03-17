@@ -25,16 +25,21 @@ export async function generateMetadata({ params }) {
     }
   }
 
+  const avatarUrl = member.avatar?.startsWith('http')
+    ? member.avatar
+    : `${process.env.NEXT_PUBLIC_SITE_URL}${member.avatar}`
+
+    console.log(member.avatar);
   return {
-    title: `${member.name}`,
+    title: `${member.avatar}`,
     description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
 
     openGraph: {
       title: `${member.name} | NGOO BADMINTON`,
       description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
       images: {
-        url: member.avatar,
-        widht: 1200,
+        url: avatarUrl,
+        width: 1200,
         height: 630,
         alt: `${member.name} | NGOO BADMINTON`
       },
@@ -44,7 +49,7 @@ export async function generateMetadata({ params }) {
       card: "summary_large_image",
       title: `${member.name} | NGOO BADMINTON`,
       description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton`,
-      images: member.avatar,
+      images: [member.avatar],
     }
   }
 }
