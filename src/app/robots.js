@@ -3,12 +3,9 @@ export default function robots() {
     rules: [
       {
         userAgent: "*",
-        allow: "/"
+        allow: "/",
+        disallow: ["/admin", "/login"]
       },
-      {
-        userAgent: "*",
-        disallow: "/admin"
-      }
     ],
     sitemap: "https://ngoobadminton.vercel.app/sitemap.xml"
   }

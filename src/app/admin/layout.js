@@ -1,14 +1,5 @@
 import Link from "next/link";
 
-export const metadata = {
-  title: "Admin",
-  description: "Danh sách thành viên và điểm danh của CLB cầu lông NGOO Badminton",
-  robots: {
-    index: false,
-    follow: false
-  }
-}
-
 export default function AdminLayout({ children }) {
   return (
     <div className="d-flex">

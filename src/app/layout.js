@@ -5,28 +5,41 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import AnalyticsTracker from "@/components/AnalyticsTracker"
 import { Suspense } from "react"
 
-const TITLE = "N G O O B A D M I N T O N"
-const NAME = "NGOO Badminton"
-const KEYWS = ["ngoobadminton", "ngoo", "badminton", "san cau long Thang Loi", "Thang Loi"]
-const URL = "https://ngoobadminton.vercel.app"
+const TITLE = "NGOO BADMINTON"
+const KEYWS = ["ngoobadminton", "ngoo", "badminton", "san cau long Thang Loi", "Thang Loi", "nhom cau long", "cau long newbie", "cau long", "san cau long", "ren luyen cau long"]
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export const metadata = {
-  title: TITLE,
-  description: `Đơn giản chúng tôi là ${TITLE}`,
+  title: {
+    template: `%s | ${TITLE}`,
+    default: `${TITLE} - Nhóm cầu lông lớn thứ 2 Thủ Dầu Một`
+  },
+  description: `${TITLE} là CLB cầu lông dành cho mọi trình độ, từ người mới đến nâng cao. Tham gia ngay để rèn luyện sức khỏe, giao lưu và phát triển kỹ năng`,
   keywords: KEYWS,
+  openGraph: {
+    title: `${TITLE} - Nhóm cầu lông lớn thứ 2 Thủ Dầu Một`,
+    description: `${TITLE} là CLB cầu lông dành cho mọi trình độ, từ người mới đến nâng cao. Tham gia ngay để rèn luyện sức khỏe, giao lưu và phát triển kỹ năng`,
+    type: "website",
+    locale: "vi_VN",
+    siteName: TITLE,
+    url: BASE_URL,
+    images: {
+      url: "/opg.png",
+      widht: 1200,
+      height: 630,
+      alt: TITLE
+    },
+    phoneNumbers: "0352171104",
+    emails: "leenoson93@gmail.com",
+    countryName: "Việt Nam"
+  },
+  metadateBase: new URL(BASE_URL),
+  alternates: {
+    canonical: BASE_URL
+  },
   authors: [
     { name: "NGOO team" }
   ],
-  openGraph: {
-    title: NAME,
-    description: "Giới thiệu về nhóm cầu lông lớn thứ 2 Thủ Dầu Một",
-    type: "website",
-    locale: "vi_VN",
-    siteName: NAME,
-  },
-  alternates: {
-    canonical: URL
-  },
   verification: {
     google: "2Q9QH2IBDFj1e383A6H3C2jBFZlJU6DPe1nWbknXBlI"
   },
