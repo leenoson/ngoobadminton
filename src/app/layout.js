@@ -1,9 +1,10 @@
-import "./globals.css"
+import "./styles/globals.scss"
 import Navbar from "@/components/Navbar";
 import AuthProvider from "@/context/AuthProvider";
 import { GoogleAnalytics } from "@next/third-parties/google"
 import AnalyticsTracker from "@/components/AnalyticsTracker"
 import { Suspense } from "react"
+import BootstrapClient from "@/components/BootstrapClient";
 
 const TITLE = "NGOO BADMINTON"
 const KEYWS = ["ngoobadminton", "ngoo", "badminton", "san cau long Thang Loi", "Thang Loi", "nhom cau long", "cau long newbie", "cau long", "san cau long", "ren luyen cau long"]
@@ -65,10 +66,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <BootstrapClient />
         <AuthProvider>
-          <Navbar />
+          <header>
+            <Navbar />
+          </header>
 
-          <main className="max-w-6xl mx-auto">
+          <main>
             <Suspense fallback={null}>
               <AnalyticsTracker />
             </Suspense>

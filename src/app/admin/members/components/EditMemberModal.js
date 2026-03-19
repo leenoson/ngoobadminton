@@ -1,32 +1,34 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useTransition, useEffect } from "react"
 import { updateMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import { compressImage } from "@/lib/image/compressImage"
-import { useTransition } from "react"
+import { formatDate } from "@/lib/formatDate"
+import useModal from "@/hooks/useModal"
 
-export default function EditMemberModal({ member, open, onClose }) {
-	const [isPending, startTransition] = useTransition()
+export default function EditMemberModal({ member, onClose }) {
 	const inputFile = useRef(null)
-	const [name, setName] = useState(member.name)
-	const [joinedAt, setJoinedAt] = useState(member.joined_at
-		? new Date(member.joined_at).toISOString().split("T")[0]
-		: "")
+	const [isPending, startTransition] = useTransition()
+	const [name, setName] = useState(member?.name)
+	const [joinedAt, setJoinedAt] = useState(
+		member?.joined_at ? formatDate(member.joined_at) : ""
+	)
 	const [avatar, setAvatar] = useState(null)
 	const [preview, setPreview] = useState(
-		member.avatar || "https://i.pravatar.cc/50"
+		member?.avatar || "https://i.pravatar.cc/50"
 	)
-	if (!open) return null
+
+	const formRef = useRef(null)
+
 	const handleResetAvatar = () => {
 		setAvatar(null)
 
-		setPreview(member.avatar || null)
+		setPreview(member?.avatar || null)
 
 		if (inputFile.current) {
 			inputFile.current.value = null
 		}
-
 	}
 
 	const handleFile = async (e) => {
@@ -44,9 +46,7 @@ export default function EditMemberModal({ member, open, onClose }) {
 		setPreview(url)
 
 	}
-	const handleSubmit = async (e) => {
-		e.preventDefault()
-
+	const handleSubmit = async () => {
 		const formData = new FormData()
 
 		formData.append("id", member.id)
@@ -63,98 +63,99 @@ export default function EditMemberModal({ member, open, onClose }) {
 		})
 	}
 
-	const handleCancel = () => {
-		if (preview) {
-			URL.revokeObjectURL(preview)
-			setPreview(member.avatar || "https://i.pravatar.cc/50")
-		}
+	useModal({
+		isOpen: open,
+		onClose,
+		isPending,
+	});
 
-		onClose()
-	}
+	if (!member) return null
 
 	return (
+		<div
+			className="modal modal-custom"
+			onClick={() => {
+				if (!isPending) onClose();
+			}}
+		>
+			<div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+				<div className="modal-content">
+					<form ref={formRef} action={handleSubmit} >
+						<div className="modal-header">
+							<h5 className="modal-title fs-5">Cập nhật thông tin</h5>
+							<button type="button" className="btn-close" onClick={onClose} />
+						</div>
+						<div className="modal-body">
+							<div className="mb-3">
 
-		<div className="p-2" onClick={onClose}>
+								<label>Tên</label>
+								<input
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+									required
+									disabled={isPending}
+									className="form-control"
+									name="name"
+								/>
+							</div>
 
-			<div onClick={(e) => e.stopPropagation()}>
+							<div className="mb-3">
+								<label>Ngày tham gia</label>
+								<input
+									type="date"
+									value={joinedAt}
+									onChange={(e) => setJoinedAt(e.target.value)}
+									required
+									disabled={isPending}
+									name="joined_at"
+									className="form-control"
+								/>
+							</div>
 
-				<h3>Edit Member</h3>
+							<div className="mb-3">
+								<label>Thay avatar</label>
+								<input
+									type="file"
+									accept="image/*"
+									onChange={handleFile}
+									disabled={isPending}
+									name="avatar"
+									className="form-control"
+								/>
+								<div className="mt-3">
 
-				<form onSubmit={handleSubmit}>
+									{preview &&
+										(
+											<div className="avatar-preview">
+												<ImgAvatar
+													src={preview}
+													alt={member.name}
+													classprop="rounded"
+												/>
+											</div>
+										)
+									}
+								</div>
 
-					<div>
+							</div>
 
-						<label>Name</label>
+							<button disabled={isPending || !avatar} type="button" className="btn btn-primary" onClick={handleResetAvatar}>
+								Giữ avatar cũ
+							</button>
 
-						<input
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							required
-							disabled={isPending}
-						/>
+						</div>
 
-					</div>
-
-					<div>
-
-						<label>Joined At</label>
-
-						<input
-							type="date"
-							value={joinedAt}
-							onChange={(e) => setJoinedAt(e.target.value)}
-							required
-							disabled={isPending}
-						/>
-
-					</div>
-
-					<div>
-						{preview &&
-							<ImgAvatar
-								src={preview}
-								alt={member.name}
-							/>
-						}
-
-					</div>
-
-					<div>
-
-						<label>Upload new avatar</label>
-
-						<input
-							type="file"
-							accept="image/*"
-							onChange={handleFile}
-							ref={inputFile}
-							disabled={isPending}
-						/>
-
-						<button disabled={isPending} type="button" className="btn btn-outline-primary" onClick={handleResetAvatar}>
-							Reset
-						</button>
-
-					</div>
-
-					<div>
-
-						<button disabled={isPending} type="button" className="btn btn-primary" onClick={handleCancel}>
-							Cancel
-						</button>
-
-						<button disabled={isPending} className="btn btn-primary">
-							{isPending ? "Đang lưu..." : "Lưu"}
-						</button>
-
-					</div>
-
-				</form>
-
+						<div className="modal-footer">
+							<button disabled={isPending} type="button" className="btn btn-secondary" onClick={onClose}>
+								Hủy
+							</button>
+							<button disabled={isPending} type="submit" className="btn btn-primary">
+								{isPending ? "Đang lưu..." : "Lưu"}
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
-
 		</div>
-
 	)
-
 }

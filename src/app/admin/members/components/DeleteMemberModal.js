@@ -1,38 +1,59 @@
 "use client"
 
 import { deleteMember } from "@/app/actions/memberActions"
+import useModal from "@/hooks/useModal"
 import { useTransition } from "react"
 
-export default function DeleteMemberModal({ open, onClose, member }) {
-	const [isPending, startTransition] = useTransition()
-  if (!open) return null
+export default function DeleteMemberModal({ member, onClose }) {
+  const [isPending, startTransition] = useTransition()
 
-  const handleDelete = async () => {
-    startTransition(async () => {
-      await deleteMember(member.id, member.avatar)
-      onClose()
-    })
-  }
+	const handleDelete = () => {
+		if (isPending) return
+
+		startTransition(async () => {
+			await deleteMember(member.id, member.avatar)
+			onClose()
+		})
+	}
+
+	useModal({
+    isOpen: open,
+    onClose,
+    isPending,
+  });
+
+	if (!member) return null
 
   return (
-    <div className="p-2">
-      <h3>Delete member</h3>
-      <p>
-        Are you sure you want to delete <b>{member.name}</b>?
-      </p>
-      <div className="d-flex justify-content-between">
+    <div className="modal modal-custom"
+      onClick={() => {
+				if (!isPending) onClose();
+			}}
+    >
+      <div className="modal-dialog modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h3>Xóa NGOO này</h3>
+          </div>
+          <div className="modal-body">
+            Bạn có chắc muốn đá đít <b>{member.name}</b>?
+          </div>
+          <div className="modal-footer">
 
-        <button disabled={isPending} className="btn btn-primary" onClick={onClose}>
-          Cancel
-        </button>
+            <button disabled={isPending} className="btn btn-primary" onClick={onClose} type="button">
+              Hủy
+            </button>
 
-        <button
-          disabled={isPending}
-          onClick={handleDelete}
-          className="btn btn-danger"
-        >
-          {isPending ? "Đang xóa..." : "Xóa"}
-        </button>
+            <button
+              disabled={isPending}
+              onClick={handleDelete}
+              className="btn btn-danger"
+              type="button"
+            >
+              {isPending ? "Đang xóa..." : "Xóa"}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

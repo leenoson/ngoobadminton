@@ -1,0 +1,18 @@
+@use "../styles/mixin" as m;
+
+.admin {
+	&-navbar {
+		width: 250px;
+		flex-shrink: 0;
+		background-color: #0d6efd;
+		color: #fff;
+
+		@include m.sp {
+			width: 100%;
+		}
+	}
+
+	&-content {
+		width: 100%;
+	}
+}

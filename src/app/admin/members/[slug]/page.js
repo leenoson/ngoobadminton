@@ -179,7 +179,7 @@ export default async function MemberDetail({ params }) {
             )
           })
         ) : (
-          <p>Chưa có dữ liệu tham gia</p>
+          <p>Chưa tham gia buổi nào</p>
         )}
       </div>
 

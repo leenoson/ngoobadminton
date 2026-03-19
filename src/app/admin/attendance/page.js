@@ -4,6 +4,8 @@ import { useState, useEffect, useMemo, useTransition } from "react"
 import { createClient } from "@/lib/supabase/client"
 import ImgAvatar from "@/components/ImgAvatar"
 import useDebounce from "@/hooks/useDebounce"
+import clsx from "clsx"
+import "./attendance.scss"
 
 export default function AttendancePage() {
 
@@ -193,37 +195,36 @@ export default function AttendancePage() {
 
       {!loadingMembers && (
 
-        <div className="list-group">
+        <div className="row row-cols-xxl-5 row-cols-xl-4 row-cols-md-3 row-cols-sm-2 row-cols-1">
 
           {filteredMembers.map(member => (
 
             <label
               key={member.id}
-              className="list-group-item d-flex align-items-center gap-3"
+              className="col mb-4 cursor-pointer"
             >
-
-              <input
+               <input
                 type="checkbox"
                 checked={checked.includes(member.id)}
                 onChange={() => toggleMember(member.id)}
+                className="sr-only"
               />
-
-              <ImgAvatar
-                src={member.avatar}
-                alt={member.name}
-              />
-
-              <span className="flex-grow-1">
-                {member.name}
-              </span>
-
-              <span className="text-muted">
-                {member.attendance?.[0]?.count || 0}
-              </span>
-
+              <div className={clsx("card h-100", {
+                "border-primary": checked.includes(member.id)
+              })}>
+                <ImgAvatar
+                  src={member.avatar}
+                  alt={member.name}
+                  classprop="card-img-top"
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{member.name}</h5>
+                  <p className="card-text">Số buổi tham gia: {member.attendance?.[0]?.count || 0}</p>
+                </div>
+              </div>
             </label>
-
-          ))}
+          )
+          )}
 
           {members.length > 0 && filteredMembers.length === 0 && (
             <div className="text-muted p-3">

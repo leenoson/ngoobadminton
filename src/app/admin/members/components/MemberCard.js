@@ -6,10 +6,9 @@ import DeleteMemberModal from "./DeleteMemberModal"
 import ImgAvatar from "@/components/ImgAvatar";
 import Link from "next/link";
 import { createMemberSlug } from '@/lib/slugify'
-
 export default function MemberCard({ member, isAdmin }) {
-	const [deleteOpen, setDeleteOpen] = useState(false)
-	const [editOpen, setEditOpen] = useState(false)
+	const [selectedMember, setSelectedMember] = useState(null)
+	const [deletingMember, setDeletingMember] = useState(null)
 	const attendanceCount = member.attendance_count ?? 0;
 
 	const joinedDate = member.joined_at
@@ -40,7 +39,7 @@ export default function MemberCard({ member, isAdmin }) {
 					{attendanceCount} buổi tham gia
 				</p>
 			{isAdmin && (
-				<Link href={`/admin/members/${createMemberSlug(member.name, member.id)}`} className="btn btn-primary">
+				<Link href={`/admin/members/${createMemberSlug(member.name, member.id)}`} className="btn btn-primary mt-2">
 					Chi tiết
 				</Link>
 			)}
@@ -49,32 +48,32 @@ export default function MemberCard({ member, isAdmin }) {
 				<>
 					<div className="card-footer d-flex justify-content-between">
 
-						<button
-							className="btn btn-sm btn-outline-primary"
-							onClick={() => setEditOpen(true)}
-						>
-							Edit
+						<button className="btn btn-primary" onClick={() => setSelectedMember(member)}>
+							Sửa
 						</button>
 
 						<button
 							className="btn btn-sm btn-outline-danger"
-							onClick={() => setDeleteOpen(true)}
+							onClick={() => setDeletingMember(member)}
 						>
-							Delete
+							Xóa
 						</button>
 
 					</div>
-					<EditMemberModal
-						member={member}
-						open={editOpen}
-						onClose={() => setEditOpen(false)}
-					/>
 
-					<DeleteMemberModal
-						member={member}
-						open={deleteOpen}
-						onClose={() => setDeleteOpen(false)}
-					/>
+					{selectedMember && (
+						<EditMemberModal
+							member={selectedMember}
+							onClose={() => setSelectedMember(null)}
+						/>
+					)}
+
+					{deletingMember && (
+						<DeleteMemberModal
+							member={deletingMember}
+							onClose={() => setDeletingMember(null)}
+						/>
+					)}
 				</>
 			)}
 			</div>

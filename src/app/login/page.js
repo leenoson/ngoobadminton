@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import "./login.scss";
 
 export default function LoginPage() {
 
@@ -31,34 +32,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="container">
+    <>
+      <div className="container">
+        <form onSubmit={login} className="form-signin">
+          <h1 className="h3 mb-3 font-weight-normal">Admin login</h1>
+          <label htmlFor="inputEmail" className="sr-only">Email address</label>
+          <input
+            type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus
+            onChange={(e)=>setEmail(e.target.value)}
+          />
+          <label htmlFor="inputPassword" className="sr-only">Password</label>
+          <input
+            type="password" id="inputPassword" className="form-control" placeholder="Password" required
+            onChange={(e)=>setPassword(e.target.value)}
+          />
 
-      <h1>Login</h1>
+          <button
+            className="btn btn-lg btn-primary w-100"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
 
-      <form onSubmit={login}>
+        </form>
 
-        <input
-          className="form-control mb-3"
-          placeholder="Email"
-          onChange={(e)=>setEmail(e.target.value)}
-        />
-
-        <input
-          type="password"
-          className="form-control mb-3"
-          placeholder="Password"
-          onChange={(e)=>setPassword(e.target.value)}
-        />
-
-        <button
-          className="btn btn-primary w-100"
-          disabled={loading}
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
-
-      </form>
-
-    </div>
+      </div>
+    </>
   );
 }

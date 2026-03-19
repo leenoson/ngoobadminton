@@ -1,18 +1,18 @@
 "use client"
 
 import { addMember } from "@/app/actions/memberActions"
-import { useRef, useState } from "react"
+import { useRef, useState, useTransition } from "react"
 import { compressImage } from "@/lib/image/compressImage"
 import ImgAvatar from "@/components/ImgAvatar"
-import { useTransition } from "react"
+import useModal from "@/hooks/useModal"
 
-export default function AddMemberModal({ open, onClose }) {
-	const formRef = useRef()
+export default function AddMemberModal({isOpen, onClose}) {
+	const formRef = useRef(null)
+
 	const [avatar, setAvatar] = useState(null)
 	const [name, setName] = useState("")
 	const [isPending, startTransition] = useTransition()
 
-	if (!open) return null
 	const handleFile = async (e) => {
 
 		const file = e.target.files?.[0]
@@ -30,118 +30,113 @@ export default function AddMemberModal({ open, onClose }) {
 			file: compressed,
 			preview
 		})
-
 	}
+
 	const handleSubmit = async (formData) => {
 		if (avatar?.file) {
 			formData.set("avatar", avatar.file)
 		}
 		startTransition(async () => {
 			await addMember(formData)
-    })
-		formRef.current.reset()
-		setName("")
-		setAvatar(null)
-		onClose()
+			handleClose()
+		})
 	}
 
 	const handleClose = () => {
-		formRef.current.reset()
-		setName("")
-		if (avatar) {
-			URL.revokeObjectURL(avatar)
-			setAvatar(null)
-		}
+		resetForm()
 		onClose()
 	}
+
+	const resetForm = () => {
+		formRef?.current?.reset()
+		setName("")
+
+		if (avatar?.preview) {
+			URL.revokeObjectURL(avatar.preview)
+		}
+
+		setAvatar(null)
+	}
+
+	useModal({
+		isOpen,
+		onClose,
+		isPending,
+	});
+
+	if (!isOpen) return null
+
 	return (
 
-		<div >
-
-			<div className="modal-dialog">
-
+		<div className="modal modal-custom"
+			onClick={() => {
+				if (!isPending) handleClose();
+			}}
+		>
+			<div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
 				<div className="modal-content">
-
-					<div className="modal-header">
-
-						<h5>Add Member</h5>
-
-						<button onClick={handleClose} className="btn-close" />
-
-					</div>
-
 					<form
 						ref={formRef}
 						action={handleSubmit}
 					>
+						<div className="modal-header">
+							<h5 className="modal-title fs-5">Thêm thành viên</h5>
+							<button type="button" className="btn-close" onClick={handleClose}/>
+						</div>
 
 						<div className="modal-body">
-
 							<div className="mb-3">
-
-								<label>Name</label>
-
+								<label>Tên</label>
 								<input
 									name="name"
 									required
 									className="form-control"
 									value={name}
 									onChange={(e) => setName(e.target.value)}
+									disabled={isPending}
 								/>
-
 							</div>
-
 							<div className="mb-3">
-
-								<label>Joined Date</label>
-
+								<label>Ngày tham gia</label>
 								<input
 									type="date"
 									name="joined_at"
 									required
 									className="form-control"
+									disabled={isPending}
 								/>
-
 							</div>
-
 							<div className="mb-3">
-
 								<label>Avatar</label>
-
 								<input
 									type="file"
 									name="avatar"
 									className="form-control"
 									onChange={(e) => handleFile(e)}
 									accept="image/*"
+									disabled={isPending}
 								/>
-								{avatar &&
-									<ImgAvatar
-										src={avatar.preview}
-										alt={name}
-									/>
-								}
-
+								<div className="mt-3">
+									{avatar &&
+										<ImgAvatar
+											src={avatar.preview}
+											alt={name}
+											classprop="rounded object-fit-cover w-100"
+										/>
+									}
+								</div>
 							</div>
-
 						</div>
 
 						<div className="modal-footer">
-
-							<button disabled={isPending} className="btn btn-primary">
-								{isPending ? "Adding member..." : "Add Member"}
+							<button disabled={isPending} type="button" className="btn btn-secondary" onClick={handleClose}>Hủy</button>
+							<button disabled={isPending} type="submit" className="btn btn-primary">
+								{isPending ? "Thêm..." : "Thêm"}
 							</button>
-
 						</div>
-
 					</form>
-
 				</div>
-
 			</div>
-
 		</div>
-
 	)
-
 }

@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
-import MembersClient from "./components/MembersClient"
 import FilterBar from "./components/FilterBar"
 import MemberCard from "./components/MemberCard"
+import AddMemberButton from "./components/AddMemberButton"
 
 export default async function MembersPage({ searchParams }) {
   const params = await searchParams
@@ -38,29 +38,27 @@ export default async function MembersPage({ searchParams }) {
   const filteredMembers = members?.length || 0
 
   return (
-
-    <div className="py-5">
-      <MembersClient members={members} />
+    <div>
+      <h2>Danh sách NGOO dân</h2>
+      <AddMemberButton members={members} />
       <div className="d-flex justify-content-between align-items-center mb-3">
 
-        <div className="text-muted">
-
+        <div>
           {search
-            ? `Found ${filteredMembers} of ${totalMembers} members`
-            : `${totalMembers} members`
+            ? `Tìm thấy ${filteredMembers} trong ${totalMembers} NGOO`
+            : ` Có ${totalMembers} NGOO`
           }
-
         </div>
 
       </div>
       <FilterBar />
 
-      <div className="row">
+      <div className="row row-cols-xxl-4 row-cols-xl-3 row-cols-md-2 row-cols-1">
 
         {members && members.length > 0 ? (
 
           members.map(member => (
-            <div key={member.id} className="col-3">
+            <div key={member.id} className="col mb-4">
               <MemberCard member={member} isAdmin/>
             </div>
           ))
@@ -71,8 +69,8 @@ export default async function MembersPage({ searchParams }) {
 
             <h5 className="text-muted">
               {search
-                ? "Không tìm thấy member nào"
-                : "Chưa có members"
+                ? "Không tìm thấy NGOO nào"
+                : "Chưa có NGOO nào"
               }
             </h5>
 
