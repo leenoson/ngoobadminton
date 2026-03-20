@@ -2,28 +2,11 @@ import ImgAvatar from '@/components/ImgAvatar'
 import { notFound } from 'next/navigation'
 import { createClient } from "@/lib/supabase/server"
 import { slugify, extractIdFromSlug } from '@/lib/slugify'
+import { getMember } from "@/lib/db/member"
 
 export async function generateMetadata({ params }) {
-  const id = extractIdFromSlug(params.slug)
-  const supabase = await createClient()
-
-  if (!id) {
-    return {
-      title: 'Member | NGOO Badminton'
-    }
-  }
-
-  const { data: member } = await supabase
-    .from('members')
-    .select('name, avatar')
-    .eq('id', id)
-    .single()
-
-  if (!member) {
-    return {
-      title: 'Member not found | NGOO Badminton'
-    }
-  }
+  const member = await getMember(params.slug)
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
   const avatarUrl = member.avatar?.startsWith('http')
     ? (member.avatar.startsWith('http')
@@ -32,10 +15,10 @@ export async function generateMetadata({ params }) {
     : `${process.env.NEXT_PUBLIC_BASE_URL}/opg.png`
 
   return {
-    title: `${member.name}`,
+    title: `${member.name} | NGOO Badminton`,
     description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton. Xem thông tin, lịch sử tham gia và hoạt động.`,
     alternates: {
-      canonical: `/admin/members/${params.slug}`,
+      canonical: `${BASE_URL}/admin/members/${params.slug}`,
     },
     openGraph: {
       title: `${member.name} | NGOO BADMINTON`,

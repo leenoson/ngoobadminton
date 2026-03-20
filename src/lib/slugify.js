@@ -14,6 +14,13 @@ export function createMemberSlug(name, id) {
 }
 
 export function extractIdFromSlug(slug) {
-  const parts = slug.split('--')
+  if (!slug) return null
+
+  if (Array.isArray(slug)) slug = slug[0]
+
+  if (typeof slug !== "string") return null
+
+  const parts = slug.split("--")
+
   return parts[1] || null
 }
