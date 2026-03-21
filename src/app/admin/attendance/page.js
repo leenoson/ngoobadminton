@@ -5,17 +5,14 @@ import { createClient } from "@/lib/supabase/client"
 import ImgAvatar from "@/components/ImgAvatar"
 import useDebounce from "@/hooks/useDebounce"
 import clsx from "clsx"
-import "./attendance.scss"
+import { formatDate } from "@/lib/formatDate"
 
 export default function AttendancePage() {
-
   const supabase = createClient()
 
   const [isPending, startTransition] = useTransition()
 
-  const [date, setDate] = useState(
-    new Date().toISOString().split("T")[0]
-  )
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0])
 
   const [members, setMembers] = useState([])
   const [checked, setChecked] = useState([])
@@ -26,56 +23,44 @@ export default function AttendancePage() {
   const debouncedSearch = useDebounce(search, 400)
 
   function toggleMember(id) {
-    setChecked(prev =>
-      prev.includes(id)
-        ? prev.filter(x => x !== id)
-        : [...prev, id]
+    setChecked((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     )
   }
 
   // chỉ check những member đang hiển thị
   function checkAll() {
-    setChecked(prev => {
-      const ids = filteredMembers.map(m => m.id)
+    setChecked((prev) => {
+      const ids = filteredMembers.map((m) => m.id)
       return Array.from(new Set([...prev, ...ids]))
     })
   }
 
   function uncheckAll() {
-    setChecked(prev => {
-      const ids = filteredMembers.map(m => m.id)
-      return prev.filter(id => !ids.includes(id))
+    setChecked((prev) => {
+      const ids = filteredMembers.map((m) => m.id)
+      return prev.filter((id) => !ids.includes(id))
     })
   }
 
   async function saveAttendance() {
-
     startTransition(async () => {
+      await supabase.from("attendance").delete().eq("attend_date", date)
 
-      await supabase
-        .from("attendance")
-        .delete()
-        .eq("attend_date", date)
-
-      const rows = checked.map(id => ({
+      const rows = checked.map((id) => ({
         member_id: id,
-        attend_date: date
+        attend_date: date,
       }))
 
       if (rows.length) {
-        await supabase
-          .from("attendance")
-          .insert(rows)
+        await supabase.from("attendance").insert(rows)
       }
 
       await fetchAttendance()
-
     })
-
   }
 
   async function fetchAttendance() {
-
     setLoadingMembers(true)
 
     const { data: membersData } = await supabase
@@ -88,51 +73,33 @@ export default function AttendancePage() {
       .select("member_id")
       .eq("attend_date", date)
 
-    const checkedIds =
-      attendanceData?.map(a => a.member_id) || []
+    const checkedIds = attendanceData?.map((a) => a.member_id) || []
 
     setMembers(membersData || [])
     setChecked(checkedIds)
 
     setLoadingMembers(false)
-
   }
 
   useEffect(() => {
     fetchAttendance()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date])
 
   // filter members
   const filteredMembers = useMemo(() => {
-
     if (!debouncedSearch) return members
 
     const keyword = debouncedSearch.toLowerCase()
 
-    return members.filter(m =>
-      m.name.toLowerCase().includes(keyword)
-    )
-
+    return members.filter((m) => m.name.toLowerCase().includes(keyword))
   }, [members, debouncedSearch])
 
   return (
-
     <div className="container py-2">
+      <h2 className="mb-4">Điểm danh</h2>
 
-      <h2 className="mb-4">Attendance</h2>
-
-      <div className="d-flex align-items-center gap-3 mb-2">
-
-        <input
-          type="date"
-          className="form-control"
-          style={{ width: "200px" }}
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-					disabled={isPending}
-        />
-
+      <div className="d-flex align-items-center gap-3 mb-3">
         <input
           type="text"
           className="form-control"
@@ -140,78 +107,79 @@ export default function AttendancePage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={{ width: "250px" }}
-					disabled={isPending}
+          disabled={isPending}
         />
 
         {search && (
           <button
             className="btn btn-outline-secondary"
             onClick={() => setSearch("")}
-						disabled={isPending}
+            disabled={isPending}
           >
-            Clear
+            X
           </button>
         )}
 
         <button
           className="btn btn-outline-primary"
           onClick={checkAll}
-					disabled={isPending}
+          disabled={isPending}
         >
-          Check All
+          Chọn tất cả
         </button>
 
         <button
           className="btn btn-outline-secondary"
           onClick={uncheckAll}
-					disabled={isPending}
+          disabled={isPending}
         >
-          Uncheck All
+          Bỏ chọn tất cả
         </button>
 
-        <div className="ms-auto fw-bold">
-          Có mặt: {checked.length} / {members.length}
+        <div className="ms-auto">
+          Có mặt ngày <span className="fw-bold">{formatDate(date, "vi")}</span>:{" "}
+          {checked.length}/{members.length}
         </div>
-
       </div>
 
-      <div className="mb-3">
+      <div className="mb-3 d-flex align-items-center gap-3">
+        <input
+          type="date"
+          className="form-control"
+          style={{ width: "200px" }}
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          disabled={isPending}
+        />
         <button
-          className="btn btn-primary mt-3"
+          className="btn btn-primary"
           onClick={saveAttendance}
           disabled={isPending}
         >
-          {isPending
-            ? `Đang lưu điểm danh ngày ${date}...`
-            : `Lưu điểm danh ngày ${date}`}
+          {isPending ? `Đang lưu điểm danh ngày ` : `Lưu điểm danh ngày `}
+          {formatDate(date, "vi")}
         </button>
       </div>
 
       {loadingMembers && (
-        <div className="text-muted p-3">
-          Loading member list...
-        </div>
+        <div className="text-muted p-3">Loading member list...</div>
       )}
 
       {!loadingMembers && (
-
         <div className="row row-cols-xxl-5 row-cols-xl-4 row-cols-md-3 row-cols-sm-2 row-cols-1">
-
-          {filteredMembers.map(member => (
-
-            <label
-              key={member.id}
-              className="col mb-4 cursor-pointer"
-            >
-               <input
+          {filteredMembers.map((member) => (
+            <label key={member.id} className="col mb-4 cursor-pointer">
+              <input
                 type="checkbox"
                 checked={checked.includes(member.id)}
                 onChange={() => toggleMember(member.id)}
                 className="sr-only"
               />
-              <div className={clsx("card h-100", {
-                "border-primary": checked.includes(member.id)
-              })}>
+              <div
+                className={clsx("card h-100", {
+                  "border-primary": checked.includes(member.id),
+                })}
+              >
                 <ImgAvatar
                   src={member.avatar}
                   alt={member.name}
@@ -219,24 +187,19 @@ export default function AttendancePage() {
                 />
                 <div className="card-body">
                   <h5 className="card-title">{member.name}</h5>
-                  <p className="card-text">Số buổi tham gia: {member.attendance?.[0]?.count || 0}</p>
+                  <p className="card-text">
+                    Số buổi tham gia: {member.attendance?.[0]?.count || 0}
+                  </p>
                 </div>
               </div>
             </label>
-          )
-          )}
+          ))}
 
           {members.length > 0 && filteredMembers.length === 0 && (
-            <div className="text-muted p-3">
-              No members found
-            </div>
+            <div className="text-muted p-3">No members found</div>
           )}
-
         </div>
-
       )}
-
     </div>
   )
-
 }

@@ -1,7 +1,13 @@
+import CardSkeleton from "@/components/Skeleton"
+
 export default function Loading() {
   return (
-    <div style={{ padding: 40, textAlign: 'center' }}>
-      <p>Loading member...</p>
-    </div>
+    <>
+      <CardSkeleton type="avatar avatar--full" />
+      <CardSkeleton type="title center" />
+      <CardSkeleton type="text short" />
+      <CardSkeleton type="text short" />
+      <CardSkeleton type="title medium" />
+    </>
   )
 }

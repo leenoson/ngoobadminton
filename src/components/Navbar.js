@@ -1,54 +1,40 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import Link from "next/link"
 import useAuth from "@/hooks/useAuth"
 
-export default function Navbar(){
-  const supabase = createClient();
-  const router = useRouter();
+export default function Navbar() {
   const { isLoggedIn } = useAuth()
 
-  async function logout(){
-    await supabase.auth.signOut();
-    router.refresh();
-  }
-
-  return(
-
-    <nav className="navbar navbar-expand-lg bg-light">
-
-      <div className="container">
-
-        <Link className="navbar-brand" href="/">
-          Badminton Club
-        </Link>
-
-        <div className="navbar-nav ms-auto">
-          {isLoggedIn ? (
-            <>
-              <Link className="nav-link" href="/admin">
-                Admin
-              </Link>
-
-              <button
-                className="btn btn-outline-danger ms-3"
-                onClick={logout}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <Link className="nav-link" href="/login">
-              Login
-            </Link>
-          )}
-
+  return (
+    <nav className="navbar-custom">
+      <div className="navbar-container">
+        <ul className="menu">
+          <li className="menu-item">
+            <a href="#about">NGOO là gì?</a>
+          </li>
+          <li className="menu-item">
+            <a href="#join">Top 10 NGOO</a>
+          </li>
+          <li className="menu-item">
+            <a href="#contact">Liên hệ NGOO</a>
+          </li>
+        </ul>
+        <div className="menu-logo">
+          <Link className="navbar-brand" href="/">
+            Logo NGOO
+          </Link>
         </div>
-
+        {isLoggedIn ? (
+          <Link className="btn btn-outline-danger ms-3" href="/admin">
+            Admin
+          </Link>
+        ) : (
+          <Link className="btn btn-primary btn-sm" href="/login">
+            Bí mật?
+          </Link>
+        )}
       </div>
-
     </nav>
-  );
+  )
 }
