@@ -1,0 +1,20 @@
+@use "./mixin" as m;
+
+.icon {
+  &-facebook {
+    fill: blue;
+  }
+}
+
+.social {
+  [class^="icon-"] {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.footer {
+  padding: 20px;
+  background-color: #111;
+  color: #fff;
+}

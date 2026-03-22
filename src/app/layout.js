@@ -1,10 +1,13 @@
 import "./styles/globals.scss"
-import Navbar from "@/components/Navbar"
 import AuthProvider from "@/context/AuthProvider"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import AnalyticsTracker from "@/components/AnalyticsTracker"
 import { Suspense } from "react"
 import BootstrapClient from "@/components/BootstrapClient"
+import "swiper/css"
+import "swiper/css/navigation"
+// import "swiper/css/pagination"
+// import "swiper/css/scrollbar"
 
 const TITLE = "NGOO BADMINTON"
 const KEYWS = [

@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import FilterBar from "./components/FilterBar"
-import MemberCard from "./components/MemberCard"
+import MemberCard from "../../../components/MemberCard"
 import AddMemberButton from "./components/AddMemberButton"
 
 export default async function MembersPage({ searchParams }) {

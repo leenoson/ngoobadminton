@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
-import MemberCard from "../admin/members/components/MemberCard"
+import MemberCard from "../../components/MemberCard"
+import TopAttendance from "@/components/TopAttendance"
+import BannerTop from "@/components/BannerTop"
 
 export default async function Home() {
   const supabase = await createClient()
@@ -23,7 +25,9 @@ export default async function Home() {
   return (
     <>
       <div className="container py-5">
-        <section className="c-banner">slide banner</section>
+        <section className="c-banner">
+          <BannerTop />
+        </section>
         <section id="member">
           <h2 className="mb-4">Members</h2>
 
@@ -55,11 +59,30 @@ export default async function Home() {
         <section id="rank">
           <h2 className="mt-5 mb-4">Top 10 thành viên năng động</h2>
           <p>10 thành viên có nhiều buổi tham gia nhất</p>
+          <TopAttendance />
         </section>
       </div>
-      <footer>
-        <div className="container">copyright of Cactus aka Tarot Reader</div>
-      </footer>
+      <section className="contact">
+        <div className="container d-sm-flex">
+          <div className="contact-info">
+            <h2>NGOO BADMINTON</h2>
+            <p>Sdt(Zalo): 03521xx1xx</p>
+            <p>Email: ngoobadminton@cl.com</p>
+            <p>
+              Địa chỉ: Sân cầu lông Thắng Lợi - 210 Thích Quảng Đức, Phú Cường,
+              Thủ Dầu Một, Bình Dương
+            </p>
+          </div>
+          <div className="contact-map">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.814828029157!2d106.66024977577777!3d10.977345355454124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d16e3752f507%3A0xcb356352c4d812d2!2zU8OibiBD4bqndSBMw7RuZyBUaOG6r25nIEzhu6Np!5e0!3m2!1svi!2s!4v1774169945302!5m2!1svi!2s"
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+      </section>
     </>
   )
 }

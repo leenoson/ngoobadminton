@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import EditMemberModal from "./EditMemberModal"
-import DeleteMemberModal from "./DeleteMemberModal"
+import EditMemberModal from "../app/admin/members/components/EditMemberModal"
+import DeleteMemberModal from "../app/admin/members/components/DeleteMemberModal"
 import ImgAvatar from "@/components/ImgAvatar"
 import Link from "next/link"
 import { createMemberSlug } from "@/lib/slugify"
-import CardSkeleton from "@/components/Skeleton"
+
 export default function MemberCard({ member, isAdmin }) {
   const [selectedMember, setSelectedMember] = useState(null)
   const [deletingMember, setDeletingMember] = useState(null)
