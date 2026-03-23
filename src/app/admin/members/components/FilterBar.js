@@ -43,29 +43,26 @@ export default function FilterBar() {
   }, [debouncedSearch])
 
   return (
-    <div className="row g-2 mb-4">
-      <div className="d-flex col-md-4 gap-2">
+    <div className="">
+      <div className="">
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Tìm kiếm thành viên theo tên..."
-          className="form-control"
+          className=""
         />
 
         {search && (
-          <button
-            className="btn btn-outline-secondary"
-            onClick={() => setSearch("")}
-          >
+          <button className="" onClick={() => setSearch("")}>
             X
           </button>
         )}
       </div>
 
-      <div className="col-md-3">
+      <div className="">
         <select
           value={sort}
-          className="form-select"
+          className=""
           onChange={(e) => updateParam("sort", e.target.value)}
         >
           <option value="joined">Ngày tham gia</option>
@@ -74,10 +71,10 @@ export default function FilterBar() {
         </select>
       </div>
 
-      <div className="col-md-3">
+      <div className="">
         <select
           value={order}
-          className="form-select"
+          className=""
           onChange={(e) => updateParam("order", e.target.value)}
         >
           <option value="desc">Giảm dần</option>

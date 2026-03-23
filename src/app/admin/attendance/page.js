@@ -96,13 +96,13 @@ export default function AttendancePage() {
   }, [members, debouncedSearch])
 
   return (
-    <div className="container py-2">
-      <h2 className="mb-4">Điểm danh</h2>
+    <div className="">
+      <h2 className="">Điểm danh</h2>
 
-      <div className="d-flex align-items-center gap-3 mb-3">
+      <div className="">
         <input
           type="text"
-          className="form-control"
+          className=""
           placeholder="Search member..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -112,7 +112,7 @@ export default function AttendancePage() {
 
         {search && (
           <button
-            className="btn btn-outline-secondary"
+            className=""
             onClick={() => setSearch("")}
             disabled={isPending}
           >
@@ -120,74 +120,56 @@ export default function AttendancePage() {
           </button>
         )}
 
-        <button
-          className="btn btn-outline-primary"
-          onClick={checkAll}
-          disabled={isPending}
-        >
+        <button className="" onClick={checkAll} disabled={isPending}>
           Chọn tất cả
         </button>
 
-        <button
-          className="btn btn-outline-secondary"
-          onClick={uncheckAll}
-          disabled={isPending}
-        >
+        <button className="" onClick={uncheckAll} disabled={isPending}>
           Bỏ chọn tất cả
         </button>
 
-        <div className="ms-auto">
-          Có mặt ngày <span className="fw-bold">{formatDate(date, "vi")}</span>:{" "}
+        <div className="">
+          Có mặt ngày <span className="">{formatDate(date, "vi")}</span>:{" "}
           {checked.length}/{members.length}
         </div>
       </div>
 
-      <div className="mb-3 d-flex align-items-center gap-3">
+      <div className="">
         <input
           type="date"
-          className="form-control"
+          className=""
           style={{ width: "200px" }}
           value={date}
           onChange={(e) => setDate(e.target.value)}
           disabled={isPending}
         />
-        <button
-          className="btn btn-primary"
-          onClick={saveAttendance}
-          disabled={isPending}
-        >
+        <button className="" onClick={saveAttendance} disabled={isPending}>
           {isPending ? `Đang lưu điểm danh ngày ` : `Lưu điểm danh ngày `}
           {formatDate(date, "vi")}
         </button>
       </div>
 
-      {loadingMembers && (
-        <div className="text-muted p-3">Loading member list...</div>
-      )}
+      {loadingMembers && <div className="">Loading member list...</div>}
 
       {!loadingMembers && (
-        <div className="row row-cols-xxl-5 row-cols-xl-4 row-cols-md-3 row-cols-sm-2 row-cols-1">
+        <div className="">
           {filteredMembers.map((member) => (
-            <label key={member.id} className="col mb-4 cursor-pointer">
+            <label key={member.id} className="">
               <input
                 type="checkbox"
                 checked={checked.includes(member.id)}
                 onChange={() => toggleMember(member.id)}
-                className="sr-only"
+                className=""
               />
               <div
-                className={clsx("card h-100", {
-                  "border-primary": checked.includes(member.id),
+                className={clsx("", {
+                  "": checked.includes(member.id),
                 })}
               >
-                <ImgAvatar
-                  src={member.avatar}
-                  alt={member.name}
-                  classprop="card-img-top"
-                />
-                <div className="card-body">
-                  <h5 className="card-title">{member.name}</h5>
-                  <p className="card-text">
+                <ImgAvatar src={member.avatar} alt={member.name} classprop="" />
+                <div className="">
+                  <h5 className="">{member.name}</h5>
+                  <p className="">
                     Số buổi tham gia: {member.attendance?.[0]?.count || 0}
                   </p>
                 </div>
@@ -196,7 +178,7 @@ export default function AttendancePage() {
           ))}
 
           {members.length > 0 && filteredMembers.length === 0 && (
-            <div className="text-muted p-3">No members found</div>
+            <div className="">No members found</div>
           )}
         </div>
       )}

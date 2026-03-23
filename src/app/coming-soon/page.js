@@ -20,10 +20,12 @@ export default function CommingSoon() {
       /> */}
       <div
         className={clsx(
-          `comming-soon d-flex justify-content-center align-items-center ${beVN.className}`,
+          `comming-soon flex justify-center items-center ${beVN.className}`,
         )}
       >
-        <h1 className="comming-text">Chúng tôi sẽ sớm có mặt!</h1>
+        <h1 className="text-[#fff] z-1 text-md md:text-3xl">
+          Chúng tôi sẽ sớm có mặt!
+        </h1>
       </div>
     </>
   )

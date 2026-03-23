@@ -16,7 +16,7 @@ export default function BannerTop() {
         autoplay={{ delay: 3000 }}
         loop
         onSlideChange={(swiper) => {
-          console.log(swiper.realIndex)
+          // console.log(swiper.realIndex)
         }}
         // onSwiper={(swiper) => console.log(swiper)}
       >

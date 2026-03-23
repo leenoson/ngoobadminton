@@ -14,19 +14,19 @@ export default function Navbar() {
   }
   return (
     <>
-      <div className="navbar-admin">
+      <div className="">
         <Link href="/admin">
           <h4>Admin</h4>
         </Link>
 
-        <ul className="menu-admin">
-          <li className="menu-admin-item">
+        <ul className="">
+          <li className="">
             <Link href="/admin/members">Members</Link>
           </li>
-          <li className="menu-admin-item">
+          <li className="">
             <Link href="/admin/attendance">Điểm danh</Link>
           </li>
-          <li className="menu-admin-item">
+          <li className="">
             <div className="btn btn-outline-danger" onClick={logout}>
               Đăng xuất
             </div>

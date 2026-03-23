@@ -18,23 +18,19 @@ export default function MemberCard({ member, isAdmin }) {
 
   return (
     <>
-      <div className="card shadow-sm">
-        <ImgAvatar
-          src={member.avatar}
-          alt={member.name}
-          classprop="card-img-top"
-        />
+      <div className="">
+        <ImgAvatar src={member.avatar} alt={member.name} classprop="" />
 
-        <div className="card-body text-center">
-          <h5 className="card-title mb-2">{member.name}</h5>
+        <div className="">
+          <h5 className="">{member.name}</h5>
 
-          <p className="text-muted mb-1">Tham gia: {joinedDate}</p>
+          <p className="">Tham gia: {joinedDate}</p>
 
-          <p className="mb-0">{attendanceCount} buổi tham gia</p>
+          <p className="">{attendanceCount} buổi tham gia</p>
           {isAdmin && (
             <Link
               href={`/admin/members/${createMemberSlug(member.name, member.id)}`}
-              className="btn btn-primary mt-2"
+              className=""
             >
               Chi tiết
             </Link>
@@ -42,18 +38,12 @@ export default function MemberCard({ member, isAdmin }) {
         </div>
         {isAdmin && (
           <>
-            <div className="card-footer d-flex justify-content-between">
-              <button
-                className="btn btn-primary"
-                onClick={() => setSelectedMember(member)}
-              >
+            <div className="">
+              <button className="" onClick={() => setSelectedMember(member)}>
                 Sửa
               </button>
 
-              <button
-                className="btn btn-sm btn-outline-danger"
-                onClick={() => setDeletingMember(member)}
-              >
+              <button className="" onClick={() => setDeletingMember(member)}>
                 Xóa
               </button>
             </div>

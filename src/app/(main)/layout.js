@@ -4,13 +4,13 @@ import Link from "next/link"
 export default function MainLayout({ children }) {
   return (
     <>
-      <header className="header">
+      <header className="">
         <Navbar />
       </header>
       <main>{children}</main>
-      <footer className="text-center footer">
-        <div className="container">
-          <ul className="social d-flex gap-1 justify-content-center">
+      <footer className="">
+        <div className="">
+          <ul className="">
             <li>
               <Link href="/">
                 <svg
@@ -20,7 +20,7 @@ export default function MainLayout({ children }) {
                   width="100"
                   height="100"
                   viewBox="0 0 48 48"
-                  className="icon-zalo"
+                  className=""
                 >
                   <path
                     fill="#2962ff"
@@ -58,7 +58,7 @@ export default function MainLayout({ children }) {
                   width="100"
                   height="100"
                   viewBox="0 0 48 48"
-                  className="icon-tiktok"
+                  className=""
                 >
                   <path
                     fill="#212121"
@@ -90,7 +90,7 @@ export default function MainLayout({ children }) {
             <li>
               <Link href="/">
                 <svg
-                  className="icon-facebook"
+                  className=""
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"
                   y="0px"

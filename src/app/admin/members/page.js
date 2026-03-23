@@ -39,7 +39,7 @@ export default async function MembersPage({ searchParams }) {
     <div>
       <h2>Danh sách NGOO dân</h2>
       <AddMemberButton members={members} />
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="">
         <div>
           {search
             ? `Tìm thấy ${filteredMembers} trong ${totalMembers} NGOO`
@@ -48,16 +48,16 @@ export default async function MembersPage({ searchParams }) {
       </div>
       <FilterBar />
 
-      <div className="row row-cols-xxl-4 row-cols-xl-3 row-cols-md-2 row-cols-1">
+      <div className="">
         {members && members.length > 0 ? (
           members.map((member) => (
-            <div key={member.id} className="col mb-4">
+            <div key={member.id} className="">
               <MemberCard member={member} isAdmin />
             </div>
           ))
         ) : (
-          <div className="col-12 text-center py-5">
-            <h5 className="text-muted">
+          <div className="">
+            <h5 className="">
               {search ? "Không tìm thấy NGOO nào" : "Chưa có NGOO nào"}
             </h5>
           </div>

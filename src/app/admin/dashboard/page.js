@@ -10,7 +10,7 @@ import {
   LineElement,
   PointElement,
   Tooltip,
-  Legend
+  Legend,
 } from "chart.js"
 import { Line, Bar } from "react-chartjs-2"
 
@@ -21,11 +21,10 @@ ChartJS.register(
   LineElement,
   PointElement,
   Tooltip,
-  Legend
+  Legend,
 )
 
 export default function DashboardPage() {
-
   const supabase = createClient()
 
   const [last7Days, setLast7Days] = useState([])
@@ -46,77 +45,70 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function load() {
+      const dates30 = getPastDates(30)
+      const startDate = dates30[0]
 
-			const dates30 = getPastDates(30)
-			const startDate = dates30[0]
+      const { data } = await supabase
+        .from("attendance")
+        .select("attend_date")
+        .gte("attend_date", startDate)
 
-			const { data } = await supabase
-				.from("attendance")
-				.select("attend_date")
-				.gte("attend_date", startDate)
+      const counts = {}
 
-			const counts = {}
+      data?.forEach((row) => {
+        counts[row.attend_date] = (counts[row.attend_date] || 0) + 1
+      })
 
-			data?.forEach(row => {
-				counts[row.attend_date] = (counts[row.attend_date] || 0) + 1
-			})
+      const stats30 = dates30.map((date) => ({
+        date,
+        count: counts[date] || 0,
+      }))
 
-			const stats30 = dates30.map(date => ({
-				date,
-				count: counts[date] || 0
-			}))
+      const stats7 = stats30.slice(-7)
 
-			const stats7 = stats30.slice(-7)
+      setLast30Days(stats30)
+      setLast7Days(stats7)
+    }
 
-			setLast30Days(stats30)
-			setLast7Days(stats7)
-
-		}
-
-		load()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    load()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const chart7Data = {
-    labels: last7Days.map(d => d.date),
+    labels: last7Days.map((d) => d.date),
     datasets: [
       {
         label: "Attendance",
-        data: last7Days.map(d => d.count),
+        data: last7Days.map((d) => d.count),
         borderWidth: 2,
-        tension: 0.3
-      }
-    ]
+        tension: 0.3,
+      },
+    ],
   }
 
   const chart30Data = {
-    labels: last30Days.map(d => d.date),
+    labels: last30Days.map((d) => d.date),
     datasets: [
       {
         label: "Attendance",
-        data: last30Days.map(d => d.count)
-      }
-    ]
+        data: last30Days.map((d) => d.count),
+      },
+    ],
   }
 
   return (
+    <div className="">
+      <h2 className="">Dashboard</h2>
 
-    <div className="container py-4">
-
-      <h2 className="mb-4">Dashboard</h2>
-
-      <div className="card mb-5 p-3">
+      <div className="">
         <h5>Attendance - Last 7 Days</h5>
         <Line data={chart7Data} />
       </div>
 
-      <div className="card p-3">
+      <div className="">
         <h5>Attendance - Last 30 Days</h5>
         <Bar data={chart30Data} />
       </div>
-
     </div>
-
   )
-
 }
