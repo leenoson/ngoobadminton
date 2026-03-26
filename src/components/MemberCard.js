@@ -23,6 +23,7 @@ export default function MemberCard({ member, isAdmin }) {
 
         <div className="">
           <h5 className="">{member.name}</h5>
+          <h6 className="">{member.nickname}</h6>
 
           <p className="">Tham gia: {joinedDate}</p>
 

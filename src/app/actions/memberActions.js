@@ -21,6 +21,7 @@ export async function addMember(formData) {
   const supabase = await createClient()
 
   const name = formData.get("name")
+  const nickname = formData.get("nickname")
   const joined_at = formData.get("joined_at")
   const avatar = formData.get("avatar")
 
@@ -54,6 +55,7 @@ export async function addMember(formData) {
 
   await supabase.from("members").insert({
     name,
+    nickname,
     joined_at,
     avatar: avatarUrl,
   })
@@ -80,6 +82,7 @@ export async function updateMember(formData) {
 
   const id = formData.get("id")
   const name = formData.get("name")
+  const nickname = formData.get("nickname")
   const joined_at = formData.get("joined_at")
   const avatarFile = formData.get("avatar")
 
@@ -121,6 +124,7 @@ export async function updateMember(formData) {
 
   const updateData = {
     name,
+    nickname,
     joined_at,
   }
 

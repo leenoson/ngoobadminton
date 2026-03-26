@@ -3,9 +3,10 @@ import AuthProvider from "@/context/AuthProvider"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import AnalyticsTracker from "@/components/AnalyticsTracker"
 import { Suspense } from "react"
-import BootstrapClient from "@/components/BootstrapClient"
 import "swiper/css"
 import "swiper/css/navigation"
+import ScrollToTop from "@/components/ScrollToTop"
+import PageTransitionWrapper from "@/components/PageTransitionWrapper"
 // import "swiper/css/pagination"
 // import "swiper/css/scrollbar"
 
@@ -59,7 +60,7 @@ export const metadata = {
     emails: "leenoson93@gmail.com",
     countryName: "Việt Nam",
   },
-  metadateBase: new URL(BASE_URL),
+  metadataBase: new URL(BASE_URL),
   alternates: {
     canonical: BASE_URL,
   },
@@ -91,14 +92,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <BootstrapClient />
         <AuthProvider>
           <Suspense fallback={null}>
             <AnalyticsTracker />
           </Suspense>
 
-          {children}
+          <PageTransitionWrapper>{children}</PageTransitionWrapper>
         </AuthProvider>
+        <ScrollToTop />
       </body>
 
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

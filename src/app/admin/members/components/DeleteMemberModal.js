@@ -7,40 +7,55 @@ import { useTransition } from "react"
 export default function DeleteMemberModal({ member, onClose }) {
   const [isPending, startTransition] = useTransition()
 
-	const handleDelete = () => {
-		if (isPending) return
+  const handleDelete = () => {
+    if (isPending) return
 
-		startTransition(async () => {
-			await deleteMember(member.id, member.avatar)
-			onClose()
-		})
-	}
+    startTransition(async () => {
+      await deleteMember(member.id, member.avatar)
+      onClose()
+    })
+  }
 
-	useModal({
+  const handleClose = () => {
+    onClose()
+  }
+
+  useModal({
     isOpen: open,
     onClose,
     isPending,
-  });
+  })
 
-	if (!member) return null
+  if (!member) return null
 
   return (
-    <div className="modal modal-custom"
+    <div
+      className="modal modal-custom"
       onClick={() => {
-				if (!isPending) onClose();
-			}}
+        if (!isPending) onClose()
+      }}
     >
-      <div className="modal-dialog modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="modal-dialog modal-dialog-centered"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-content">
           <div className="modal-header">
             <h3>Xóa NGOO này</h3>
+            <button type="button" className="btn-close" onClick={handleClose}>
+              X
+            </button>
           </div>
           <div className="modal-body">
             Bạn có chắc muốn đá đít <b>{member.name}</b>?
           </div>
           <div className="modal-footer">
-
-            <button disabled={isPending} className="btn btn-primary" onClick={onClose} type="button">
+            <button
+              disabled={isPending}
+              className="btn btn-primary"
+              onClick={onClose}
+              type="button"
+            >
               Hủy
             </button>
 
@@ -57,5 +72,4 @@ export default function DeleteMemberModal({ member, onClose }) {
       </div>
     </div>
   )
-
 }

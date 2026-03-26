@@ -20,23 +20,31 @@ export default function BannerTop() {
         }}
         // onSwiper={(swiper) => console.log(swiper)}
       >
-        <SlideNextButton type="prev" />
-        <SlideNextButton type="next" />
+        {/* <SlideNextButton type="prev" /> */}
+        {/* <SlideNextButton type="next" /> */}
 
         <SwiperSlide>
-          <div className="slide-top">Slide 1</div>
+          <div className="slide-top w-full aspect-video bg-[#111] text-[#fff] flex justify-center items-center">
+            Slide 1
+          </div>
         </SwiperSlide>
 
         <SwiperSlide>
-          <div className="slide-top">Slide 2</div>
+          <div className="slide-top w-full aspect-video bg-[#111] text-[#fff] flex justify-center items-center">
+            Slide 2
+          </div>
         </SwiperSlide>
 
         <SwiperSlide>
-          <div className="slide-top">Slide 3</div>
+          <div className="slide-top w-full aspect-video bg-[#111] text-[#fff] flex justify-center items-center">
+            Slide 3
+          </div>
         </SwiperSlide>
 
         <SwiperSlide>
-          <div className="slide-top">Slide 4</div>
+          <div className="slide-top w-full aspect-video bg-[#111] text-[#fff] flex justify-center items-center">
+            Slide 4
+          </div>
         </SwiperSlide>
       </Swiper>
     </div>

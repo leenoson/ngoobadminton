@@ -29,13 +29,13 @@ export default async function Home() {
           <BannerTop />
         </section>
         <section id="member">
-          <h2 className="font-bold text-[22px] bg-[#bada55] hover:underline">
+          {/* <h2 className="font-bold text-[22px] bg-[#bada55] hover:underline">
             Thành viên
           </h2>
           <div className="btn-primary text-primary-1">btn cuson</div>
           <div className="btn-primary text-primary-1 bg-primary-2">
             btn cuson
-          </div>
+          </div> */}
 
           <div className="">
             {members && members.length > 0 ? (
@@ -68,7 +68,7 @@ export default async function Home() {
           <TopAttendance />
         </section>
       </div>
-      <section className="">
+      <section id="contact">
         <div className="">
           <div className="">
             <h2>NGOO BADMINTON</h2>
