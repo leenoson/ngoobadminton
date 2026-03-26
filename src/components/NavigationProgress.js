@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import NProgress from "nprogress"
 
 NProgress.configure({
@@ -23,11 +23,10 @@ function isSamePage(href) {
 
 export default function NavigationProgress() {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     NProgress.done()
-  }, [pathname, searchParams])
+  }, [pathname])
 
   useEffect(() => {
     const handleClick = (e) => {
