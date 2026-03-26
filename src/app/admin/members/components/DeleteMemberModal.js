@@ -1,8 +1,9 @@
 "use client"
 
+import { useTransition } from "react"
+import { toast } from "react-toastify"
 import { deleteMember } from "@/app/actions/memberActions"
 import useModal from "@/hooks/useModal"
-import { useTransition } from "react"
 
 export default function DeleteMemberModal({ member, onClose }) {
   const [isPending, startTransition] = useTransition()
@@ -11,7 +12,11 @@ export default function DeleteMemberModal({ member, onClose }) {
     if (isPending) return
 
     startTransition(async () => {
-      await deleteMember(member.id, member.avatar)
+      await toast.promise(deleteMember(member.id, member.avatar), {
+        pending: "Đang cho đứa NGOO cook...",
+        success: "Một đứa NGOO bị cook!",
+        error: "Xóa thất bại ❌",
+      })
       onClose()
     })
   }

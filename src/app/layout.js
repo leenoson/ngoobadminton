@@ -1,14 +1,28 @@
-import "./styles/globals.scss"
-import AuthProvider from "@/context/AuthProvider"
-import { GoogleAnalytics } from "@next/third-parties/google"
-import AnalyticsTracker from "@/components/AnalyticsTracker"
 import { Suspense } from "react"
+import { GoogleAnalytics } from "@next/third-parties/google"
+import { Montserrat } from "next/font/google"
+import clsx from "clsx"
+import AuthProvider from "@/context/AuthProvider"
+import AnalyticsTracker from "@/components/AnalyticsTracker"
+import ScrollToTop from "@/components/ScrollToTop"
+import { ModalProvider } from "@/components/ModalProvider"
+import ToastProvider from "@/components/ToastProvider"
+import NavigationProgress from "@/components/NavigationProgress"
 import "swiper/css"
 import "swiper/css/navigation"
-import ScrollToTop from "@/components/ScrollToTop"
-import PageTransitionWrapper from "@/components/PageTransitionWrapper"
+import "./styles/globals.scss"
+import "nprogress/nprogress.css"
+// import TopLoader from "@/components/TopLoader"
+// import PageTransitionWrapper from "@/components/PageTransitionWrapper"
 // import "swiper/css/pagination"
 // import "swiper/css/scrollbar"
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  style: ["normal"],
+  variable: "--font-montserrat",
+})
 
 const TITLE = "NGOO BADMINTON"
 const KEYWS = [
@@ -31,6 +45,16 @@ const KEYWS = [
   "ngoo cầu lông",
   "ngô cầu lông",
   "cầu lông ngoo",
+  "cầu lông newbie",
+  "sân cầu lông Thắng Lợi",
+  "cầu lông ma sói",
+  "cầu lông chơi ma sói",
+  "chơi cầu lông",
+  "chơi cl",
+  "chơi cl newbie",
+  "nhóm cầu lông chấp nhận newbie",
+  "luyện tập cầu lông",
+  "luyện tập cl",
 ]
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
@@ -91,13 +115,16 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className={clsx(`${montserrat.className}`)}>
+        {/* <TopLoader /> */}
+        <NavigationProgress />
         <AuthProvider>
           <Suspense fallback={null}>
             <AnalyticsTracker />
           </Suspense>
-
-          <PageTransitionWrapper>{children}</PageTransitionWrapper>
+          <ModalProvider>{children}</ModalProvider>
+          <ToastProvider />
+          {/* <PageTransitionWrapper>{children}</PageTransitionWrapper> */}
         </AuthProvider>
         <ScrollToTop />
       </body>

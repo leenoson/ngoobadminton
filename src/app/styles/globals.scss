@@ -1,27 +1,38 @@
 @use "./mixin" as m;
 @use "./commingsoon";
 @use "./skeleton";
+@use "./progressbar";
 @use "tailwindcss";
 
-@theme {
-  --color-primary-1: #d8d6d8;
-  --color-primary-2: #7d8297;
+:root {
+  --color-primary-1: #898f97;
+  --color-primary-2: #fff;
   --color-primary-3: #264875;
   --color-primary-4: #722c29;
   --color-primary-5: #1f2b40;
   --color-primary-6: #12151a;
 }
 
+.container {
+  @apply mx-auto;
+}
+
+a {
+  &:focus-visible {
+    outline: none;
+  }
+}
+
 .btn-primary {
-  font-size: 20px;
-  @apply text-center;
+  // font-size: 20px;
+  // @apply text-center;
 
-  @include m.sp {
-    font-size: 20px;
-  }
+  // @include m.sp {
+  //   font-size: 20px;
+  // }
 
-  @variant dark {
-    background: black;
-    color: var(--color-primary-1);
-  }
+  // @variant dark {
+  //   background: black;
+  //   color: var(--color-primary-1);
+  // }
 }

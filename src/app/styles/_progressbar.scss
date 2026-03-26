@@ -1,0 +1,11 @@
+#nprogress .bar {
+  background: linear-gradient(90deg, #ff0000, #ff7a00, #ff00c8) !important;
+  height: 4px !important;
+  box-shadow:
+    0 0 10px rgba(255, 0, 200, 0.7),
+    0 0 5px rgba(255, 122, 0, 0.7);
+}
+
+#nprogress .peg {
+  display: none !important;
+}

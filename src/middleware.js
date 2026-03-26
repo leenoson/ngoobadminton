@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
 
-const ENABLE_COMING_SOON = true
+const ENABLE_COMING_SOON = false
 
 export async function middleware(request) {
   const response = NextResponse.next()
@@ -71,5 +71,4 @@ export async function middleware(request) {
 
 export const config = {
   matcher: ["/((?!_next|favicon.ico|images|.*\\..*).*)"],
-  // matcher: ["/admin/:path*", "/login"],
 }

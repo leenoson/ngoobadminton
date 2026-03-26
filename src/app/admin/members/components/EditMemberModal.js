@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useRef, useTransition, useEffect } from "react"
+import { useState, useRef, useTransition } from "react"
+import { toast } from "react-toastify"
 import { updateMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import { compressImage } from "@/lib/image/compressImage"
@@ -56,7 +57,11 @@ export default function EditMemberModal({ member, onClose }) {
     }
 
     startTransition(async () => {
-      await updateMember(formData)
+      await toast.promise(updateMember(formData), {
+        pending: "Đang cập nhật thông tin...",
+        success: "Một đứa NGOO bị đổi thông tin!",
+        error: "Cập nhật thất bại ❌",
+      })
       onClose()
     })
   }

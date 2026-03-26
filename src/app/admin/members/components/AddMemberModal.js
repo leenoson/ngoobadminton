@@ -1,14 +1,15 @@
 "use client"
-
-import { addMember } from "@/app/actions/memberActions"
 import { useRef, useState, useTransition } from "react"
+import { toast } from "react-toastify"
 import { compressImage } from "@/lib/image/compressImage"
+import { addMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import useModal from "@/hooks/useModal"
 
 export default function AddMemberModal({ isOpen, onClose }) {
-  const formRef = useRef(null)
+  const notify = () => toast("Wow so easy !")
 
+  const formRef = useRef(null)
   const [avatar, setAvatar] = useState(null)
   const [name, setName] = useState("")
   const [nickname, setNickname] = useState("")
@@ -37,7 +38,11 @@ export default function AddMemberModal({ isOpen, onClose }) {
       formData.set("avatar", avatar.file)
     }
     startTransition(async () => {
-      await addMember(formData)
+      await toast.promise(addMember(formData), {
+        pending: "Đang thêm một NGOO...",
+        success: "Một nạn nhân của NGOO xuất hiện!",
+        error: "Thêm thất bại ❌",
+      })
       handleClose()
     })
   }
@@ -74,6 +79,7 @@ export default function AddMemberModal({ isOpen, onClose }) {
         if (!isPending) handleClose()
       }}
     >
+      <div onClick={notify}>Notify !</div>
       <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
         <div className="modal-content">
           <form ref={formRef} action={handleSubmit}>

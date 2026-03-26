@@ -1,5 +1,5 @@
 import Link from "next/link"
-import Navbar from "./components/navbar"
+import Navbar from "./components/NavbarAdmin"
 
 export const metadata = {
   title: "Admin",
@@ -11,7 +11,9 @@ export default function AdminLayout({ children }) {
       <header className="header">
         <ul className="admin-menu">
           <li>
-            <Link href="/">Logo NGOO</Link>
+            <Link href="/" data-no-progress>
+              Logo NGOO
+            </Link>
           </li>
         </ul>
       </header>

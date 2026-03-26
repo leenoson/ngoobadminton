@@ -1,4 +1,5 @@
 "use client"
+
 import { useEffect, useState } from "react"
 import { smoothScrollTo } from "@/lib/smoothScroll"
 

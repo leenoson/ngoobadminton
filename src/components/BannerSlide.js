@@ -2,9 +2,9 @@
 
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, Autoplay } from "swiper/modules"
-import SlideNextButton from "./SlideButton"
+// import SlideNextButton from "./SlideButton"
 
-export default function BannerTop() {
+export default function BannerSlide() {
   return (
     <div className="slide">
       <Swiper
