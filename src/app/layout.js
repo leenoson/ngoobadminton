@@ -1,30 +1,29 @@
 import { Suspense } from "react"
 import { GoogleAnalytics } from "@next/third-parties/google"
-import { Montserrat } from "next/font/google"
 import clsx from "clsx"
 import AuthProvider from "@/context/AuthProvider"
 import AnalyticsTracker from "@/components/AnalyticsTracker"
-import ScrollToTop from "@/components/ScrollToTop"
 import { ModalProvider } from "@/components/ModalProvider"
-import ToastProvider from "@/components/ToastProvider"
 import NavigationProgress from "@/components/NavigationProgress"
 import "swiper/css"
 import "swiper/css/navigation"
 import "./styles/globals.scss"
 import "nprogress/nprogress.css"
+import { merriweather } from "@/lib/fonts"
+import AOSProvider from "@/components/AOSProvider"
+import ProviderMUI from "@/components/ProviderMUI"
+
+// import ScrollToTop from "@/components/ScrollToTop"
+// import ToastProvider from "@/components/ToastProvider"
 // import TopLoader from "@/components/TopLoader"
 // import PageTransitionWrapper from "@/components/PageTransitionWrapper"
 // import "swiper/css/pagination"
 // import "swiper/css/scrollbar"
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  style: ["normal"],
-  variable: "--font-montserrat",
-})
-
-const TITLE = "NGOO BADMINTON"
+const TITLE =
+  "NGOO – Nhóm Cầu Lông Lớn Thứ 2 Thủ Dầu Một, Cộng Đồng Tập Luyện Năng Động"
+const DESCRIPTION =
+  "Tham gia NGOO – nhóm cầu lông lớn thứ 2 Thủ Dầu Một. Luyện tập Thứ 2-4-6 từ 17:30 – 19:30, kết nối đam mê cầu lông, nâng cao kỹ năng và trải nghiệm cộng đồng thân thiện."
 const KEYWS = [
   "ngoobadminton",
   "ngoo",
@@ -61,13 +60,31 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 export const metadata = {
   title: {
     template: `%s | ${TITLE}`,
-    default: `${TITLE} - Nhóm cầu lông lớn thứ 2 Thủ Dầu Một`,
+    default: TITLE,
   },
-  description: `${TITLE} là CLB cầu lông dành cho mọi trình độ, từ người mới đến nâng cao. Tham gia ngay để rèn luyện sức khỏe, giao lưu và phát triển kỹ năng`,
+  description: DESCRIPTION,
   keywords: KEYWS,
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+    other: [
+      {
+        rel: "icon",
+        url: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        url: "/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+  },
   openGraph: {
-    title: `${TITLE} - Nhóm cầu lông lớn thứ 2 Thủ Dầu Một`,
-    description: `${TITLE} là CLB cầu lông dành cho mọi trình độ, từ người mới đến nâng cao. Tham gia ngay để rèn luyện sức khỏe, giao lưu và phát triển kỹ năng`,
+    title: TITLE,
+    description: DESCRIPTION,
     type: "website",
     locale: "vi_VN",
     siteName: TITLE,
@@ -90,8 +107,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${TITLE} - Nhóm cầu lông lớn thứ 2 Thủ Dầu Một`,
-    description: `${TITLE} là CLB cầu lông dành cho mọi trình độ, từ người mới đến nâng cao. Tham gia ngay để rèn luyện sức khỏe, giao lưu và phát triển kỹ năng`,
+    title: TITLE,
+    description: DESCRIPTION,
     images: ["/opg.png"],
   },
   robots: {
@@ -114,19 +131,23 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={clsx(`${montserrat.className}`)}>
+    <html lang="vi">
+      <body
+        className={clsx(`${merriweather.className} ${merriweather.variable}`)}
+      >
         {/* <TopLoader /> */}
         <NavigationProgress />
         <AuthProvider>
           <Suspense fallback={null}>
             <AnalyticsTracker />
           </Suspense>
-          <ModalProvider>{children}</ModalProvider>
-          <ToastProvider />
+          <ProviderMUI>
+            <ModalProvider>
+              <AOSProvider>{children}</AOSProvider>
+            </ModalProvider>
+          </ProviderMUI>
           {/* <PageTransitionWrapper>{children}</PageTransitionWrapper> */}
         </AuthProvider>
-        <ScrollToTop />
       </body>
 
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

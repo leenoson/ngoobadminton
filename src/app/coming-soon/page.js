@@ -12,7 +12,7 @@ export default function CommingSoon() {
       /> */}
       <div className={clsx(`comming-soon flex justify-center items-center`)}>
         <h1 className="text-[#fff] z-1 text-md md:text-3xl">
-          Chúng tôi sẽ sớm có mặt!
+          Chúng mình sẽ sớm có mặt!
         </h1>
       </div>
     </>

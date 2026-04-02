@@ -1,26 +1,141 @@
 @use "./mixin" as m;
 @use "./commingsoon";
 @use "./skeleton";
+@use "./title";
+@use "./other";
+@use "./header";
 @use "./progressbar";
+@use "./list";
+@use "./footer";
+@use "./form";
+@use "./utilities";
 @use "tailwindcss";
 
 :root {
-  --color-primary-1: #898f97;
-  --color-primary-2: #fff;
-  --color-primary-3: #264875;
-  --color-primary-4: #722c29;
-  --color-primary-5: #1f2b40;
-  --color-primary-6: #12151a;
+  // FONT SIZE
+  --fs-default: 1.6rem;
+  --fs-m: 2rem;
+  --fs-l: 3.2rem;
+  --fs-xl: 4rem;
+  --fs-2xl: 5.6rem;
+  --fs-3xl: 6rem;
+  --fs-4xl: 7rem;
+  --fs-5xl: 8rem;
+
+  // LIGHT
+  --color-l-1: rgb(254, 119, 67);
+  --border-color-1: 254, 119, 67;
+  --color-l-2: rgb(39, 63, 79);
+  --shadow-color-2: 39, 63, 79;
+  --color-l-2-hover: rgb(33, 58, 75);
+  --color-l-3: rgb(68, 125, 155);
+  --color-l-4: rgb(236, 233, 233);
+  --color-error: #f44336;
+
+  // DARK
+  --color-d-1: rgb(34, 40, 49);
+  --color-d-2: rgb(57, 62, 70);
+  --color-d-3: rgb(0, 173, 181);
+  --color-d-4: rgb(238, 238, 238);
+
+  // BORDER-RADIUS
+  --radius-xxl: 2rem;
+  --radius-xl: 1.6rem;
+  --radius-l: 1.2rem;
+  --radius-m: 8px;
+  --radius-s: 4px;
+
+  // SPACING PADDING
+  $space-scale: (
+    5xl: 8rem,
+    4xl: 6rem,
+    3xl: 4rem,
+    2xl: 3.6rem,
+    xl: 3.2rem,
+    md: 2.8rem,
+    sm: 2.4rem,
+    xs: 2rem,
+    2xs: 1.2rem,
+    3xs: 8px,
+    default: 1.6rem,
+  );
+
+  $targets: (
+    padding: (
+      top,
+      bottom,
+      right,
+      left,
+      inline,
+      block,
+    ),
+    margin: (
+      top,
+      bottom,
+      right,
+      left,
+      inline,
+      block,
+    ),
+  );
+
+  @each $type, $dirs in $targets {
+    @each $dir in $dirs {
+      @each $size, $val in $space-scale {
+        @if $size == default {
+          --#{$type}-#{$dir}: #{$val};
+        } @else {
+          --#{$type}-#{$dir}-#{$size}: #{$val};
+        }
+      }
+    }
+  }
+
+  // MAX WIDTH
+  --max-width: calc(1200px + var(--padding-inline) * 2);
+
+  // Font Size Scale
+  --fs-xs: clamp(1.2rem, 1.1rem + 0.2vw, 1.4rem);
+  --fs-sm: clamp(1.4rem, 1.2rem + 0.3vw, 1.6rem);
+  --fs-md: clamp(1.6rem, 1.3rem + 0.5vw, 1.8rem);
+  --fs-lg: clamp(1.8rem, 1.4rem + 0.8vw, 2.2rem);
+  --fs-xl: clamp(2rem, 1.6rem + 1.2vw, 2.8rem);
+  --fs-2xl: clamp(2.4rem, 1.8rem + 1.8vw, 3.6rem);
+  --fs-3xl: clamp(3rem, 2rem + 2.5vw, 4.8rem);
+  --fs-4xl: clamp(3.6rem, 2.4rem + 3.5vw, 6.4rem);
+  --fs-5xl: clamp(6.5rem, 3rem + 5vw, 8rem);
+  --fs-6xl: clamp(6rem, 4rem + 6vw, 10rem);
 }
 
-.container {
-  @apply mx-auto;
+body {
+  color: #111;
+  background-color: var(--color-l-4);
+  line-height: 1.7;
+  font-size: 1.6rem;
+  letter-spacing: 0.3px;
+}
+
+html {
+  font-size: 62.5%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
   &:focus-visible {
     outline: none;
   }
+}
+
+.container {
+  margin-inline: auto;
+  max-width: var(--max-width);
+  padding-inline: var(--padding-inline);
+  width: 100%;
+}
+
+.transition-cubic {
+  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .btn-primary {

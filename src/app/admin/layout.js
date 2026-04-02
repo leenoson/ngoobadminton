@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Navbar from "./components/NavbarAdmin"
+import ToastProvider from "@/components/ToastProvider"
 
 export const metadata = {
   title: "Admin",
@@ -22,6 +23,7 @@ export default function AdminLayout({ children }) {
         <Navbar />
         <section className="admin-content">{children}</section>
       </main>
+      <ToastProvider />
 
       <footer>Footer B</footer>
     </>

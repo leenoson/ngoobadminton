@@ -1,0 +1,145 @@
+@use "./mixin" as m;
+@use "sass:map";
+
+.list01 {
+  padding-left: 8px;
+
+  li {
+    position: relative;
+    padding-left: 16px;
+
+    &:before {
+      top: 8px;
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-l-2);
+      position: absolute;
+      left: 0;
+    }
+  }
+}
+
+.rank {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+  &__nickname {
+    @include m.sp {
+      text-align: center;
+    }
+  }
+
+  // .rank__name .
+  &__name {
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+  }
+
+  &__number {
+    font-size: 20px;
+    min-width: max-content;
+  }
+
+  &__number,
+  &__avatar,
+  &__attendance {
+    flex-shrink: 0;
+  }
+
+  &__attendance {
+    margin-left: auto;
+    min-width: max-content;
+
+    @include m.sp {
+      margin-left: 0;
+    }
+  }
+
+  // rank__item .
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 2px solid transparent;
+    padding: 16px;
+    border-radius: var(--radius-xl);
+    box-shadow: 0px 8px 32px 0px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6))
+        padding-box,
+      linear-gradient(135deg, #fe7743 0%, #ffb41e 93%) border-box;
+
+    @include m.sp {
+      padding: 4px 8px 12px;
+      gap: 8px;
+      flex-direction: column;
+    }
+
+    $ranks: (
+      1: (
+        border: 10px,
+        num: 60px,
+        name: 32px,
+        img: 160px,
+      ),
+      2: (
+        border: 8px,
+        num: 45px,
+        name: 24px,
+        img: 140px,
+      ),
+      3: (
+        border: 6px,
+        num: 30px,
+        name: 20px,
+        img: 120px,
+      ),
+    );
+
+    @each $index, $data in $ranks {
+      &:nth-child(#{$index}) {
+        border-width: map.get($data, border);
+
+        @include m.sp {
+          border-width: map.get($data, border) - 2px;
+        }
+
+        .rank {
+          &__number {
+            font-size: map.get($data, num);
+            font-weight: 700;
+          }
+
+          &__name {
+            font-size: map.get($data, name);
+            font-weight: 700;
+          }
+
+          &__avatar {
+            width: map.get($data, img);
+          }
+        }
+      }
+    }
+  }
+
+  &__avatar {
+    border-radius: 50%;
+    width: 100px;
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      @include m.imgcover;
+    }
+  }
+}

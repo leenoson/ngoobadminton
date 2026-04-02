@@ -1,20 +1,65 @@
 @use "./mixin" as m;
 
-.icon {
-  &-facebook {
-    fill: blue;
-  }
-}
-
-.social {
-  [class^="icon-"] {
-    width: 40px;
-    height: 40px;
-  }
-}
-
 .footer {
-  padding: 20px;
-  background-color: #111;
-  color: #fff;
+  text-align: center;
+  padding: 3.2rem 1.6rem;
+  background-color: var(--color-l-1);
+
+  @include m.tab {
+    padding: 2rem 1.6rem 6.2rem;
+  }
+
+  @include m.sp {
+    font-size: 3.7vw;
+    padding-bottom: 6rem;
+  }
+
+  &__menu {
+    margin-block: 8px;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__link {
+    display: flex;
+
+    svg {
+      width: 4rem;
+      height: auto;
+    }
+  }
+}
+
+.scrolltotop {
+  transform: scale(0);
+  pointer-events: none;
+  bottom: 3.2rem;
+  right: 3.2rem;
+  opacity: 0;
+
+  &.is-show {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1);
+  }
+
+  @include m.tab {
+    bottom: 10rem;
+    right: 2rem;
+  }
+
+  @include m.sp {
+    bottom: 10rem;
+    right: 2rem;
+  }
+
+  &:hover {
+    background-color: var(--color-l-2-hover);
+  }
+
+  svg {
+    width: 26px;
+  }
 }

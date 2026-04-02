@@ -19,7 +19,13 @@ export default function MemberCard({ member, isAdmin }) {
   return (
     <>
       <div className="">
-        <ImgAvatar src={member.avatar} alt={member.name} classprop="" />
+        <ImgAvatar
+          src={member.avatar}
+          alt={member.name}
+          classprop=""
+          width={200}
+          height={200}
+        />
 
         <div className="">
           <h5 className="">{member.name}</h5>

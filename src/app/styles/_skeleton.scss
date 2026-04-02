@@ -2,7 +2,7 @@
   background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
   background-size: 400% 100%;
   animation: loading 1.4s ease infinite;
-  border-radius: 4px;
+  border-radius: var(--radius-s);
   margin-bottom: 10px;
   height: 20px;
 }
@@ -43,7 +43,7 @@
 .button {
   width: 80px;
   height: 30px;
-  border-radius: 4px;
+  border-radius: var(--radius-s);
 }
 
 @keyframes loading {

@@ -28,7 +28,9 @@ export default function Navbar() {
             <SmartLink
               href="/admin/members"
               className={clsx({
-                [styles.active]: pathname === "/admin/members",
+                [styles.active]:
+                  pathname === "/admin/members" ||
+                  pathname.startsWith("/admin/members/"),
               })}
             >
               NGOO dân
@@ -38,7 +40,9 @@ export default function Navbar() {
             <SmartLink
               href="/admin/attendance"
               className={clsx({
-                "text-red-600": pathname === "/admin/attendance",
+                "text-red-600":
+                  pathname === "/admin/attendance" ||
+                  pathname.startsWith("/admin/attendance/"),
               })}
             >
               Điểm danh

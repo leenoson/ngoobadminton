@@ -1,0 +1,80 @@
+@use "./mixin" as m;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--color-l-2);
+}
+
+h1 {
+  font-size: var(--fs-5xl);
+}
+
+h2 {
+  font-size: 6.7344rem;
+  line-height: 1.2;
+
+  @include m.tab {
+    font-size: 5.7vw;
+    line-height: 1.3;
+  }
+
+  @include m.sp {
+    font-size: 7.6vw;
+  }
+}
+
+h3 {
+  font-size: 5.0512rem;
+  line-height: 1.1;
+
+  @include m.tab {
+    font-size: 4.5vw;
+    line-height: 1.2;
+  }
+
+  @include m.sp {
+    font-size: 6vw;
+    line-height: 1.3;
+  }
+}
+
+h4 {
+  font-size: 3.7904rem;
+
+  @include m.sp {
+    font-size: 1.8rem;
+  }
+}
+
+h5 {
+  font-size: 2.8432rem;
+
+  @include m.sp {
+    font-size: 2.08rem;
+  }
+}
+
+.title01 {
+  letter-spacing: 1rem;
+  line-height: 1.4;
+  color: var(--color-l-1);
+
+  @include m.sp {
+    letter-spacing: 0.25rem;
+  }
+}
+
+.title02 {
+  text-align: center;
+  margin-bottom: 4rem;
+
+  @include m.sp {
+    margin-bottom: var(--margin-bottom);
+  }
+}

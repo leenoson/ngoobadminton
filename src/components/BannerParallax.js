@@ -3,10 +3,16 @@
 import { useEffect, useState } from "react"
 import { useModal } from "@/components/ModalProvider"
 import VideoHero from "./VideoHero"
+import useScrollToSection from "@/hooks/useScrollToSection"
+import { useDevice } from "@/hooks/useDevice"
+import clsx from "clsx"
+import ImgAvatar from "./ImgAvatar"
 
-export default function BannerParallax({ title, image }) {
+export default function BannerParallax({ image }) {
   const [offsetY, setOffsetY] = useState(0)
+  const { isMobileDevice, isSmallScreen } = useDevice()
   const { openModal, closeModal } = useModal()
+  const scrollTo = useScrollToSection()
 
   useEffect(() => {
     const handleScroll = () => setOffsetY(window.scrollY)
@@ -15,30 +21,52 @@ export default function BannerParallax({ title, image }) {
   }, [])
 
   return (
-    <section className="relative w-full overflow-hidden h-screen flex justify-center items-center max-h-[932px] md:max-h-[100vh]">
+    <section
+      className={clsx(`banner`, {
+        "is-mobile": isMobileDevice || isSmallScreen,
+      })}
+    >
       <div
-        className="absolute top-0 left-0 w-full h-[150%] bg-center bg-cover"
+        className="banner__container"
         style={{
           backgroundImage: `url(${image})`,
           transform: `translateY(-${offsetY * 0.5}px)`,
         }}
       />
 
-      <div className="absolute inset-0 bg-black/50" />
-      <div className="top-0 left-0 h-full w-auto flex justify-center flex-col relative">
-        <h1 className="text-white text-7xl md:text-9xl font-bold tracking-[8px]">
+      <div className="banner__bg" />
+      <div
+        className="banner__content text-center md:text-left"
+        data-aos="fade-up"
+      >
+        <h1 className="title01">
           NGOO.
+          <p className="-mt-4 text-white font-medium banner__subtitle tracking-[10px] md:tracking-[20px] mb-2">
+            #Badminton
+          </p>
         </h1>
-        <p className="text-white font-medium text-4xl md:text-5xl tracking-[10px] md:tracking-[20px] mb-2">
-          #Badminton
+        <p className="banner__text">
+          Xin chào!
+          <br className="pc-hidden" /> Chúng mình vừa NGOO,{" "}
+          <br className="pc-hidden" />
+          vừa thân thiện.
         </p>
-        <p className="text-white text-sm md:text-base md:tracking-[3px]">
-          Xin chào! Chúng tôi vừa NGOO vừa thân thiện.
-        </p>
-        <div className="flex gap-x-1"></div>
       </div>
-      <div className="absolute bottom-4 left-4 rounded-[50%] ">scroll down</div>
-      <div className="absolute z-8 bottom-4 right-4">
+      <div
+        className="banner__button"
+        onClick={() => scrollTo("about", { duration: 1000 })}
+      >
+        <span>
+          <ImgAvatar
+            alt={"scroll down"}
+            src={"/images/common/shuttlecock.svg"}
+            aria-label="Scroll xuống dưới"
+            widthprop={50}
+            heightprop={50}
+          />
+        </span>
+      </div>
+      {/* <div className="absolute z-8 bottom-4 right-4">
         <div
           className="rounded-[50%] bg-[#000] text-white w-10 h-10 cursor-pointer text-xs"
           onClick={() =>
@@ -51,7 +79,7 @@ export default function BannerParallax({ title, image }) {
         >
           Xem clip
         </div>
-      </div>
+      </div> */}
     </section>
   )
 }

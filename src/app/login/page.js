@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
-import clsx from "clsx"
+import { Controller } from "react-hook-form"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
+import clsx from "clsx"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createClient } from "@/lib/supabase/client"
@@ -90,57 +92,67 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-[840px] flex-col bg-gray-900 scheme-dark">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="form-signin"
-        noValidate
-      >
-        <h1 className="h3 mb-3">Admin login</h1>
+    <div className="login">
+      <form onSubmit={handleSubmit(onSubmit)} className="form" noValidate>
+        <h4 className="form__title">Admin login</h4>
 
-        <label className="relative">
-          <input
-            disabled={loading}
-            type="email"
-            placeholder="Email address"
-            className={`block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 ${errors.email ? "is-invalid" : ""}`}
-            {...register("email", {
-              onChange: () => clearErrors(["email", "password"]),
-            })}
-          />
-          {errors.email && <div className="">{errors.email.message}</div>}
-        </label>
+        <div className="form__control">
+          <div className="form__input">
+            <div className="form__wrap">
+              <label
+                className="form__label"
+                htmlFor="email"
+                aria-label="email"
+              />
+              <input
+                id="email"
+                disabled={loading}
+                type="email"
+                placeholder="Nhập email admin..."
+                className={`${errors.email ? "is-invalid" : ""}`}
+                {...register("email", {
+                  onChange: () => clearErrors(["email", "password"]),
+                })}
+              />
+              {errors.email && (
+                <div className="form__error">{errors.email.message}</div>
+              )}
+            </div>
+          </div>
 
-        <label className="relative">
-          <input
-            disabled={loading}
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            className={`block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 ${
-              errors.password ? "is-invalid" : ""
-            }`}
-            {...register("password", {
-              onChange: () => clearErrors(["email", "password"]),
-            })}
-          />
+          <div className="form__input">
+            <div className="form__wrap">
+              <label
+                className="form__label"
+                htmlFor="password"
+                aria-label="password"
+              />
+              <input
+                id="password"
+                disabled={loading}
+                type={showPassword ? "text" : "password"}
+                placeholder="Mật khẩu..."
+                className={`${errors.password ? "is-invalid" : ""}`}
+                {...register("password", {
+                  onChange: () => clearErrors(["email", "password"]),
+                })}
+              />
 
-          <span
-            onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-            }}
-          >
-            {showPassword ? "🙈" : "👁️"}
-          </span>
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className={clsx(`form__eye`, {
+                  "is-text": showPassword,
+                })}
+              ></span>
+            </div>
 
-          {errors.password && <div className="">{errors.password.message}</div>}
-        </label>
+            {errors.password && (
+              <div className="form__error">{errors.password.message}</div>
+            )}
+          </div>
+        </div>
 
-        <div className="form-check mb-2">
+        <div className="form__checkbox">
           <input
             disabled={loading}
             type="checkbox"
@@ -148,26 +160,35 @@ export default function LoginPage() {
             id="remember"
             {...register("remember")}
           />
-          <label className="form-check-label" htmlFor="remember">
+
+          <span className="form__checkbox--icon"></span>
+
+          <label className="form__label" htmlFor="remember">
             Ghi nhớ email
           </label>
         </div>
 
-        {serverError && <div className="text-danger mb-2">{serverError}</div>}
+        {serverError && <div className="form__error">{serverError}</div>}
 
         <button
-          className={clsx(
-            "flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500",
-            {
-              ["bg-primary-6"]: loading,
-            },
-          )}
+          className={clsx("form__button", {
+            ["bg-primary-6"]: loading,
+          })}
           type="submit"
           disabled={loading}
         >
-          {loading ? "Đang vào..." : "Vào luôn"}
+          <span className="form__button--text">
+            {loading ? "Đang vào..." : "Vào luôn"}
+          </span>
         </button>
-        <Link href="/" data-no-progress>
+        <Link href="/" data-no-progress className="link">
+          <Image
+            src="/images/common/home.svg"
+            width={100}
+            height={100}
+            alt="home"
+            aria-label="Về trang chủ"
+          />
           Trang chủ
         </Link>
       </form>
