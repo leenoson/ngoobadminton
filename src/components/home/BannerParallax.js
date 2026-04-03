@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react"
 import { useModal } from "@/components/ModalProvider"
-import VideoHero from "./VideoHero"
 import useScrollToSection from "@/hooks/useScrollToSection"
 import { useDevice } from "@/hooks/useDevice"
 import clsx from "clsx"
-import ImgAvatar from "./ImgAvatar"
+import VideoHero from "./VideoHero"
+import ImgAvatar from "../ImgAvatar"
 
 export default function BannerParallax({ image }) {
   const [offsetY, setOffsetY] = useState(0)
@@ -39,13 +39,13 @@ export default function BannerParallax({ image }) {
         className="banner__content text-center md:text-left"
         data-aos="fade-up"
       >
-        <h1 className="title01">
+        <h1 className="title01" data-aos="fade-up" data-aos-delay="600">
           NGOO.
           <p className="-mt-4 text-white font-medium banner__subtitle tracking-[10px] md:tracking-[20px] mb-2">
             #Badminton
           </p>
         </h1>
-        <p className="banner__text">
+        <p className="banner__text" data-aos="fade-up" data-aos-delay="700">
           Xin chào!
           <br className="pc-hidden" /> Chúng mình vừa NGOO,{" "}
           <br className="pc-hidden" />

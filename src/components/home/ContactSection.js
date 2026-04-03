@@ -1,6 +1,6 @@
-import ImgAvatar from "./ImgAvatar"
+import ImgAvatar from "../ImgAvatar"
 
-function SectionContact() {
+function ContactSection() {
   return (
     <section id="contact">
       <div className="container">
@@ -50,7 +50,7 @@ function SectionContact() {
             </div>
           </div>
 
-          <div className="map">
+          <div className="map" data-aos="fade-up">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.814828029157!2d106.66024977577777!3d10.977345355454124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d16e3752f507%3A0xcb356352c4d812d2!2zU8OibiBD4bqndSBMw7RuZyBUaOG6r25nIEzhu6Np!5e0!3m2!1svi!2s!4v1774169945302!5m2!1svi!2s"
               allowFullScreen=""
@@ -64,4 +64,4 @@ function SectionContact() {
   )
 }
 
-export default SectionContact
+export default ContactSection

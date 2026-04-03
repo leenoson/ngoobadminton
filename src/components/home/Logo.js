@@ -5,8 +5,8 @@ import { smoothScrollTo } from "@/lib/smoothScroll"
 
 function Logo() {
   return (
-    <div className="menu__logo" onClick={() => smoothScrollTo(0, 600)}>
-      <figure>
+    <>
+      <figure onClick={() => smoothScrollTo(0, 600)}>
         <Image
           src="/images/common/logo.webp"
           alt="NGOO Badminton"
@@ -16,9 +16,9 @@ function Logo() {
       </figure>
 
       {/* <AnimatedLink className="" href="/about">
-								Chuyển màn
-							</AnimatedLink> */}
-    </div>
+        Chuyển màn
+      </AnimatedLink> */}
+    </>
   )
 }
 

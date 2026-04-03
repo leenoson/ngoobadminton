@@ -1,5 +1,5 @@
 // import Navbar from "@/components/Navbar"
-import ScrollToTop from "@/components/ScrollToTop"
+import ScrollToTop from "@/components/home/ScrollToTop"
 // import Link from "next/link"
 
 export default function MainLayout({ children, header, footer }) {

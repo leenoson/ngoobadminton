@@ -1,8 +1,8 @@
-import TopAttendance from "@/components/TopAttendance"
-import BannerParallax from "@/components/BannerParallax"
-import SectionContact from "@/components/SectionContact"
-import AboutSection from "@/components/AboutSection"
-import EventSection from "@/components/EventSection"
+import TopAttendance from "@/components/home/TopAttendance"
+import ContactSection from "@/components/home/ContactSection"
+import AboutSection from "@/components/home/AboutSection"
+import EventSection from "@/components/home/EventSection"
+import BannerParallax from "@/components/home/BannerParallax"
 // import MemberSection from "@/components/MemberSection"
 
 export default async function Home() {
@@ -18,7 +18,7 @@ export default async function Home() {
 
         <TopAttendance />
 
-        <SectionContact />
+        <ContactSection />
       </div>
     </>
   )

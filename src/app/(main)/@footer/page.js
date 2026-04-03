@@ -1,9 +1,14 @@
+import Logo from "@/components/home/Logo"
 import Link from "next/link"
 
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer__inner">
+        <div className="footer__logo">
+          <Logo />
+          <strong className="footer__title">N G O O B A D M I N T O N</strong>
+        </div>
         <p>Theo dõi chúng mình tại đây nhá!</p>
         <ul className="footer__menu">
           <li className="footer__item">

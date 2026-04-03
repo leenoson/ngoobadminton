@@ -172,7 +172,7 @@ export default function LoginPage() {
 
         <button
           className={clsx("form__button", {
-            ["bg-primary-6"]: loading,
+            "": loading,
           })}
           type="submit"
           disabled={loading}

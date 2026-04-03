@@ -136,17 +136,27 @@
     margin-bottom: var(--margin-bottom-2xs);
     width: 100%;
     padding: 8px 16px;
-    color: var(--color-l-4);
+    color: var(--color-default);
     border-radius: var(--radius-s);
     font-size: var(--fs-default);
     cursor: pointer;
     transition: 0.3s ease;
     @include m.gradient01;
     overflow: hidden;
+    box-shadow: 0 0 6px rgba($color: #000, $alpha: 0.3);
 
     &--text {
       position: relative;
       z-index: 1;
+    }
+
+    &:disabled {
+      pointer-events: none;
+      box-shadow: none;
+
+      &:before {
+        opacity: 1;
+      }
     }
   }
 

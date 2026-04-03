@@ -3,16 +3,13 @@
 import { useProgressRouter } from "@/lib/progressRouter"
 // import { useRouter } from "next/navigation"
 
-export default function BackButton() {
+export default function BackButton({ href, title }) {
   // const router = useRouter()
   const router = useProgressRouter()
 
   return (
-    <button
-      onClick={() => router.push("/admin/members")}
-      className="btn btn-secondary"
-    >
-      Danh sách NGOO dân
+    <button onClick={() => router.push(href)} className="btn btn-secondary">
+      {title}
     </button>
   )
 }

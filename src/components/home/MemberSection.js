@@ -1,4 +1,4 @@
-import MemberCard from "./MemberCard"
+import MemberCard from "../MemberCard"
 import { createClient } from "@/lib/supabase/server"
 
 async function MemberSection() {

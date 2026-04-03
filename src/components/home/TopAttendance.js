@@ -1,5 +1,5 @@
-import ImgAvatar from "./ImgAvatar"
 import { getTopAttendance } from "@/app/actions/memberActions"
+import ImgAvatar from "../ImgAvatar"
 
 export default async function TopAttendance() {
   const members = await getTopAttendance()

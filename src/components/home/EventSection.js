@@ -1,5 +1,5 @@
 import Image from "next/image"
-import ImgAvatar from "./ImgAvatar"
+import ImgAvatar from "../ImgAvatar"
 
 function EventSection() {
   return (

@@ -57,7 +57,7 @@ export async function generateMetadata({ params }) {
 export default function AdminLayout({ children }) {
   return (
     <>
-      <BackButton />
+      <BackButton href="/admin/members" title="Danh sách NGOO dân" />
       {children}
     </>
   )
