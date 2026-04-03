@@ -49,9 +49,9 @@ function AboutSection() {
           <div className="block01__row block01__row--full" data-aos="fade-up">
             <h3 className="block01__title">NGOO&apos;s ra đời</h3>
             <p>
-              <b>NGOO</b> được thành lập nhằm mang đến một môi trường luyện tập
-              cầu lông lành mạnh và bổ ích, đồng thời kết nối những người yêu
-              thích cầu lông tại Thủ Dầu Một.
+              <strong>NGOO</strong> được thành lập nhằm mang đến một môi trường
+              luyện tập cầu lông lành mạnh và bổ ích, đồng thời kết nối những
+              người yêu thích cầu lông tại Thủ Dầu Một.
             </p>
             <p>
               Chúng mình mong muốn các thành viên vừa rèn luyện kỹ năng, vừa xây
@@ -63,8 +63,8 @@ function AboutSection() {
           <div className="block01__row block01__row--full" data-aos="fade-up">
             <h3 className="block01__title">NGOO&apos;s sinh nhật</h3>
             <p>
-              <b>NGOO</b> ra đời vào ngày 02/06/2025, với khoảng 4–5 thành viên
-              ban đầu.
+              <strong>NGOO</strong> ra đời vào ngày 02/06/2025, với khoảng 4–5
+              thành viên ban đầu.
             </p>
             <p>
               Từ một nhóm nhỏ, NGOO đã nhanh chóng phát triển và trở thành một

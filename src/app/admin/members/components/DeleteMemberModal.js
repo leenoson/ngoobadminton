@@ -52,7 +52,7 @@ export default function DeleteMemberModal({ member, onClose }) {
             </button>
           </div>
           <div className="modal-body">
-            Bạn có chắc muốn đá đít <strong>{member.name}</b>?
+            Bạn có chắc muốn đá đít <strong>{member.name}</strong>?
           </div>
           <div className="modal-footer">
             <button
