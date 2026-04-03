@@ -20,7 +20,7 @@ export default function Navbar() {
     <nav>
       <div className="">
         <SmartLink href="/admin">
-          <h4>Admin</h4>
+          <h4 className="title03">Admin</h4>
         </SmartLink>
 
         <ul className="">

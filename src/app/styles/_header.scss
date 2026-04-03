@@ -105,6 +105,7 @@
     position: relative;
     cursor: pointer;
     transition: 0.3s ease;
+    font-size: 1.6rem;
 
     @include m.sp {
       font-size: 1.4rem;

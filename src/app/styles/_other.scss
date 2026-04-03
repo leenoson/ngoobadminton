@@ -159,6 +159,13 @@
   $widthSp: 100vw;
   $offset: 20vw;
   $offsetSp: 20vw;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
 
   &:before,
   &:after {
@@ -264,7 +271,7 @@
   z-index: 2;
 
   @include m.sp {
-    margin-top: 6rem;
+    margin-top: 6.5rem;
     padding-bottom: 1.6rem;
     border-radius: var(--radius-m);
   }
@@ -299,14 +306,14 @@
   // .banner__button .
   &__button {
     bottom: 3.6rem;
-    width: 5rem;
+    width: 4rem;
     position: absolute;
     margin-inline: auto;
     cursor: pointer;
 
     @include m.sp {
       bottom: 1.6rem;
-      width: 4rem;
+      width: 3rem;
     }
 
     span {

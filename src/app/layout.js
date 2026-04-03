@@ -132,20 +132,18 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="vi">
-      <body
-        className={clsx(`${merriweather.className} ${merriweather.variable}`)}
-      >
+      <body className={clsx(`${merriweather.className}`)}>
         {/* <TopLoader /> */}
         <NavigationProgress />
         <AuthProvider>
           <Suspense fallback={null}>
             <AnalyticsTracker />
           </Suspense>
-          <ProviderMUI>
-            <ModalProvider>
-              <AOSProvider>{children}</AOSProvider>
-            </ModalProvider>
-          </ProviderMUI>
+          {/* <ProviderMUI> */}
+          <ModalProvider>
+            <AOSProvider>{children}</AOSProvider>
+          </ModalProvider>
+          {/* </ProviderMUI> */}
           {/* <PageTransitionWrapper>{children}</PageTransitionWrapper> */}
         </AuthProvider>
       </body>
