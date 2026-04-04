@@ -11,12 +11,15 @@ h6 {
   color: var(--color-l-2);
 }
 
-h1 {
-  font-size: var(--fs-5xl);
+$ratio: 1.5;
+
+@for $i from 1 through 6 {
+  h#{$i} {
+    font-size: calc(1.4rem * pow(#{$ratio}, #{5 - $i}));
+  }
 }
 
 h2 {
-  font-size: 6.7344rem;
   line-height: 1.2;
 
   @include m.tab {
@@ -30,7 +33,6 @@ h2 {
 }
 
 h3 {
-  font-size: 5.0512rem;
   line-height: 1.1;
 
   @include m.tab {
@@ -45,16 +47,12 @@ h3 {
 }
 
 h4 {
-  font-size: 3.7904rem;
-
   @include m.sp {
     font-size: 1.8rem;
   }
 }
 
 h5 {
-  font-size: 2.8432rem;
-
   @include m.sp {
     font-size: 2.08rem;
   }

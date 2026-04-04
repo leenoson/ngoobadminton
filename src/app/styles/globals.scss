@@ -131,6 +131,10 @@ a {
   }
 }
 
+img {
+  display: inline-block;
+}
+
 .container {
   margin-inline: auto;
   max-width: var(--max-width);
@@ -142,16 +146,25 @@ a {
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.btn-primary {
-  // font-size: 20px;
-  // @apply text-center;
+// Demo Light Dark Theme
+// .demo {
+//   @apply text-center;
 
-  // @include m.sp {
-  //   font-size: 20px;
-  // }
+//   @variant dark {
+//     background: black;
+//   }
+// }
 
-  // @variant dark {
-  //   background: black;
-  //   color: var(--color-primary-1);
-  // }
-}
+// @media (prefers-color-scheme: dark) {
+//   body {
+//     background: black;
+//     color: white;
+//   }
+// }
+
+// :root {
+//   color-scheme: light dark;
+// }
+// .demo {
+//   color: light-dark(#111, #eee) !important;
+// }

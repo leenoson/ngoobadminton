@@ -1,3 +1,4 @@
+import Image from "next/image"
 import ImgAvatar from "../ImgAvatar"
 
 function ContactSection() {
@@ -25,12 +26,14 @@ function ContactSection() {
               </p>
               <p className="mb-2">Điều kiện tham gia là bạn muốn tham gia.</p>
             </div>
-            <div className="imgtitle imgtitle--small" data-aos="fade-up">
-              <ImgAvatar
-                src="/images/common/message.svg"
-                alt="NGOO-Nhóm Cầu Lông Lớn Thứ 2 Thủ Dầu Một"
-                widthprop={800}
-                heightprop={800}
+            <div className="text-center" data-aos="fade-up">
+              <Image
+                className="icon icon--xl"
+                src="/images/common/info.svg"
+                alt="Thông tin liên lạc với NGOO"
+                width={100}
+                height={100}
+                aria-hidden="true"
               />
             </div>
             <div data-aos="fade-up">
