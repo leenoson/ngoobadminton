@@ -97,18 +97,18 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="">
+    <section className="">
       <h2 className="">Dashboard</h2>
 
-      <div className="">
-        <h5>Attendance - Last 7 Days</h5>
-        <Line data={chart7Data} />
-      </div>
+      <article className="">
+        <h3>Thống kê điểm danh 7 ngày gần nhất</h3>
+        {/* <Line data={chart7Data} /> */}
+      </article>
 
-      <div className="">
-        <h5>Attendance - Last 30 Days</h5>
-        <Bar data={chart30Data} />
-      </div>
-    </div>
+      <article className="">
+        <h3>Thống kê điểm danh 30 ngày gần nhất</h3>
+        {/* <Bar data={chart30Data} /> */}
+      </article>
+    </section>
   )
 }

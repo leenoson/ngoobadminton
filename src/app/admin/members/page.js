@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import FilterBar from "./components/FilterBar"
 import MemberCard from "../../../components/MemberCard"
 import AddMemberButton from "./components/AddMemberButton"
+import NoResultSearchMember from "./components/NoResultSearchMember"
 
 export default async function MembersPage({ searchParams }) {
   const params = await searchParams
@@ -37,17 +38,34 @@ export default async function MembersPage({ searchParams }) {
 
   return (
     <div>
-      <h2>Danh sách NGOO dân</h2>
+      <h2 className="title04">Danh sách NGOO dân</h2>
       <AddMemberButton members={members} />
-      <div className="">
+      <ul className="box">
+        <li className="box__item">
+          <div className="box__box">
+            <p>Tổng số NGOO</p>
+            <strong className="box__number">{totalMembers}</strong>
+          </div>
+        </li>
+        <li className="box__item">
+          <div className="box__box">
+            <p>Thành viên mới</p>
+            <strong className="box__number">Tên</strong>
+          </div>
+        </li>
+        <li className="box__item">
+          <div className="box__box">
+            <p>Thành viên hot</p>
+            <strong className="box__number">Tên</strong>
+          </div>
+        </li>
+      </ul>
+      <FilterBar />
+      <div className="result">
         <div>
-          {search
-            ? `Tìm thấy ${filteredMembers} trong ${totalMembers} NGOO`
-            : ` Có ${totalMembers} NGOO`}
+          {search && `Tìm thấy ${filteredMembers} trong ${totalMembers} NGOO`}
         </div>
       </div>
-      <FilterBar />
-
       <div className="">
         {members && members.length > 0 ? (
           members.map((member) => (
@@ -56,11 +74,7 @@ export default async function MembersPage({ searchParams }) {
             </div>
           ))
         ) : (
-          <div className="">
-            <h5 className="">
-              {search ? "Không tìm thấy NGOO nào" : "Chưa có NGOO nào"}
-            </h5>
-          </div>
+          <>{search ? <NoResultSearchMember /> : <p>Chưa có NGOO nào</p>}</>
         )}
       </div>
     </div>

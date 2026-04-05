@@ -44,7 +44,10 @@ export function ModalProvider({ children }) {
 
       {/* Modal UI */}
       {content && (
-        <div className="fixed p-4 inset-0 z-50 flex items-center justify-center">
+        <div
+          className="fixed p-4 inset-0 z-50 flex items-center justify-center modal01"
+          role="dialog"
+        >
           <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeModal}

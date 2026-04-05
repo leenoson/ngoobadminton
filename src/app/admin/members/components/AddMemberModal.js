@@ -78,6 +78,7 @@ export default function AddMemberModal({ isOpen, onClose }) {
       onClick={() => {
         if (!isPending) handleClose()
       }}
+      role="dialog"
     >
       <div onClick={notify}>Notify !</div>
       <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>

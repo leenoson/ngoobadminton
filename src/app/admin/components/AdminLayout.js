@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import ToastProvider from "@/components/ToastProvider"
 import Navbar from "./NavbarAdmin"
 import clsx from "clsx"
+import ImgAvatar from "@/components/ImgAvatar"
 
 function AdminLayout({ children }) {
   const [isClose, setIsClose] = useState(false)
@@ -21,18 +22,23 @@ function AdminLayout({ children }) {
   return (
     <div
       className={clsx(`admin`, {
-        "is-close": isClose,
+        "is-collapsed": isClose,
       })}
     >
-      <aside className={clsx(`admin__sidebar`)}>
+      <aside
+        className={clsx(`admin__sidebar`, {
+          "is-collapsed": isClose,
+        })}
+      >
         <Navbar />
+        <div className="admin__bg" onClick={() => setIsClose(!isClose)}></div>
       </aside>
 
-      <section className="admin__main">
+      <main className="admin__main">
         <header className="admin__header">
           <button
             role="button"
-            className="cursor-pointer"
+            className="button-collapsed"
             onClick={() => setIsClose(!isClose)}
           >
             <svg
@@ -41,8 +47,8 @@ function AdminLayout({ children }) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className={clsx(`size-10`, {
-                hidden: isClose,
+              className={clsx(`size-10 icon-collapsed`, {
+                // hidden: isClose,
               })}
             >
               <path
@@ -58,8 +64,8 @@ function AdminLayout({ children }) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className={clsx(`size-10`, {
-                hidden: !isClose,
+              className={clsx(`size-10 icon-uncollapsed`, {
+                // hidden: !isClose,
               })}
             >
               <path
@@ -69,14 +75,14 @@ function AdminLayout({ children }) {
               />
             </svg>
           </button>
-          <p>
+          <button className="button-notice">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6"
+              className="size-10"
             >
               <path
                 strokeLinecap="round"
@@ -84,12 +90,24 @@ function AdminLayout({ children }) {
                 d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
               />
             </svg>
-          </p>
-          <p>avatar admin</p>
+          </button>
+          <div className="admin__info">
+            <figure className="admin__avatar">
+              <ImgAvatar
+                src="/images/ngoo_04.jpg"
+                alt="Ảnh đại điện của admin"
+                widthprop={200}
+                heightprop={200}
+                classprop=""
+              />
+            </figure>
+          </div>
         </header>
-        {children}
-        <footer>&copy; All rights reserved by Cactus aka Tarot Reader.</footer>
-      </section>
+        <div className="admin__content">{children}</div>
+        <footer className="admin__footer">
+          &copy; All rights reserved by Cactus aka Tarot Reader.
+        </footer>
+      </main>
       <ToastProvider />
     </div>
   )

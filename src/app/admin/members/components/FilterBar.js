@@ -2,8 +2,21 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect, useTransition } from "react"
+import Select from "react-select"
 import useDebounce from "@/hooks/useDebounce"
+
 export default function FilterBar() {
+  const options_sort = [
+    { value: "joined", label: "Ngày tham gia" },
+    { value: "attendance", label: "Chuyên cần" },
+    { value: "name", label: "Họ & Tên" },
+  ]
+
+  const options_order = [
+    { value: "desc", label: "Giảm dần" },
+    { value: "asc", label: "Tăng dần" },
+  ]
+
   const router = useRouter()
   const params = useSearchParams()
   const [isPending, startTransition] = useTransition()
@@ -14,6 +27,9 @@ export default function FilterBar() {
 
   const [search, setSearch] = useState(searchParam)
   const debouncedSearch = useDebounce(search, 500)
+
+  const sortOption = options_sort.find((opt) => opt.value === sort)
+  const orderOption = options_order.find((opt) => opt.value === order)
 
   const updateParam = (key, value) => {
     const newParams = new URLSearchParams(params)
@@ -42,44 +58,117 @@ export default function FilterBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
+  const customStyles = {
+    control: (base, state) => ({
+      // ...base,
+      // background: "#111",
+      // borderColor: state.isFocused ? "#6366f1" : "#333",
+      // boxShadow: "none",
+      // "&:hover": {
+      //   borderColor: "#6366f1",
+      // },
+    }),
+
+    container: (base) => ({
+      // ...base,
+    }),
+
+    indicatorsContainer: (base) => ({
+      // ...base,
+    }),
+
+    indicatorSeparator: () => ({
+      display: "none",
+    }),
+
+    valueContainer: (base) => ({
+      // ...base,
+      // padding: "0px 8px",
+    }),
+
+    menu: (base) => ({
+      ...base,
+      borderRadius: "var(--radius-m)",
+      backgroundColor: "var(--color-d-5)",
+      border: "1px solid var(--color-d-6)",
+    }),
+
+    option: (base, state) => ({
+      // ...base,
+      // background: state.isSelected
+      //   ? "#6366f1"
+      //   : state.isFocused
+      //     ? "#222"
+      //     : "transparent",
+      // color: "#fff",
+    }),
+
+    singleValue: (base) => ({
+      // ...base,
+      // color: "#fff",
+    }),
+  }
+
   return (
-    <div className="">
-      <div className="">
+    <div className="search" role="form">
+      <div className="search__input">
+        <label htmlFor="search" />
         <input
+          id="search"
+          autoFocus
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Tìm kiếm thành viên theo tên..."
-          className=""
         />
 
         {search && (
-          <button className="" onClick={() => setSearch("")}>
-            X
+          <button
+            aria-label="Reset input tìm kiếm"
+            className="search__reset"
+            onClick={() => setSearch("")}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-8"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
           </button>
         )}
       </div>
 
-      <div className="">
-        <select
-          value={sort}
-          className=""
-          onChange={(e) => updateParam("sort", e.target.value)}
-        >
-          <option value="joined">Ngày tham gia</option>
-          <option value="attendance">Chuyên cần</option>
-          <option value="name">Họ & Tên</option>
-        </select>
-      </div>
+      <div className="filters">
+        <Select
+          options={options_sort}
+          value={sortOption}
+          onChange={(opt) => updateParam("sort", opt.value)}
+          instanceId="search-sort"
+          styles={customStyles}
+          isSearchable={false}
+          isClearable={false}
+          classNamePrefix="select-custom"
+          className="select__container"
+        />
 
-      <div className="">
-        <select
-          value={order}
-          className=""
-          onChange={(e) => updateParam("order", e.target.value)}
-        >
-          <option value="desc">Giảm dần</option>
-          <option value="asc">Tăng dần</option>
-        </select>
+        <Select
+          options={options_order}
+          value={orderOption}
+          onChange={(opt) => updateParam("sort", opt.value)}
+          instanceId="search-order"
+          styles={customStyles}
+          isSearchable={false}
+          isClearable={false}
+          classNamePrefix="select-custom"
+          className="select__container"
+        />
       </div>
     </div>
   )

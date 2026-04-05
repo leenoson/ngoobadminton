@@ -18,7 +18,7 @@ export default function TabsSection() {
   }
 
   return (
-    <div className="tab">
+    <div className="tab" role="tabs">
       <div className="tab__label">
         {tabs.map((tab) => (
           <div
@@ -34,7 +34,7 @@ export default function TabsSection() {
       </div>
 
       {/* Content */}
-      <div className="tab__contents">
+      <div className="tab__contents" role="tabpanel">
         {activeTab?.content && (
           <div key={activeTab.id} className="is-show">
             {activeTab.content}

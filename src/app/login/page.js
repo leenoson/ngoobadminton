@@ -59,6 +59,10 @@ export default function LoginPage() {
       requestAnimationFrame(() => {
         setFocus("password")
       })
+    } else {
+      requestAnimationFrame(() => {
+        setFocus("email")
+      })
     }
   }, [setValue, setFocus])
 
@@ -92,9 +96,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="login">
+    <section className="login">
       <form onSubmit={handleSubmit(onSubmit)} className="form" noValidate>
-        <h4 className="form__title">Admin login</h4>
+        <h2 className="form__title">Admin login</h2>
 
         <div className="form__control">
           <div className="form__input">
@@ -108,14 +112,18 @@ export default function LoginPage() {
                 id="email"
                 disabled={loading}
                 type="email"
+                autoComplete="email"
                 placeholder="Nhập email admin..."
                 className={`${errors.email ? "is-invalid" : ""}`}
                 {...register("email", {
                   onChange: () => clearErrors(["email", "password"]),
                 })}
+                aria-describedby="error-email"
               />
               {errors.email && (
-                <div className="form__error">{errors.email.message}</div>
+                <span id="error-email" className="form__error">
+                  {errors.email.message}
+                </span>
               )}
             </div>
           </div>
@@ -136,6 +144,7 @@ export default function LoginPage() {
                 {...register("password", {
                   onChange: () => clearErrors(["email", "password"]),
                 })}
+                aria-describedby="error-password"
               />
 
               <span
@@ -143,11 +152,14 @@ export default function LoginPage() {
                 className={clsx(`form__eye`, {
                   "is-text": showPassword,
                 })}
+                aria-label="Biểu tượng ẩn hiện mật khẩu"
               ></span>
             </div>
 
             {errors.password && (
-              <div className="form__error">{errors.password.message}</div>
+              <span id="error-password" className="form__error">
+                {errors.password.message}
+              </span>
             )}
           </div>
         </div>
@@ -168,7 +180,7 @@ export default function LoginPage() {
           </label>
         </div>
 
-        {serverError && <div className="form__error">{serverError}</div>}
+        {serverError && <span className="form__error">{serverError}</span>}
 
         <button
           className={clsx("form__button", {
@@ -186,12 +198,12 @@ export default function LoginPage() {
             src="/images/common/home.svg"
             width={100}
             height={100}
-            alt="home"
+            alt=""
             aria-label="Về trang chủ"
           />
           Trang chủ
         </Link>
       </form>
-    </div>
+    </section>
   )
 }

@@ -26,11 +26,13 @@
     border-radius: var(--radius-m);
   }
 
+  // form__title .
   &__title {
+    font-size: var(--fs-2xl);
     text-align: center;
+    margin-bottom: 8px;
 
     @include m.sp {
-      font-size: 2.4rem;
       margin-bottom: 4px;
     }
   }
@@ -125,11 +127,13 @@
     }
   }
 
+  // .form__error .
   &__error {
     margin-top: 2px;
     font-style: italic;
     color: var(--color-error);
     font-size: var(--fs-xs);
+    display: block;
   }
 
   &__button {
@@ -153,6 +157,7 @@
     &:disabled {
       pointer-events: none;
       box-shadow: none;
+      opacity: 0.65;
 
       &:before {
         opacity: 1;

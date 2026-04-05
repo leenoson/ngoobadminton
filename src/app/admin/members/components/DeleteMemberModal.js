@@ -39,6 +39,7 @@ export default function DeleteMemberModal({ member, onClose }) {
       onClick={() => {
         if (!isPending) onClose()
       }}
+      role="dialog"
     >
       <div
         className="modal-dialog modal-dialog-centered"

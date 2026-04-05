@@ -80,6 +80,7 @@ export default function EditMemberModal({ member, onClose }) {
       onClick={() => {
         if (!isPending) onClose()
       }}
+      role="dialog"
     >
       <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
         <div className="modal-content">
