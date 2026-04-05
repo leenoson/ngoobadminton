@@ -1,31 +1,19 @@
-import Link from "next/link"
-import Navbar from "./components/NavbarAdmin"
-import ToastProvider from "@/components/ToastProvider"
+import { createClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
+import AdminLayout from "./components/AdminLayout"
 
 export const metadata = {
   title: "Admin",
 }
 
-export default function AdminLayout({ children }) {
-  return (
-    <>
-      <header className="header">
-        <ul className="admin-menu">
-          <li>
-            <Link href="/" data-no-progress>
-              Logo NGOO
-            </Link>
-          </li>
-        </ul>
-      </header>
+export default async function Layout({ children }) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-      <main className="admin-main">
-        <Navbar />
-        <section className="admin-content">{children}</section>
-      </main>
-      <ToastProvider />
-
-      <footer>Footer B</footer>
-    </>
-  )
+  if (!user) {
+    redirect("/login")
+  }
+  return <AdminLayout>{children}</AdminLayout>
 }

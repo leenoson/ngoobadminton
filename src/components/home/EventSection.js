@@ -157,10 +157,10 @@ function EventSection() {
                   height={1201}
                   alt="Các thành viên NGOO đang chơi ma sói cùng nhau"
                 />
+                <figcaption className="block01__caption">
+                  Chơi ma sói tại quán cafe
+                </figcaption>
               </figure>
-              <figcaption className="block01__caption">
-                Chơi ma sói tại quán cafe
-              </figcaption>
             </article>
           </li>
           <li className="block01__item">

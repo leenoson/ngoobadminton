@@ -7,7 +7,34 @@ import { createClient } from "@/lib/supabase/server"
 export async function getTopAttendance() {
   const supabase = await createClient()
 
-  const { data, error } = await supabase.rpc("get_top_members")
+  // Dùng RPC trong supabase
+  // const { data, error } = await supabase.rpc("get_top_members")
+  // return data
+
+  // Dùng query tại đây
+  // const { data, error } = await supabase.from("members").select(
+  //   `
+  //     id,
+  //     name,
+  //     avatar,
+  //     nickname,
+  //     attendance(count)
+  //   `,
+  // )
+  // return data
+  //   .map((item) => ({
+  //     ...item,
+  //     attendance_count: item.attendance?.count || 0,
+  //   }))
+  //   .sort((a, b) => b.attendance_count - a.attendance_count)
+  //   .slice(0, 10)
+
+  // Dùng View trong supabase
+  const { data, error } = await supabase
+    .from("top_members")
+    .select("*")
+    .order("attendance_count", { ascending: false })
+    .limit(10)
 
   if (error) {
     console.error(error)

@@ -1,14 +1,10 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import DashboardPage from "./dashboard/page";
+"use client"
 
-export default async function AdminDashboard() {
-  const supabase = await createClient();
-  const { data:{user} } = await supabase.auth.getUser();
+import ToastProvider from "@/components/ToastProvider"
+import DashboardPage from "./dashboard/page"
+import Navbar from "./components/NavbarAdmin"
+import Link from "next/link"
 
-  if(!user){
-    redirect("/login");
-  }
-
-  return <DashboardPage />;
+export default function AdminDashboard() {
+  return <DashboardPage />
 }

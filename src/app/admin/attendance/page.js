@@ -154,8 +154,15 @@ export default function AttendancePage() {
       {!loadingMembers && (
         <div className="">
           {filteredMembers.map((member) => (
-            <label key={member.id} className="">
+            <label
+              key={member.id}
+              className={clsx(``, {
+                "is-active": checked.includes(member.id),
+              })}
+              htmlFor={member.id}
+            >
               <input
+                id={member.id}
                 type="checkbox"
                 checked={checked.includes(member.id)}
                 onChange={() => toggleMember(member.id)}

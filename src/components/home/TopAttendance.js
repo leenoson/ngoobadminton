@@ -18,7 +18,7 @@ export default async function TopAttendance() {
         <h2 className="title02" data-aos="fade-up">
           Top 10 NGOO
         </h2>
-        <p className="text-center text-(--fs-default)" data-aos="fade-up">
+        <p className="text-center text-(--fs-default) mb-4" data-aos="fade-up">
           10 <strong>NGOO</strong> dễ bắt gặp trên sân nhất
         </p>
 
@@ -43,7 +43,7 @@ export default async function TopAttendance() {
                   )}
                 </div>
                 <span className="rank__attendance">
-                  {member.attendance_count ?? 0} buổi
+                  {member.attendance_count || 0} buổi
                 </span>
               </li>
             ))}
