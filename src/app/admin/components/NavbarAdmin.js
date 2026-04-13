@@ -8,7 +8,7 @@ import SmartLink from "@/lib/SmartLink"
 import Link from "next/link"
 import Image from "next/image"
 
-export default function Navbar() {
+export default function Navbar({ onToggle }) {
   const supabase = createClient()
   const router = useRouter()
   const pathname = usePathname()
@@ -19,7 +19,7 @@ export default function Navbar() {
   }
   return (
     <nav className="admin__navbar">
-      <button className="closemenu">
+      <button className="closemenu" onClick={onToggle}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

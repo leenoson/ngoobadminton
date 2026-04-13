@@ -6,6 +6,7 @@ import ImgAvatar from "@/components/ImgAvatar"
 import useDebounce from "@/hooks/useDebounce"
 import clsx from "clsx"
 import { formatDate } from "@/lib/formatDate"
+import CardSkeleton from "@/components/Skeleton"
 
 export default function AttendancePage() {
   const supabase = createClient()
@@ -18,7 +19,6 @@ export default function AttendancePage() {
   const [checked, setChecked] = useState([])
   const [loadingMembers, setLoadingMembers] = useState(true)
 
-  // search
   const [search, setSearch] = useState("")
   const debouncedSearch = useDebounce(search, 400)
 
@@ -28,7 +28,6 @@ export default function AttendancePage() {
     )
   }
 
-  // chỉ check những member đang hiển thị
   function checkAll() {
     setChecked((prev) => {
       const ids = filteredMembers.map((m) => m.id)
@@ -96,104 +95,125 @@ export default function AttendancePage() {
   }, [members, debouncedSearch])
 
   return (
-    <div className="">
-      <h2 className="">Điểm danh</h2>
+    <div>
+      <h1 className="title04">Điểm danh</h1>
 
-      <div className="">
-        <input
-          type="text"
-          className=""
-          placeholder="Search member..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{ width: "250px" }}
-          disabled={isPending}
-        />
-
-        {search && (
-          <button
-            className=""
-            onClick={() => setSearch("")}
+      <div className="form02">
+        <div className="input" disabled={isPending}>
+          <input
+            placeholder="Tìm kiếm thành viên theo tên..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             disabled={isPending}
-          >
-            X
-          </button>
-        )}
+          />
+          {search && (
+            <button
+              aria-label="Reset input tìm kiếm"
+              className="search__reset"
+              onClick={() => setSearch("")}
+              disabled={isPending}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
 
-        <button className="" onClick={checkAll} disabled={isPending}>
+        <button className="button01" onClick={checkAll} disabled={isPending}>
           Chọn tất cả
         </button>
 
-        <button className="" onClick={uncheckAll} disabled={isPending}>
+        <button className="button01" onClick={uncheckAll} disabled={isPending}>
           Bỏ chọn tất cả
         </button>
-
-        <div className="">
-          Có mặt ngày <span className="">{formatDate(date, "vi")}</span>:{" "}
-          {checked.length}/{members.length}
-        </div>
       </div>
+      <p className="mb-[1rem]">
+        Ngày <span className="badge">{formatDate(date, "vi")}</span> có{" "}
+        <span className="text-(--color-l-1)">
+          {loadingMembers ? "..." : `${checked.length}/${members.length}`}
+        </span>{" "}
+        thành viên
+      </p>
 
-      <div className="">
-        <input
-          type="date"
-          className=""
-          style={{ width: "200px" }}
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+      <div className="form02">
+        <div className="input input--date" disabled={isPending}>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            disabled={isPending}
+          />
+        </div>
+        <button
+          className="button01 button01--type01"
+          onClick={saveAttendance}
           disabled={isPending}
-        />
-        <button className="" onClick={saveAttendance} disabled={isPending}>
-          {isPending ? `Đang lưu điểm danh ngày ` : `Lưu điểm danh ngày `}
+        >
+          {isPending ? `Đang lưu điểm danh ngày... ` : `Lưu điểm danh ngày `}
           {formatDate(date, "vi")}
         </button>
       </div>
 
-      {loadingMembers && <div className="">Loading member list...</div>}
+      {loadingMembers && <CardSkeleton />}
 
       {!loadingMembers && (
-        <div className="">
+        <ul className="card-list list-attendance">
           {filteredMembers.map((member) => (
-            <label
-              key={member.id}
-              className={clsx(``, {
-                "is-active": checked.includes(member.id),
-              })}
-              htmlFor={member.id}
-            >
-              <input
-                id={member.id}
-                type="checkbox"
-                checked={checked.includes(member.id)}
-                onChange={() => toggleMember(member.id)}
-                className=""
-              />
-              <div
-                className={clsx("", {
-                  "": checked.includes(member.id),
+            <li key={member.id} className="card-item">
+              <label
+                className={clsx(`card`, {
+                  "is-active": checked.includes(member.id),
                 })}
+                htmlFor={member.id}
               >
-                <ImgAvatar
-                  src={member.avatar}
-                  alt={member.name}
-                  classprop=""
-                  width={200}
-                  height={200}
+                <input
+                  id={member.id}
+                  type="checkbox"
+                  checked={checked.includes(member.id)}
+                  onChange={() => toggleMember(member.id)}
                 />
-                <div className="">
-                  <h5 className="">{member.name}</h5>
-                  <p className="">
-                    Số buổi tham gia: {member.attendance?.[0]?.count || 0}
+                <div className="card__avatar">
+                  <ImgAvatar
+                    src={member.avatar}
+                    alt={member.name}
+                    classprop="card__img"
+                    width={250}
+                    height={250}
+                  />
+                </div>
+                <div className="card__detail">
+                  <h3 className="card__name">{member.name}</h3>
+                  <h4 className="card__nickname">{member.nickname}</h4>
+                  <p className="card__attendance">
+                    Số buổi:{" "}
+                    {member.attendance?.[0]?.count ? (
+                      <span className="badge">
+                        {member.attendance?.[0]?.count}
+                      </span>
+                    ) : (
+                      <span className="badge badge--type01">0</span>
+                    )}
                   </p>
                 </div>
-              </div>
-            </label>
+              </label>
+            </li>
           ))}
 
           {members.length > 0 && filteredMembers.length === 0 && (
-            <div className="">No members found</div>
+            <div className="">Chưa có NGOO nào tên này</div>
           )}
-        </div>
+        </ul>
       )}
     </div>
   )

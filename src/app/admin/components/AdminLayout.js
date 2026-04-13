@@ -30,7 +30,7 @@ function AdminLayout({ children }) {
           "is-collapsed": isClose,
         })}
       >
-        <Navbar />
+        <Navbar onToggle={() => setIsClose(!isClose)} />
         <div className="admin__bg" onClick={() => setIsClose(!isClose)}></div>
       </aside>
 

@@ -19,30 +19,39 @@ export default function MemberCard({ member, isAdmin }) {
   return (
     <>
       <div className="card">
-        <ImgAvatar
-          src={member.avatar}
-          alt={member.name}
-          classprop="card__avatar"
-          width={200}
-          height={200}
-        />
+        <div className="card__avatar">
+          <ImgAvatar
+            src={member.avatar}
+            alt={member.name}
+            classprop="card__img"
+            width={250}
+            height={250}
+          />
+        </div>
 
         <div className="card__detail">
-          <h5 className="card__name">{member.name}</h5>
-          <h6 className="card__nickname">{member.nickname}</h6>
+          <h2 className="card__name">{member.name}</h2>
+          <h4 className="card__nickname">{member.nickname}</h4>
 
-          <p className="card__join">Ngày vào: {joinedDate}</p>
+          <p className="card__join">Ngày tham gia: {joinedDate}</p>
 
-          <p className="card__attendance">{attendanceCount} buổi tham gia</p>
-          {isAdmin && (
-            <Link
-              href={`/admin/members/${createMemberSlug(member.name, member.id)}`}
-              className="card__link"
-            >
-              Chi tiết
-            </Link>
-          )}
+          <p className="card__attendance">
+            Số buổi:{" "}
+            {attendanceCount ? (
+              <span className="badge">{attendanceCount}</span>
+            ) : (
+              <span className="badge badge--type01">0</span>
+            )}
+          </p>
         </div>
+        {isAdmin && (
+          <Link
+            href={`/admin/members/${createMemberSlug(member.name, member.id)}`}
+            className="button01 button01--type01"
+          >
+            Chi tiết
+          </Link>
+        )}
         {isAdmin && (
           <>
             <div className="card__control">

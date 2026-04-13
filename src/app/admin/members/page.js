@@ -1,44 +1,39 @@
-import { createClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
 import FilterBar from "./components/FilterBar"
 import MemberCard from "../../../components/MemberCard"
 import AddMemberButton from "./components/AddMemberButton"
 import NoResultSearchMember from "./components/NoResultSearchMember"
+import { getMembers } from "@/services/members/getMembers"
+import Pagination from "@/components/Pagination"
 
 export default async function MembersPage({ searchParams }) {
   const params = await searchParams
-  const supabase = await createClient()
 
   const search = params?.search || ""
   const sort = params?.sort || "joined"
   const order = params?.order || "desc"
 
-  const ascending = order === "asc"
+  const page = Math.max(1, Number(params?.page) || 1)
+  const limit = Math.max(1, Number(params?.limit) || 12)
 
-  const { count: totalMembers } = await supabase
-    .from("members")
-    .select("id", { count: "exact", head: true })
+  const { members, totalMembers, filteredMembers, totalPages } =
+    await getMembers({
+      search,
+      sort,
+      order,
+      page,
+      limit,
+    })
 
-  let query = supabase.from("members_with_attendance").select("*")
+  if (page > totalPages && totalPages > 0) {
+    const newParams = new URLSearchParams(params)
+    newParams.set("page", "1")
 
-  if (search) {
-    query = query.ilike("name", `%${search}%`)
+    redirect(`/admin/members?${newParams.toString()}`)
   }
-
-  const sortMap = {
-    name: "name",
-    joined: "joined_at",
-    attendance: "attendance_count",
-  }
-
-  query = query.order(sortMap[sort] ?? "joined_at", { ascending })
-
-  const { data: members } = await query
-
-  const filteredMembers = members?.length || 0
-
   return (
     <div>
-      <h2 className="title04">Danh sách NGOO dân</h2>
+      <h1 className="title04">Danh sách NGOO dân</h1>
       <AddMemberButton members={members} />
       <ul className="box">
         <li className="box__item">
@@ -66,17 +61,18 @@ export default async function MembersPage({ searchParams }) {
           {search && `Tìm thấy ${filteredMembers} trong ${totalMembers} NGOO`}
         </div>
       </div>
-      <div className="">
-        {members && members.length > 0 ? (
-          members.map((member) => (
-            <div key={member.id} className="">
+      {members && members.length > 0 ? (
+        <ul className="card-list">
+          {members.map((member) => (
+            <li key={member.id} className="card-item">
               <MemberCard member={member} isAdmin />
-            </div>
-          ))
-        ) : (
-          <>{search ? <NoResultSearchMember /> : <p>Chưa có NGOO nào</p>}</>
-        )}
-      </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <>{search ? <NoResultSearchMember /> : <p>Chưa có NGOO nào</p>}</>
+      )}
+      <Pagination totalPages={totalPages} currentPage={page} />
     </div>
   )
 }

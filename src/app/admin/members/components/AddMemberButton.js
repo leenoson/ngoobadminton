@@ -7,7 +7,7 @@ export default function AddMemberButton() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="mb-2">
+    <div className="mb-(--spac)">
       <button className="button01" onClick={() => setIsOpen(true)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,7 @@ export default function AddMemberButton() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-6"
+          className="size-8"
         >
           <path
             strokeLinecap="round"

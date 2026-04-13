@@ -74,68 +74,93 @@ export default function AddMemberModal({ isOpen, onClose }) {
 
   return (
     <div
-      className="modal modal-custom"
+      className="modal"
       onClick={() => {
         if (!isPending) handleClose()
       }}
       role="dialog"
     >
-      <div onClick={notify}>Notify !</div>
-      <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-content">
-          <form ref={formRef} action={handleSubmit}>
-            <div className="modal-header">
-              <h5 className="modal-title fs-5">Thêm thành viên</h5>
-              <button type="button" className="btn-close" onClick={handleClose}>
-                X
-              </button>
+      <div className="modal__dialog" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="modal__close" onClick={handleClose}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-8"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+        <div className="modal__content">
+          <form
+            className="form03"
+            ref={formRef}
+            action={handleSubmit}
+            noValidate
+          >
+            <div className="modal__header">
+              <p className="modal__title">Thêm thành viên</p>
             </div>
 
-            <div className="modal-body">
-              <div className="mb-3">
-                <label>Tên</label>
+            <div className="modal__body">
+              <label className="form03__control">
+                <span className="form03__text">Họ & tên</span>
                 <input
                   name="name"
                   required
-                  className="form-control"
+                  className="form03__input"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={isPending}
                   autoFocus
+                  autoComplete="name"
+                  aria-label="Tên"
+                  placeholder="Nguyễn Văn Cẩm"
                 />
-              </div>
-              <div className="mb-3">
-                <label>Nick name</label>
+              </label>
+              <label className="form03__control">
+                <span className="form03__text">Nickname</span>
                 <input
                   name="nickname"
                   required
-                  className="form-control"
+                  className="form03__input"
                   value={nickname}
                   onChange={(e) => setNickname(e.target.value)}
                   disabled={isPending}
+                  placeholder="Cẩm Hót"
+                  aria-label="Nickname"
+                  autoComplete="Nickname"
                 />
-              </div>
-              <div className="mb-3">
-                <label>Ngày tham gia</label>
+              </label>
+              <label className="form03__control">
+                <span className="form03__text">Ngày tham gia</span>
                 <input
                   type="date"
                   name="joined_at"
                   required
-                  className="form-control"
+                  className="form03__input"
                   disabled={isPending}
+                  aria-label="Ngày tham gia"
                 />
-              </div>
-              <div className="mb-3">
-                <label>Avatar</label>
+              </label>
+              <label className="form03__control">
+                <span className="form03__text">Ảnh đại diện</span>
+                <span className="form03__upfile">Chọn ảnh</span>
                 <input
                   type="file"
                   name="avatar"
-                  className="form-control"
+                  className="form03__file"
                   onChange={(e) => handleFile(e)}
                   accept="image/*"
                   disabled={isPending}
                 />
-                <div className="mt-3">
+                <div className="form03__preview">
                   {avatar && (
                     <ImgAvatar
                       src={avatar.preview}
@@ -144,23 +169,66 @@ export default function AddMemberModal({ isOpen, onClose }) {
                     />
                   )}
                 </div>
+              </label>
+              {/* <div className="">
+                <label>Sinh nhật</label>
+                <input
+                  type="date"
+                  name="dob"
+                  required
+                  className="input"
+                  disabled={isPending}
+                />
               </div>
+              <div className="">
+                <label>Sdt</label>
+                <input
+                  name="phone"
+                  required
+                  className="input"
+                  disabled={isPending}
+                />
+              </div>
+              <div className="">
+                <label>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  className="input"
+                  disabled={isPending}
+                />
+              </div>
+              <div className="">
+                <label>Địa chỉ</label>
+                <input
+                  name="address"
+                  required
+                  className="input"
+                  disabled={isPending}
+                />
+              </div>
+              <div className="">
+                <label>Trình độ</label>
+                <input
+                  name="level"
+                  required
+                  className="input"
+                  disabled={isPending}
+                />
+              </div> */}
             </div>
 
-            <div className="modal-footer">
+            <div className="modal__footer">
               <button
                 disabled={isPending}
                 type="button"
-                className="btn btn-secondary"
+                className="button01 button01--cancel"
                 onClick={handleClose}
               >
                 Hủy
               </button>
-              <button
-                disabled={isPending}
-                type="submit"
-                className="btn btn-primary"
-              >
+              <button disabled={isPending} type="submit" className="button01">
                 {isPending ? "Thêm..." : "Thêm"}
               </button>
             </div>

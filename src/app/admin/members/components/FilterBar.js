@@ -4,8 +4,33 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect, useTransition } from "react"
 import Select from "react-select"
 import useDebounce from "@/hooks/useDebounce"
+import { updateQueryParams } from "@/lib/updateQueryParams"
 
 export default function FilterBar() {
+  const router = useRouter()
+  const params = useSearchParams()
+  const [isPending, startTransition] = useTransition()
+
+  // 👉 source of truth = URL
+  const urlSort = params.get("sort") || "joined"
+  const urlOrder = params.get("order") || "desc"
+  const searchParam = params.get("search") || ""
+
+  const [sort, setSort] = useState(urlSort)
+  const [order, setOrder] = useState(urlOrder)
+
+  const [search, setSearch] = useState(searchParam)
+  const debouncedSearch = useDebounce(search, 500)
+
+  useEffect(() => {
+    const handleSetFilter = () => {
+      setSort(urlSort)
+      setOrder(urlOrder)
+    }
+
+    handleSetFilter()
+  }, [urlSort, urlOrder])
+
   const options_sort = [
     { value: "joined", label: "Ngày tham gia" },
     { value: "attendance", label: "Chuyên cần" },
@@ -17,34 +42,37 @@ export default function FilterBar() {
     { value: "asc", label: "Tăng dần" },
   ]
 
-  const router = useRouter()
-  const params = useSearchParams()
-  const [isPending, startTransition] = useTransition()
-
-  const sort = params.get("sort") || "joined"
-  const order = params.get("order") || "desc"
-  const searchParam = params.get("search") || ""
-
-  const [search, setSearch] = useState(searchParam)
-  const debouncedSearch = useDebounce(search, 500)
-
   const sortOption = options_sort.find((opt) => opt.value === sort)
   const orderOption = options_order.find((opt) => opt.value === order)
 
-  const updateParam = (key, value) => {
-    const newParams = new URLSearchParams(params)
+  const pushParams = (updates) => {
+    const newParams = updateQueryParams(params, {
+      ...updates,
+      page: 1, // 🔥 luôn reset page
+    })
 
-    newParams.set(key, value)
+    startTransition(() => {
+      router.replace(`/admin/members?${newParams.toString()}`, {
+        scroll: false,
+      })
+    })
+  }
 
-    router.replace(`/admin/members?${newParams.toString()}`)
+  const handleSortChange = (opt) => {
+    setSort(opt.value)
+    pushParams({ sort: opt.value })
+  }
+
+  const handleOrderChange = (opt) => {
+    setOrder(opt.value)
+    pushParams({ order: opt.value })
   }
 
   useEffect(() => {
-    const newParams = new URLSearchParams(params)
-
-    debouncedSearch
-      ? newParams.set("search", debouncedSearch)
-      : newParams.delete("search")
+    const newParams = updateQueryParams(params, {
+      search: debouncedSearch,
+      page: 1,
+    })
 
     const newUrl = `/admin/members?${newParams.toString()}`
     const currentUrl = `/admin/members?${params.toString()}`
@@ -54,9 +82,7 @@ export default function FilterBar() {
         router.replace(newUrl, { scroll: false })
       })
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch])
+  }, [debouncedSearch]) // eslint-disable-line
 
   const customStyles = {
     control: (base, state) => ({
@@ -112,10 +138,7 @@ export default function FilterBar() {
   return (
     <div className="search" role="form">
       <div className="search__input">
-        <label htmlFor="search" />
         <input
-          id="search"
-          autoFocus
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Tìm kiếm thành viên theo tên..."
@@ -126,6 +149,7 @@ export default function FilterBar() {
             aria-label="Reset input tìm kiếm"
             className="search__reset"
             onClick={() => setSearch("")}
+            disabled={isPending}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +157,6 @@ export default function FilterBar() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-8"
             >
               <path
                 strokeLinecap="round"
@@ -145,29 +168,33 @@ export default function FilterBar() {
         )}
       </div>
 
-      <div className="filters">
+      <div className="sort">
+        <p className="sort__text">Sắp xếp</p>
+
         <Select
           options={options_sort}
           value={sortOption}
-          onChange={(opt) => updateParam("sort", opt.value)}
+          onChange={handleSortChange}
           instanceId="search-sort"
           styles={customStyles}
           isSearchable={false}
           isClearable={false}
           classNamePrefix="select-custom"
           className="select__container"
+          isDisabled={isPending}
         />
 
         <Select
           options={options_order}
           value={orderOption}
-          onChange={(opt) => updateParam("sort", opt.value)}
+          onChange={handleOrderChange}
           instanceId="search-order"
           styles={customStyles}
           isSearchable={false}
           isClearable={false}
           classNamePrefix="select-custom"
           className="select__container"
+          isDisabled={isPending}
         />
       </div>
     </div>

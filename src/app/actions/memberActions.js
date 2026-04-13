@@ -1,48 +1,55 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath, unstable_cache } from "next/cache"
 import { randomUUID } from "crypto"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 
-export async function getTopAttendance() {
-  const supabase = await createClient()
+export const getTopAttendance = unstable_cache(
+  async () => {
+    const supabase = createAdminClient()
 
-  // Dùng RPC trong supabase
-  // const { data, error } = await supabase.rpc("get_top_members")
-  // return data
+    // Dùng RPC trong supabase
+    // const { data, error } = await supabase.rpc("get_top_members")
+    // return data
 
-  // Dùng query tại đây
-  // const { data, error } = await supabase.from("members").select(
-  //   `
-  //     id,
-  //     name,
-  //     avatar,
-  //     nickname,
-  //     attendance(count)
-  //   `,
-  // )
-  // return data
-  //   .map((item) => ({
-  //     ...item,
-  //     attendance_count: item.attendance?.count || 0,
-  //   }))
-  //   .sort((a, b) => b.attendance_count - a.attendance_count)
-  //   .slice(0, 10)
+    // Dùng query tại đây
+    // const { data, error } = await supabase.from("members").select(
+    //   `
+    //     id,
+    //     name,
+    //     avatar,
+    //     nickname,
+    //     attendance(count)
+    //   `,
+    // )
+    // return data
+    //   .map((item) => ({
+    //     ...item,
+    //     attendance_count: item.attendance?.count || 0,
+    //   }))
+    //   .sort((a, b) => b.attendance_count - a.attendance_count)
+    //   .slice(0, 10)
 
-  // Dùng View trong supabase
-  const { data, error } = await supabase
-    .from("top_members")
-    .select("*")
-    .order("attendance_count", { ascending: false })
-    .limit(10)
+    // Dùng View trong supabase
+    const { data, error } = await supabase
+      .from("top_members")
+      .select("*")
+      .order("attendance_count", { ascending: false })
+      .limit(10)
 
-  if (error) {
-    console.error(error)
-    return []
-  }
+    if (error) {
+      console.error(error)
+      return []
+    }
 
-  return data
-}
+    return data
+  },
+  ["top-attendance"],
+  {
+    revalidate: 60,
+  },
+)
 
 export async function addMember(formData) {
   try {
@@ -61,7 +68,6 @@ export async function addMember(formData) {
 
       const allowedTypes = ["jpeg", "jpg", "png", "webp"]
       if (!allowedTypes.includes(fileExt)) {
-        // fileExt = "jpg"
         throw new Error("Ảnh phải là jpg, png hoặc webp")
       }
 

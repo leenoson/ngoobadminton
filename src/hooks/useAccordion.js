@@ -38,9 +38,7 @@ export function useAccordion(data = [], { multiple = false } = {}) {
   )
 
   const isOpen = useCallback(
-    (id) => {
-      return multiple ? openItems.includes(id) : openItems === id
-    },
+    (id) => (multiple ? openItems.includes(id) : openItems === id),
     [openItems, multiple],
   )
 
