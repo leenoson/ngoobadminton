@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useTransition } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -22,8 +23,8 @@ const schema = z.object({
 
   joined_at: z.string().min(1, "Chọn ngày tham gia"),
 
-  // email: z.string().email("Email không hợp lệ"),
-  // phone: z.string().regex(/^\d+$/, "Chỉ được nhập số"),
+  // email: z.string().trim().email("Email không hợp lệ"),
+  // phone: z.string().trim().regex(/^\d+$/, "Chỉ được nhập số"),
 })
 
 export default function AddMemberModal({ isOpen, onClose }) {
