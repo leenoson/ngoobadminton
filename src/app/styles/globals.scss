@@ -18,24 +18,25 @@
 
   // LIGHT
   --color-l-1: #fe7743;
-  --color-l-1-hover: rgb(241, 97, 40);
+  --color-l-1-hover: #f16128;
   --border-color-1: 254, 119, 67;
-  --color-l-2: rgb(39, 63, 79);
+  --color-l-2: #273f4f;
   --shadow-color-2: 39, 63, 79;
   --color-l-2-hover: #1b3647;
   --color-l-3: #447d9b;
-  --color-l-3-hover: rgb(46, 116, 153);
-  --color-l-4: rgb(236, 233, 233);
-  --color-l-5: rgb(196, 205, 213);
-  --color-l-6: rgb(247, 251, 255);
+  --color-l-3-hover: #2e7499;
+  --color-l-4: #ece9e9;
+  --color-l-5: #c4cdd5;
+  --color-l-6: #f7fbff;
+  --color-l-7: #faa380;
   --color-error: #f44336;
   --color-error-hover: #ec2112;
 
   // DARK
-  --color-d-1: rgb(34, 40, 49);
-  --color-d-2: rgb(57, 62, 70);
-  --color-d-3: rgb(0, 173, 181);
-  --color-d-4: rgb(238, 238, 238);
+  --color-d-1: #222831;
+  --color-d-2: #393e46;
+  --color-d-3: #00adb5;
+  --color-d-4: #eeeeee;
   --color-d-5: #141a21;
   --color-d-6: #454f5b;
   --color-d-7: #e7edf5;
@@ -130,8 +131,9 @@
   --fs-2xl: clamp(2.4rem, 1.8rem + 1.8vw, 3.6rem);
   --fs-3xl: clamp(3rem, 2rem + 2.5vw, 4.8rem);
   --fs-4xl: clamp(3.6rem, 2.4rem + 3.5vw, 6.4rem);
-  --fs-5xl: clamp(6.5rem, 3rem + 5vw, 8rem);
-  --fs-6xl: clamp(6rem, 4rem + 6vw, 10rem);
+  --fs-5xl: clamp(4.5rem, 3rem + 4vw, 7rem);
+  --fs-6xl: clamp(6.5rem, 3rem + 5vw, 8rem);
+  --fs-7xl: clamp(7rem, 4rem + 6vw, 10rem);
 }
 
 body {
@@ -199,8 +201,11 @@ img {
 }
 
 .member {
-  display: flex;
+  display: grid;
+  grid-template-columns: 5fr 5fr;
   gap: var(--spac);
+  max-width: 1400px;
+  margin-inline: auto;
 
   @include m.sp {
     display: block;
@@ -215,14 +220,18 @@ img {
   }
 
   &__avatar {
-    flex-shrink: 0;
-    width: 55%;
     text-align: center;
 
     img {
       margin-bottom: var(--spac-xs);
       border-radius: var(--radius-l);
       width: 100%;
+      object-fit: cover;
+      max-height: 800px;
+
+      @include m.sp {
+        max-width: 768px;
+      }
     }
 
     @include m.sp {
@@ -233,7 +242,6 @@ img {
   }
 
   &__content {
-    flex: 1;
   }
 }
 
@@ -391,10 +399,10 @@ img {
 }
 
 .list-attendance {
+  // .list-attendance .card .
   .card {
     border-color: var(--color-d-6);
     position: relative;
-    display: block;
     cursor: pointer;
     transition: 0.3s ease;
 
@@ -457,15 +465,28 @@ img {
 .form03 {
   &__preview {
     margin-top: var(--spac);
+    cursor: pointer;
 
     img {
       width: 100%;
       max-height: 368px;
       border-radius: var(--radius-l);
+      object-fit: cover;
 
       @include m.sp {
         max-height: auto;
       }
+    }
+  }
+
+  &__group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spac);
+    margin-bottom: var(--spac);
+
+    @include m.sp {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -500,19 +521,29 @@ img {
     }
   }
 
+  // .form03__input .
   &__input {
-    margin-bottom: var(--spac-sm);
     border-radius: var(--radius-m);
     border: 1px solid var(--color-default);
     padding: var(--spac-sm) var(--spac);
     width: 100%;
+    color: var(--color-default);
 
-    &:focus,
-    &:not(:placeholder-shown) {
-      & + span {
-        top: -3rem;
-      }
+    &:focus {
+      border-color: var(--color-l-1);
+      outline-color: var(--color-l-1);
     }
+
+    &:hover {
+      border-color: var(--color-l-7);
+    }
+
+    // &:focus,
+    // &:not(:placeholder-shown) {
+    //   & + span {
+    //     top: -3rem;
+    //   }
+    // }
   }
 }
 
@@ -653,10 +684,11 @@ img {
 .search {
   display: flex;
   gap: 16px;
-  margin-bottom: var(--margin);
+  margin-bottom: var(--spac-2xl);
   flex-wrap: wrap;
 
   @include m.sp {
+    margin-bottom: var(--spac);
     flex-direction: column;
   }
 
@@ -1104,6 +1136,9 @@ img {
   border-radius: var(--radius-m);
   padding: var(--spac);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spac);
 
   &--skeleton {
     border-color: var(--color-d-6);
@@ -1135,8 +1170,9 @@ img {
     margin-bottom: 0;
   }
 
+  // .card__control .
   &__control {
-    margin-top: var(--margin-3xs);
+    margin-top: var(--spac);
     display: flex;
     justify-content: space-between;
     gap: var(--spac);
@@ -1147,16 +1183,19 @@ img {
     transition: 0.3s ease;
   }
 
+  // .card__name .
   &__name {
-    margin-bottom: var(--margin-3xs);
     font-size: var(--fs-xl);
     color: var(--color-l-1);
     line-height: 1.3;
   }
 
+  &__join {
+    margin-top: var(--spac-xs);
+  }
+
   // .card__avatar .
   &__avatar {
-    margin-bottom: var(--margin-2xs);
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -1164,8 +1203,13 @@ img {
     border-radius: var(--radius-m);
   }
 
-  &__detail {
-    margin-bottom: var(--spac-m);
+  &__body {
+    flex: 1;
+  }
+
+  &__avatar,
+  &__footer {
+    flex-shrink: 0;
   }
 
   // .card-list .
@@ -1234,18 +1278,23 @@ img {
   height: 100%;
   top: 0;
   left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: var(--spac-xl) var(--spac);
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  @include m.sp {
+    padding: var(--spac-md) var(--spac);
+  }
 
   &__title {
     font-size: var(--fs-xl);
     text-align: center;
   }
 
+  // .modal__header .
   &__header {
     border-bottom: 1px dashed var(--color-default);
-    padding: var(--spac-xs) var(--spac);
+    padding: var(--spac-xs) var(--spac-xl);
   }
 
   &__body {
@@ -1263,28 +1312,38 @@ img {
   &__close {
     cursor: pointer;
     position: absolute;
-    top: var(--spac-sm);
-    right: var(--spac-sm);
+    top: var(--spac-s);
+    right: var(--spac-s);
     border-radius: var(--radius-m);
     transition: 0.3s ease;
-    padding: var(--spac-xs);
 
     &:hover {
       background-color: #fff;
     }
   }
 
+  // .modal__dialog .
   &__dialog {
-    max-width: 400px;
+    max-width: 73.2rem;
     border-radius: var(--radius-l);
     position: relative;
     width: max-content;
     background-color: var(--color-d-7);
     color: var(--color-default);
+    box-shadow: 0 0 var(--spac-m) var(--spac-s) rgba($color: #111, $alpha: 0.8);
+    margin-inline: auto;
 
     @include m.sp {
       width: calc(100% - var(--spac));
       max-width: auto;
+    }
+  }
+
+  &--small {
+    .modal {
+      &__dialog {
+        max-width: 40rem;
+      }
     }
   }
 }

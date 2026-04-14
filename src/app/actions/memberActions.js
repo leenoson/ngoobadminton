@@ -5,6 +5,24 @@ import { randomUUID } from "crypto"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 
+export const getNewestMember = async () => {
+  const supabase = createAdminClient()
+
+  const { data, error } = await supabase
+    .from("members")
+    .select("name")
+    .order("joined_at", { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (error) {
+    console.error(error)
+    return []
+  }
+
+  return data
+}
+
 export const getTopAttendance = unstable_cache(
   async () => {
     const supabase = createAdminClient()
@@ -56,7 +74,10 @@ export async function addMember(formData) {
     const supabase = await createClient()
 
     const name = formData.get("name")
+
     const nickname = formData.get("nickname")
+    const level = formData.get("level")
+
     const joined_at = formData.get("joined_at")
     const avatar = formData.get("avatar")
 
@@ -91,6 +112,7 @@ export async function addMember(formData) {
     const { error: insertError } = await supabase.from("members").insert({
       name,
       nickname,
+      level,
       joined_at,
       avatar: avatarUrl,
     })
@@ -153,7 +175,10 @@ export async function updateMember(formData) {
 
     const id = formData.get("id")
     const name = formData.get("name")
+
     const nickname = formData.get("nickname")
+    const level = formData.get("level")
+
     const joined_at = formData.get("joined_at")
     const avatarFile = formData.get("avatar")
 
@@ -171,7 +196,6 @@ export async function updateMember(formData) {
 
       const allowedTypes = ["jpeg", "jpg", "png", "webp"]
       if (!allowedTypes.includes(fileExt)) {
-        // fileExt = "jpg"
         throw new Error("Ảnh phải là jpg, png hoặc webp")
       }
 
@@ -203,6 +227,7 @@ export async function updateMember(formData) {
     const updateData = {
       name,
       nickname,
+      level,
       joined_at,
     }
 

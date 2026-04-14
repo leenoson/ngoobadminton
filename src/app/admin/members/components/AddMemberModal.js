@@ -1,19 +1,61 @@
 "use client"
-import { useRef, useState, useTransition } from "react"
+import { useState, useTransition } from "react"
+import { useForm, useWatch } from "react-hook-form"
 import { toast } from "react-toastify"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { compressImage } from "@/lib/image/compressImage"
 import { addMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import useModal from "@/hooks/useModal"
 
-export default function AddMemberModal({ isOpen, onClose }) {
-  const notify = () => toast("Wow so easy !")
+const schema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, "Tên không được bỏ trống")
+    .min(2, "Tên phải có ít nhất 2 ký tự"),
 
-  const formRef = useRef(null)
+  nickname: z.string().trim().optional().or(z.literal("")),
+
+  level: z.string().trim().optional().or(z.literal("")),
+
+  joined_at: z.string().min(1, "Chọn ngày tham gia"),
+
+  // email: z.string().email("Email không hợp lệ"),
+  // phone: z.string().regex(/^\d+$/, "Chỉ được nhập số"),
+})
+
+export default function AddMemberModal({ isOpen, onClose }) {
+  const getToday = () => {
+    const today = new Date()
+    return today.toISOString().split("T")[0]
+  }
+
   const [avatar, setAvatar] = useState(null)
-  const [name, setName] = useState("")
-  const [nickname, setNickname] = useState("")
+
   const [isPending, startTransition] = useTransition()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    control,
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      nickname: "",
+      level: "",
+      joined_at: getToday(),
+    },
+  })
+
+  const name = useWatch({
+    control,
+    name: "name",
+  })
 
   const handleFile = async (e) => {
     const file = e.target.files?.[0]
@@ -33,10 +75,17 @@ export default function AddMemberModal({ isOpen, onClose }) {
     })
   }
 
-  const handleSubmit = async (formData) => {
+  const onSubmit = async (data) => {
+    const formData = new FormData()
+
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value)
+    })
+
     if (avatar?.file) {
       formData.set("avatar", avatar.file)
     }
+
     startTransition(async () => {
       await toast.promise(addMember(formData), {
         pending: "Đang thêm một NGOO...",
@@ -48,20 +97,10 @@ export default function AddMemberModal({ isOpen, onClose }) {
   }
 
   const handleClose = () => {
-    resetForm()
-    onClose()
-  }
-
-  const resetForm = () => {
-    formRef?.current?.reset()
-    setName("")
-    setNickname("")
-
-    if (avatar?.preview) {
-      URL.revokeObjectURL(avatar.preview)
-    }
-
+    reset()
+    if (avatar?.preview) URL.revokeObjectURL(avatar.preview)
     setAvatar(null)
+    onClose()
   }
 
   useModal({
@@ -75,9 +114,9 @@ export default function AddMemberModal({ isOpen, onClose }) {
   return (
     <div
       className="modal"
-      onClick={() => {
-        if (!isPending) handleClose()
-      }}
+      // onClick={() => {
+      //   if (!isPending) handleClose()
+      // }}
       role="dialog"
     >
       <div className="modal__dialog" onClick={(e) => e.stopPropagation()}>
@@ -98,125 +137,84 @@ export default function AddMemberModal({ isOpen, onClose }) {
           </svg>
         </button>
         <div className="modal__content">
-          <form
-            className="form03"
-            ref={formRef}
-            action={handleSubmit}
-            noValidate
-          >
+          <form className="form03" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="modal__header">
               <p className="modal__title">Thêm thành viên</p>
             </div>
 
             <div className="modal__body">
-              <label className="form03__control">
-                <span className="form03__text">Họ & tên</span>
-                <input
-                  name="name"
-                  required
-                  className="form03__input"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  disabled={isPending}
-                  autoFocus
-                  autoComplete="name"
-                  aria-label="Tên"
-                  placeholder="Nguyễn Văn Cẩm"
-                />
-              </label>
-              <label className="form03__control">
-                <span className="form03__text">Nickname</span>
-                <input
-                  name="nickname"
-                  required
-                  className="form03__input"
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  disabled={isPending}
-                  placeholder="Cẩm Hót"
-                  aria-label="Nickname"
-                  autoComplete="Nickname"
-                />
-              </label>
-              <label className="form03__control">
-                <span className="form03__text">Ngày tham gia</span>
-                <input
-                  type="date"
-                  name="joined_at"
-                  required
-                  className="form03__input"
-                  disabled={isPending}
-                  aria-label="Ngày tham gia"
-                />
-              </label>
+              <div className="form03__group">
+                <label className="form03__control">
+                  <span className="form03__text">Họ & tên</span>
+                  <input
+                    className="form03__input"
+                    {...register("name")}
+                    disabled={isPending}
+                    placeholder="Nguyễn Văn Cẩm"
+                  />
+                  {errors.name && (
+                    <span className="form__error">{errors.name.message}</span>
+                  )}
+                </label>
+                <label className="form03__control">
+                  <span className="form03__text">Nickname</span>
+                  <input
+                    className="form03__input"
+                    disabled={isPending}
+                    placeholder="Cẩm Hót"
+                    aria-label="Nickname"
+                    {...register("nickname")}
+                  />
+                </label>
+              </div>
+              <div className="form03__group">
+                <label className="form03__control">
+                  <span className="form03__text">
+                    Trình/số năm chơi cầu lông
+                  </span>
+                  <input
+                    className="form03__input"
+                    disabled={isPending}
+                    placeholder="1000 năm/chuyên gia phá lưới"
+                    aria-label="Trình"
+                    {...register("level")}
+                  />
+                </label>
+                <label className="form03__control">
+                  <span className="form03__text">Ngày tham gia</span>
+                  <input
+                    type="date"
+                    // name="joined_at"
+                    // required
+                    className="form03__input"
+                    disabled={isPending}
+                    aria-label="Ngày tham gia"
+                    {...register("joined_at")}
+                  />
+                  {errors.joined_at && (
+                    <span className="form__error">
+                      {errors.joined_at.message}
+                    </span>
+                  )}
+                </label>
+              </div>
               <label className="form03__control">
                 <span className="form03__text">Ảnh đại diện</span>
                 <span className="form03__upfile">Chọn ảnh</span>
                 <input
                   type="file"
-                  name="avatar"
                   className="form03__file"
-                  onChange={(e) => handleFile(e)}
+                  onChange={handleFile}
                   accept="image/*"
                   disabled={isPending}
+                  aria-label="Ảnh đại diện"
                 />
-                <div className="form03__preview">
-                  {avatar && (
-                    <ImgAvatar
-                      src={avatar.preview}
-                      alt={name}
-                      classprop="rounded object-fit-cover w-100"
-                    />
-                  )}
-                </div>
+                {avatar && (
+                  <div className="form03__preview">
+                    <ImgAvatar src={avatar.preview} alt={name} />
+                  </div>
+                )}
               </label>
-              {/* <div className="">
-                <label>Sinh nhật</label>
-                <input
-                  type="date"
-                  name="dob"
-                  required
-                  className="input"
-                  disabled={isPending}
-                />
-              </div>
-              <div className="">
-                <label>Sdt</label>
-                <input
-                  name="phone"
-                  required
-                  className="input"
-                  disabled={isPending}
-                />
-              </div>
-              <div className="">
-                <label>Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="input"
-                  disabled={isPending}
-                />
-              </div>
-              <div className="">
-                <label>Địa chỉ</label>
-                <input
-                  name="address"
-                  required
-                  className="input"
-                  disabled={isPending}
-                />
-              </div>
-              <div className="">
-                <label>Trình độ</label>
-                <input
-                  name="level"
-                  required
-                  className="input"
-                  disabled={isPending}
-                />
-              </div> */}
             </div>
 
             <div className="modal__footer">

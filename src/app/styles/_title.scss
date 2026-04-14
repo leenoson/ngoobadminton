@@ -62,6 +62,7 @@ h5 {
   letter-spacing: 1rem;
   line-height: 1.4;
   color: var(--color-l-1);
+  font-size: var(--fs-5xl);
 
   @include m.sp {
     letter-spacing: 0.25rem;

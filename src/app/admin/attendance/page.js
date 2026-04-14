@@ -7,6 +7,9 @@ import useDebounce from "@/hooks/useDebounce"
 import clsx from "clsx"
 import { formatDate } from "@/lib/formatDate"
 import CardSkeleton from "@/components/Skeleton"
+import AddMemberButton from "../members/components/AddMemberButton"
+import Link from "next/link"
+import { createMemberSlug } from "@/lib/slugify"
 
 export default function AttendancePage() {
   const supabase = createClient()
@@ -85,7 +88,6 @@ export default function AttendancePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date])
 
-  // filter members
   const filteredMembers = useMemo(() => {
     if (!debouncedSearch) return members
 
@@ -97,6 +99,8 @@ export default function AttendancePage() {
   return (
     <div>
       <h1 className="title04">Điểm danh</h1>
+
+      <AddMemberButton />
 
       <div className="form02">
         <div className="input" disabled={isPending}>
@@ -170,41 +174,49 @@ export default function AttendancePage() {
       {!loadingMembers && (
         <ul className="card-list list-attendance">
           {filteredMembers.map((member) => (
-            <li key={member.id} className="card-item">
+            <li key={member?.id} className="card-item">
               <label
                 className={clsx(`card`, {
-                  "is-active": checked.includes(member.id),
+                  "is-active": checked.includes(member?.id),
                 })}
-                htmlFor={member.id}
+                htmlFor={member?.id}
               >
                 <input
-                  id={member.id}
+                  id={member?.id}
                   type="checkbox"
-                  checked={checked.includes(member.id)}
-                  onChange={() => toggleMember(member.id)}
+                  checked={checked.includes(member?.id)}
+                  onChange={() => toggleMember(member?.id)}
                 />
                 <div className="card__avatar">
                   <ImgAvatar
-                    src={member.avatar}
-                    alt={member.name}
+                    src={member?.avatar}
+                    alt={member?.name}
                     classprop="card__img"
                     width={250}
                     height={250}
                   />
                 </div>
                 <div className="card__detail">
-                  <h3 className="card__name">{member.name}</h3>
-                  <h4 className="card__nickname">{member.nickname}</h4>
+                  <h3 className="card__name">{member?.name}</h3>
+                  <h4 className="card__nickname">{member?.nickname}</h4>
                   <p className="card__attendance">
                     Số buổi:{" "}
-                    {member.attendance?.[0]?.count ? (
+                    {member?.attendance?.[0]?.count ? (
                       <span className="badge">
-                        {member.attendance?.[0]?.count}
+                        {member?.attendance?.[0]?.count}
                       </span>
                     ) : (
                       <span className="badge badge--type01">0</span>
                     )}
                   </p>
+                  {/* <div className="card__control">
+                    <Link
+                      href={`/admin/members/${createMemberSlug(member?.name, member?.id)}`}
+                      className="button01 button01--type01"
+                    >
+                      Chi tiết
+                    </Link>
+                  </div> */}
                 </div>
               </label>
             </li>

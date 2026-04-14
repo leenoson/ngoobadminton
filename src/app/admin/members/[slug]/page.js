@@ -55,9 +55,8 @@ export default async function MemberDetail({ params }) {
         <div className="member">
           <div className="member__content">
             <h1 className="title01">{member.name}</h1>
-
             <h4 className="title03">
-              ({member.nickname || "Cần người đặt tên!"})
+              ({member.nickname || "Chưa có nickname"})
             </h4>
             <p className="flex items-center gap-(--spac-xs) mb-(--spac-s)">
               <svg

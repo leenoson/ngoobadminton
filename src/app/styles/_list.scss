@@ -26,6 +26,7 @@
   flex-direction: column;
   row-gap: 16px;
 
+  // .rank__nickname .
   &__nickname {
     @include m.sp {
       text-align: center;
@@ -40,6 +41,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.5;
+    font-size: var(--fs-md);
   }
 
   &__number {
@@ -85,22 +87,22 @@
 
     $ranks: (
       1: (
-        border: 10px,
-        num: 60px,
-        name: 32px,
-        img: 160px,
+        border: var(--spac-sm),
+        num: var(--fs-4xl),
+        name: var(--fs-4xl),
+        img: 16rem,
       ),
       2: (
-        border: 8px,
-        num: 45px,
-        name: 24px,
-        img: 140px,
+        border: var(--spac-s),
+        num: var(--fs-3xl),
+        name: var(--fs-3xl),
+        img: 14rem,
       ),
       3: (
-        border: 6px,
-        num: 30px,
-        name: 20px,
-        img: 120px,
+        border: var(--spac-xs),
+        num: var(--fs-2xl),
+        name: var(--fs-2xl),
+        img: 12rem,
       ),
     );
 
@@ -121,6 +123,7 @@
           &__name {
             font-size: map.get($data, name);
             font-weight: 700;
+            @include m.animateGradientText;
           }
 
           &__avatar {

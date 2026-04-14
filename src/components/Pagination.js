@@ -25,7 +25,7 @@ export default function Pagination({ totalPages, currentPage }) {
     newParams.set("page", page)
 
     router.replace(`/admin/members?${newParams.toString()}`, {
-      scroll: false,
+      // scroll: false,
     })
   }
 
@@ -76,7 +76,6 @@ export default function Pagination({ totalPages, currentPage }) {
         ←
       </li>
 
-      {/* Numbers */}
       {pages.map((p, index) =>
         p === "..." ? (
           <li key={`${p}-${index}`} className="pagination__dots">
@@ -96,7 +95,6 @@ export default function Pagination({ totalPages, currentPage }) {
         ),
       )}
 
-      {/* Next */}
       <li
         className="pagination__btn"
         onClick={() => goToPage(currentPage + 1)}

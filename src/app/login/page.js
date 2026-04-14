@@ -1,22 +1,21 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useForm } from "react-hook-form"
-import { Controller } from "react-hook-form"
 import Link from "next/link"
 import Image from "next/image"
+import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
-import clsx from "clsx"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import clsx from "clsx"
 import { createClient } from "@/lib/supabase/client"
 
 const schema = z.object({
   email: z
     .string()
     .trim()
-    .min(1, { message: "Vui lòng nhập email" })
-    .email({ message: "Email không hợp lệ" }),
+    .min(1, "Vui lòng nhập email")
+    .email("Email không hợp lệ"),
   password: z
     .string()
     .trim()
