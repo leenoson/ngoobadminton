@@ -1,14 +1,18 @@
-import { Merriweather, Inter } from "next/font/google"
+import { Merriweather, Inter, Lexend } from "next/font/google"
 
 export const merriweather = Merriweather({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
   variable: "--font-merriweather",
 })
 
 export const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+})
+
+export const lexend = Lexend({
+  subsets: ["latin"],
+  variable: "--font-lexend",
 })
 
 // import localFont from "next/font/local";

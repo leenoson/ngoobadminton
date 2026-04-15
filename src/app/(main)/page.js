@@ -8,7 +8,7 @@ import BannerParallax from "@/components/home/BannerParallax"
 export default async function Home() {
   return (
     <>
-      <BannerParallax image="/images/common/hero.jpg" />
+      <BannerParallax image="/images/hero.jpg" />
       <div className="main-content">
         {/* <MemberSection /> */}
 

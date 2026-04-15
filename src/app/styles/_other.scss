@@ -140,6 +140,17 @@
       width: 100%;
     }
   }
+
+  &__text {
+    padding-left: var(--spac-m);
+    position: relative;
+
+    .icon {
+      top: var(--spac-xs);
+      left: 0;
+      position: absolute;
+    }
+  }
 }
 
 .line01 {

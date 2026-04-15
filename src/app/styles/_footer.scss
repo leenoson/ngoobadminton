@@ -7,6 +7,7 @@
     url("/images/common/court.svg") no-repeat right -100px center / 460px,
     url("/images/common/player.svg") no-repeat left top / auto 100%;
   background-color: var(--color-l-1);
+  color: var(--color-d-7);
 
   @include m.tab {
     background-size: 360px, 280px;

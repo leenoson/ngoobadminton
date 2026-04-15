@@ -3,29 +3,12 @@
 import { useState, useTransition } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { toast } from "react-toastify"
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { compressImage } from "@/lib/image/compressImage"
 import { addMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import useModal from "@/hooks/useModal"
-
-const schema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Tên không được bỏ trống")
-    .min(2, "Tên phải có ít nhất 2 ký tự"),
-
-  nickname: z.string().trim().optional().or(z.literal("")),
-
-  level: z.string().trim().optional().or(z.literal("")),
-
-  joined_at: z.string().min(1, "Chọn ngày tham gia"),
-
-  // email: z.string().trim().email("Email không hợp lệ"),
-  // phone: z.string().trim().regex(/^\d+$/, "Chỉ được nhập số"),
-})
+import { memberSchema } from "@/schemas/member.schema"
 
 export default function AddMemberModal({ isOpen, onClose }) {
   const getToday = () => {
@@ -44,7 +27,7 @@ export default function AddMemberModal({ isOpen, onClose }) {
     reset,
     control,
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(memberSchema),
     defaultValues: {
       name: "",
       nickname: "",

@@ -9,7 +9,7 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "./styles/globals.scss"
 import "nprogress/nprogress.css"
-import { merriweather } from "@/lib/fonts"
+import { lexend } from "@/lib/fonts"
 import AOSProvider from "@/components/animations/AOSProvider"
 import ProviderMUI from "@/components/ProviderMUI"
 
@@ -132,7 +132,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="vi">
-      <body className={clsx(`${merriweather.className}`)}>
+      <body className={clsx(`${lexend.className}`)}>
         {/* <TopLoader /> */}
         <NavigationProgress />
         <AuthProvider>

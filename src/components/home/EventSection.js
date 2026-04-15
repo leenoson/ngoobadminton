@@ -116,7 +116,7 @@ function EventSection() {
                 data-aos-delay="100"
               >
                 <Image
-                  src="/images/ngoo_masoi.jpg"
+                  src="/images/ngoo_02.jpg"
                   width={1920}
                   height={1201}
                   alt="Các thành viên NGOO đang tổ chức sinh nhật cho nhau"

@@ -1,5 +1,6 @@
 import Image from "next/image"
 import ImgAvatar from "../ImgAvatar"
+import { Icons } from "@/components/Icons"
 
 function ContactSection() {
   return (
@@ -24,7 +25,7 @@ function ContactSection() {
                 vừa tham gia trò chơi giải trí và có các buổi tiệc giao lưu,{" "}
                 <strong>NGOO</strong> chính là lựa chọn lý tưởng.
               </p>
-              <p className="mb-2">Điều kiện tham gia là bạn muốn tham gia.</p>
+              <p>Điều kiện tham gia là bạn muốn tham gia.</p>
             </div>
             <div className="text-center" data-aos="fade-up">
               <Image
@@ -37,13 +38,16 @@ function ContactSection() {
               />
             </div>
             <div data-aos="fade-up">
-              <p>
+              <p className="block02__text">
+                <Icons.Phone />
                 Sdt(Zalo): <strong>03521xx1xx</strong>
               </p>
-              <p>
+              <p className="block02__text">
+                <Icons.Email />
                 Email: <strong>ngoobadminton@cl.com</strong>
               </p>
-              <p>
+              <p className="block02__text">
+                <Icons.Address />
                 Địa chỉ:{" "}
                 <strong>
                   Sân cầu lông Thắng Lợi - 210 Thích Quảng Đức, Phú Cường, Thủ
