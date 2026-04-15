@@ -1,31 +1,52 @@
 "use client"
 
 import { useState, useRef, useTransition } from "react"
+import { useForm, useWatch } from "react-hook-form"
 import { toast } from "react-toastify"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { updateMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import { compressImage } from "@/lib/image/compressImage"
 import { formatDate } from "@/lib/formatDate"
 import useModal from "@/hooks/useModal"
+import { memberSchema } from "@/schemas/member.schema"
 
 export default function EditMemberModal({ member, onClose }) {
+  const avatarDefault = member?.avatar || "/images/noimg.png"
+
   const inputFile = useRef(null)
   const [isPending, startTransition] = useTransition()
-  const [name, setName] = useState(member?.name)
-  const [level, setLevel] = useState(member?.level || "")
-  const [nickname, setNickname] = useState(member?.nickname || "")
-  const [joinedAt, setJoinedAt] = useState(
-    member?.joined_at ? formatDate(member.joined_at) : "",
-  )
   const [avatar, setAvatar] = useState(null)
-  const [preview, setPreview] = useState(member?.avatar || "/images/noimg.png")
 
-  const formRef = useRef(null)
+  const getToday = () => {
+    return new Date().toISOString().split("T")[0]
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    control,
+  } = useForm({
+    resolver: zodResolver(memberSchema),
+    defaultValues: {
+      name: member?.name || "",
+      nickname: member?.nickname || "",
+      level: member?.level || "",
+      joined_at: formatDate(member?.joined_at) || getToday(),
+    },
+  })
+
+  const name = useWatch({
+    control,
+    name: "name",
+  })
+
+  const preview = avatar?.preview || avatarDefault
 
   const handleResetAvatar = () => {
     setAvatar(null)
-
-    setPreview(member?.avatar || null)
 
     if (inputFile.current) {
       inputFile.current.value = null
@@ -39,26 +60,27 @@ export default function EditMemberModal({ member, onClose }) {
 
     const compressed = await compressImage(file)
 
-    setAvatar(compressed)
-
-    const url = URL.createObjectURL(file)
-
-    setPreview(url)
+    setAvatar({
+      file: compressed,
+      preview: URL.createObjectURL(file),
+    })
   }
 
-  const handleSubmit = async () => {
+  const appendFormData = (formData, data) => {
+    Object.entries(data).forEach(([key, value]) => {
+      formData.set(key, value ?? "")
+    })
+  }
+
+  const onSubmit = async (data) => {
     const formData = new FormData()
 
-    formData.append("id", member.id)
-    formData.append("name", name)
+    formData.set("id", member.id)
 
-    formData.append("level", level)
-    formData.append("nickname", nickname)
+    appendFormData(formData, data)
 
-    formData.append("joined_at", joinedAt)
-
-    if (avatar) {
-      formData.append("avatar", avatar)
+    if (avatar?.file) {
+      formData.set("avatar", avatar.file)
     }
 
     startTransition(async () => {
@@ -67,8 +89,15 @@ export default function EditMemberModal({ member, onClose }) {
         success: "Một đứa NGOO bị đổi thông tin!",
         error: "Cập nhật thất bại ❌",
       })
-      onClose()
+
+      handleClose()
     })
+  }
+
+  const handleClose = () => {
+    reset()
+    setAvatar(null)
+    onClose()
   }
 
   useModal({
@@ -105,7 +134,7 @@ export default function EditMemberModal({ member, onClose }) {
           </svg>
         </button>
         <div className="modal__content">
-          <form className="form03" ref={formRef} action={handleSubmit}>
+          <form className="form03" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="modal__header">
               <p className="modal__title">Cập nhật thông tin</p>
             </div>
@@ -114,24 +143,22 @@ export default function EditMemberModal({ member, onClose }) {
                 <label className="form03__control">
                   <span className="form03__text">Họ & tên</span>
                   <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
+                    {...register("name")}
                     disabled={isPending}
                     className="form03__input"
-                    name="name"
                     autoFocus
                     aria-label="Tên"
                   />
+                  {errors.name && (
+                    <span className="form__error">{errors.name.message}</span>
+                  )}
                 </label>
                 <label className="form03__control">
                   <span className="form03__text">Nickname</span>
                   <input
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
+                    {...register("nickname")}
                     disabled={isPending}
                     className="form03__input"
-                    name="nickname"
                     aria-label="Nickname"
                     placeholder="Một nhân cách khác"
                   />
@@ -143,11 +170,9 @@ export default function EditMemberModal({ member, onClose }) {
                     Trình/số năm chơi cầu lông
                   </span>
                   <input
-                    value={level}
-                    onChange={(e) => setLevel(e.target.value)}
+                    {...register("level")}
                     disabled={isPending}
                     className="form03__input"
-                    name="level"
                     aria-label="Trình"
                     placeholder="1000 năm/chuyên gia phá lưới"
                   />
@@ -155,12 +180,9 @@ export default function EditMemberModal({ member, onClose }) {
                 <label className="form03__control">
                   <span className="form03__text">Ngày tham gia</span>
                   <input
+                    {...register("joined_at")}
                     type="date"
-                    value={joinedAt}
-                    onChange={(e) => setJoinedAt(e.target.value)}
-                    required
                     disabled={isPending}
-                    name="joined_at"
                     className="form03__input"
                     aria-label="Ngày tham gia"
                   />
@@ -172,15 +194,15 @@ export default function EditMemberModal({ member, onClose }) {
                 <span className="form03__upfile">Chọn ảnh</span>
                 <input
                   type="file"
+                  ref={inputFile}
                   accept="image/*"
                   onChange={handleFile}
                   disabled={isPending}
-                  name="avatar"
                   className="form03__file"
                   aria-label="Ảnh đại diện"
                 />
                 <div className="form03__preview">
-                  {preview && <ImgAvatar src={preview} alt={member.name} />}
+                  {preview && <ImgAvatar src={preview} alt={name} />}
                 </div>
               </label>
 

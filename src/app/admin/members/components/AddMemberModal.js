@@ -51,20 +51,23 @@ export default function AddMemberModal({ isOpen, onClose }) {
       URL.revokeObjectURL(avatar.preview)
     }
 
-    const preview = URL.createObjectURL(compressed)
-
     setAvatar({
       file: compressed,
-      preview,
+      preview: URL.createObjectURL(compressed),
+    })
+  }
+
+  const appendFormData = (formData, data) => {
+    Object.entries(data).forEach(([key, value]) => {
+      if (value === undefined || value === null) return
+      formData.set(key, value)
     })
   }
 
   const onSubmit = async (data) => {
     const formData = new FormData()
 
-    Object.entries(data).forEach(([key, value]) => {
-      formData.append(key, value)
-    })
+    appendFormData(formData, data)
 
     if (avatar?.file) {
       formData.set("avatar", avatar.file)
@@ -76,6 +79,7 @@ export default function AddMemberModal({ isOpen, onClose }) {
         success: "Một nạn nhân của NGOO xuất hiện!",
         error: "Thêm thất bại ❌",
       })
+
       handleClose()
     })
   }
@@ -131,10 +135,12 @@ export default function AddMemberModal({ isOpen, onClose }) {
                 <label className="form03__control">
                   <span className="form03__text">Họ & tên</span>
                   <input
-                    className="form03__input"
                     {...register("name")}
+                    className="form03__input"
                     disabled={isPending}
                     placeholder="Nguyễn Văn Cẩm"
+                    aria-label="Tên"
+                    autoFocus
                   />
                   {errors.name && (
                     <span className="form__error">{errors.name.message}</span>
@@ -143,11 +149,11 @@ export default function AddMemberModal({ isOpen, onClose }) {
                 <label className="form03__control">
                   <span className="form03__text">Nickname</span>
                   <input
+                    {...register("nickname")}
                     className="form03__input"
                     disabled={isPending}
                     placeholder="Cẩm Hót"
                     aria-label="Nickname"
-                    {...register("nickname")}
                   />
                 </label>
               </div>
@@ -157,23 +163,21 @@ export default function AddMemberModal({ isOpen, onClose }) {
                     Trình/số năm chơi cầu lông
                   </span>
                   <input
+                    {...register("level")}
                     className="form03__input"
                     disabled={isPending}
                     placeholder="1000 năm/chuyên gia phá lưới"
                     aria-label="Trình"
-                    {...register("level")}
                   />
                 </label>
                 <label className="form03__control">
                   <span className="form03__text">Ngày tham gia</span>
                   <input
+                    {...register("joined_at")}
                     type="date"
-                    // name="joined_at"
-                    // required
                     className="form03__input"
                     disabled={isPending}
                     aria-label="Ngày tham gia"
-                    {...register("joined_at")}
                   />
                   {errors.joined_at && (
                     <span className="form__error">
