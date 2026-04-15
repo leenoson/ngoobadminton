@@ -4,26 +4,38 @@ import { useTransition } from "react"
 import { toast } from "react-toastify"
 import { deleteMember } from "@/app/actions/memberActions"
 import useModal from "@/hooks/useModal"
+import { useRouter } from "next/navigation"
 
-export default function DeleteMemberModal({ member, onClose }) {
+export default function DeleteMemberModal({
+  member,
+  onClose,
+  redirectAfterDelete,
+}) {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const handleDelete = () => {
     if (isPending) return
 
     startTransition(async () => {
-      await toast.promise(deleteMember(member.id, member.avatar), {
-        pending: "Đang cho đứa NGOO cook...",
-        success: "Một đứa NGOO bị cook!",
-        error: "Xóa thất bại ❌",
-      })
+      await toast.promise(
+        deleteMember(member.id, member.avatar, "/admin/members"),
+        {
+          pending: "Đang cho đứa NGOO cook...",
+          success: "Một đứa NGOO bị cook!",
+          error: "Xóa thất bại ❌",
+        },
+      )
+
       onClose()
+
+      if (redirectAfterDelete) {
+        router.push(redirectAfterDelete)
+      }
     })
   }
 
-  const handleClose = () => {
-    onClose()
-  }
+  const handleClose = () => onClose()
 
   useModal({
     isOpen: open,

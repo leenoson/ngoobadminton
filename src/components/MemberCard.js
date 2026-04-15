@@ -6,10 +6,12 @@ import EditMemberModal from "../app/admin/members/components/EditMemberModal"
 import DeleteMemberModal from "../app/admin/members/components/DeleteMemberModal"
 import ImgAvatar from "@/components/ImgAvatar"
 import { createMemberSlug } from "@/lib/slugify"
+import ButtonEditMember from "./ButtonEditMember"
+import ButtonDeleteMember from "./ButtonDeleteMember"
 
 export default function MemberCard({ member, isAdmin }) {
-  const [selectedMember, setSelectedMember] = useState(null)
-  const [deletingMember, setDeletingMember] = useState(null)
+  // const [selectedMember, setSelectedMember] = useState(null)
+  // const [deletingMember, setDeletingMember] = useState(null)
   const attendanceCount = member?.attendance_count ?? 0
 
   const joinedDate = member?.joined_at
@@ -55,34 +57,9 @@ export default function MemberCard({ member, isAdmin }) {
               Chi tiết
             </Link>
             <div className="card__control">
-              <button
-                className="button01"
-                onClick={() => setSelectedMember(member)}
-              >
-                Sửa
-              </button>
-
-              <button
-                className="button01"
-                onClick={() => setDeletingMember(member)}
-              >
-                Xóa
-              </button>
+              <ButtonDeleteMember member={member} />
+              <ButtonEditMember member={member} />
             </div>
-
-            {selectedMember && (
-              <EditMemberModal
-                member={selectedMember}
-                onClose={() => setSelectedMember(null)}
-              />
-            )}
-
-            {deletingMember && (
-              <DeleteMemberModal
-                member={deletingMember}
-                onClose={() => setDeletingMember(null)}
-              />
-            )}
           </div>
         )}
       </div>

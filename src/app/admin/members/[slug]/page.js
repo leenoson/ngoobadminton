@@ -5,6 +5,8 @@ import { slugify, extractIdFromSlug } from "@/lib/slugify"
 import { getMember } from "@/lib/db/member"
 import Image from "next/image"
 import { Icons } from "@/components/Icons"
+import ButtonEditMember from "@/components/ButtonEditMember"
+import ButtonDeleteMember from "@/components/ButtonDeleteMember"
 
 export default async function MemberDetail({ params }) {
   const { slug } = await params
@@ -51,7 +53,7 @@ export default async function MemberDetail({ params }) {
   return (
     <section>
       <article className="mb-(--spac-l)">
-        <h2 className="title04">Thông tin cơ bản</h2>
+        <h2 className="title04">Thông tin chi tiết</h2>
 
         <div className="member">
           <div className="member__content">
@@ -92,6 +94,13 @@ export default async function MemberDetail({ params }) {
               <Icons.Level />
               Trình là gì: {member.level || "*"}
             </p>
+            <div className="member__action">
+              <ButtonEditMember member={member} />
+              <ButtonDeleteMember
+                member={member}
+                redirectAfterDelete="/admin/members"
+              />
+            </div>
           </div>
           <figure className="member__avatar">
             <ImgAvatar src={member.avatar} alt={member.name} />

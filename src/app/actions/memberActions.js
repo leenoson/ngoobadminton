@@ -136,7 +136,7 @@ export async function addMember(formData) {
   }
 }
 
-export async function deleteMember(id, avatar) {
+export async function deleteMember(id, avatar, path) {
   try {
     const supabase = await createClient()
 
@@ -161,7 +161,7 @@ export async function deleteMember(id, avatar) {
       throw new Error("Xóa thành viên thất bại")
     }
 
-    revalidatePath("admin/members")
+    revalidatePath(path)
 
     return { success: true }
   } catch (err) {

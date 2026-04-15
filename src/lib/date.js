@@ -1,3 +1,7 @@
+export const getToday = () => {
+  return new Date().toISOString().split("T")[0]
+}
+
 export const formatDate = (dateStr, type = "en") => {
   const d = new Date(dateStr)
 

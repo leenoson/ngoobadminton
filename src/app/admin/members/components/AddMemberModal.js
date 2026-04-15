@@ -9,13 +9,9 @@ import { addMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import useModal from "@/hooks/useModal"
 import { memberSchema } from "@/schemas/member.schema"
+import { getToday } from "@/lib/date"
 
 export default function AddMemberModal({ isOpen, onClose }) {
-  const getToday = () => {
-    const today = new Date()
-    return today.toISOString().split("T")[0]
-  }
-
   const [avatar, setAvatar] = useState(null)
 
   const [isPending, startTransition] = useTransition()

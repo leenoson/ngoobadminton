@@ -212,6 +212,15 @@ img {
     display: block;
   }
 
+  &__action {
+    display: flex;
+    gap: var(--spac);
+
+    @include m.sp {
+      margin-bottom: var(--spac);
+    }
+  }
+
   .title03 {
     margin-bottom: var(--spac-m);
   }

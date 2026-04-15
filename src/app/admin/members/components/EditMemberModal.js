@@ -7,9 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { updateMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import { compressImage } from "@/lib/image/compressImage"
-import { formatDate } from "@/lib/formatDate"
 import useModal from "@/hooks/useModal"
 import { memberSchema } from "@/schemas/member.schema"
+import { getToday, formatDate } from "@/lib/date"
 
 export default function EditMemberModal({ member, onClose }) {
   const avatarDefault = member?.avatar || "/images/noimg.png"
@@ -17,10 +17,6 @@ export default function EditMemberModal({ member, onClose }) {
   const inputFile = useRef(null)
   const [isPending, startTransition] = useTransition()
   const [avatar, setAvatar] = useState(null)
-
-  const getToday = () => {
-    return new Date().toISOString().split("T")[0]
-  }
 
   const {
     register,
@@ -68,7 +64,8 @@ export default function EditMemberModal({ member, onClose }) {
 
   const appendFormData = (formData, data) => {
     Object.entries(data).forEach(([key, value]) => {
-      formData.set(key, value ?? "")
+      if (value === undefined || value === null) return
+      formData.set(key, value)
     })
   }
 
