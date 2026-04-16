@@ -182,15 +182,21 @@ export async function updateMember(formData) {
     const joined_at = formData.get("joined_at")
     const avatarFile = formData.get("avatar")
 
+    const isValidFile = avatarFile instanceof File && avatarFile.size > 0
+
     const { data: oldMember, error: fetchError } = await supabase
       .from("members")
       .select("avatar")
       .eq("id", id)
       .single()
 
-    let avatarUrl = null
+    if (fetchError) {
+      throw new Error("Không tìm thấy member")
+    }
 
-    if (avatarFile && avatarFile.size > 0) {
+    let avatarUrl = oldMember?.avatar || null
+
+    if (isValidFile) {
       const mimeType = avatarFile.type || "image/jpeg"
       let fileExt = mimeType.split("/")[1]
 
@@ -229,6 +235,7 @@ export async function updateMember(formData) {
       nickname,
       level,
       joined_at,
+      avatar: avatarUrl,
     }
 
     if (avatarUrl) {

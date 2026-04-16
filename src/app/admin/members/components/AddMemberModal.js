@@ -98,9 +98,11 @@ export default function AddMemberModal({ isOpen, onClose }) {
   return (
     <div
       className="modal"
-      // onClick={() => {
-      //   if (!isPending) handleClose()
-      // }}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget && !isPending) {
+          handleClose()
+        }
+      }}
       role="dialog"
     >
       <div className="modal__dialog" onClick={(e) => e.stopPropagation()}>
@@ -129,7 +131,7 @@ export default function AddMemberModal({ isOpen, onClose }) {
             <div className="modal__body">
               <div className="form03__group">
                 <label className="form03__control">
-                  <span className="form03__text">Họ & tên</span>
+                  <span className="form03__text">Họ & tên(*)</span>
                   <input
                     {...register("name")}
                     className="form03__input"
