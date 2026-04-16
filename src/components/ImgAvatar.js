@@ -7,6 +7,7 @@ export default function ImgAvatar({
   classprop = "rounded-circle",
   widthprop = 200,
   heightprop = 200,
+  ...props
 }) {
   return (
     <Image
@@ -15,6 +16,7 @@ export default function ImgAvatar({
       className={clsx("object-fit-cover", classprop)}
       width={widthprop}
       height={heightprop}
+      {...props}
     />
   )
 }

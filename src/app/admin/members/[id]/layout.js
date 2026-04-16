@@ -2,8 +2,8 @@ import BackButton from "@/components/ButtonBack"
 import { getMember } from "@/lib/db/member"
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params
-  const member = await getMember(slug)
+  const { id } = await params
+  const member = await getMember(id)
 
   if (!member) {
     return {
@@ -23,13 +23,13 @@ export async function generateMetadata({ params }) {
     title: `${member.name} | NGOO Badminton`,
     description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton. Xem thông tin, lịch sử tham gia và hoạt động.`,
     alternates: {
-      canonical: `${BASE_URL}/admin/members/${slug}`,
+      canonical: `${BASE_URL}/admin/members/${id}`,
     },
     openGraph: {
       title: `${member.name} | NGOO BADMINTON`,
       description: `Thông tin chi tiết thành viên ${member.name} của CLB NGOO Badminton. Xem thông tin, lịch sử tham gia và hoạt động.`,
       type: "profile",
-      url: `${BASE_URL}/admin/members/${slug}`,
+      url: `${BASE_URL}/admin/members/${id}`,
       images: [
         {
           url: avatarUrl,

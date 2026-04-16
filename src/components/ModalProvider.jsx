@@ -42,21 +42,36 @@ export function ModalProvider({ children }) {
     <ModalContext.Provider value={{ openModal, closeModal }}>
       {children}
 
-      {/* Modal UI */}
       {content && (
         <div
-          className="fixed p-4 inset-0 z-50 flex items-center justify-center modal01"
+          className="modal"
           role="dialog"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              closeModal()
+            }
+          }}
         >
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={closeModal}
-          />
-
-          <div className="relative z-10 bg-white rounded-2xl p-6 shadow-2xl min-w-[300px] max-h-[80vh] overflow-y-auto">
-            <button onClick={closeModal}>Close</button>
-
-            {content}
+          <div className="modal__dialog" onClick={(e) => e.stopPropagation()}>
+            <button className="modal__close" onClick={closeModal}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-8"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div className="modal__content">
+              <div className="modal01__body">{content}</div>
+            </div>
           </div>
         </div>
       )}

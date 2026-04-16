@@ -1,5 +1,6 @@
 import Image from "next/image"
 import ImgAvatar from "../ImgAvatar"
+import ButtonRipple from "../ButtonRipple"
 
 function AboutSection() {
   return (

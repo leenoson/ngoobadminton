@@ -17,8 +17,8 @@ export function useProgressRouter() {
   const push = (href, options) => {
     if (isSamePage(href)) return
 
-    NProgress.set(0.3)
-    NProgress.start()
+    // NProgress.set(0.3)
+    // NProgress.start()
     router.push(href, options)
   }
 

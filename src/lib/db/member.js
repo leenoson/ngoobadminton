@@ -1,9 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
-import { extractIdFromSlug } from "@/lib/slugify"
 import { cache } from "react"
 
-export const getMember = cache(async (slug) => {
-  const id = extractIdFromSlug(slug)
+export const getMember = cache(async (id) => {
   if (!id) return null
 
   const supabase = await createClient()

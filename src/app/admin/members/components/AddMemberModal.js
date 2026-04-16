@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { toast } from "react-toastify"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -36,6 +36,12 @@ export default function AddMemberModal({ isOpen, onClose }) {
     control,
     name: "name",
   })
+
+  useEffect(() => {
+    return () => {
+      if (avatar?.preview) URL.revokeObjectURL(avatar.preview)
+    }
+  }, [avatar])
 
   const handleFile = async (e) => {
     const file = e.target.files?.[0]

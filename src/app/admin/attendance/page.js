@@ -5,11 +5,12 @@ import { createClient } from "@/lib/supabase/client"
 import ImgAvatar from "@/components/ImgAvatar"
 import useDebounce from "@/hooks/useDebounce"
 import clsx from "clsx"
-import { formatDate } from "@/lib/formatDate"
 import CardSkeleton from "@/components/Skeleton"
 import AddMemberButton from "../members/components/AddMemberButton"
 import Link from "next/link"
 import { createMemberSlug } from "@/lib/slugify"
+import { formatDate } from "@/lib/date"
+import ButtonRipple from "@/components/ButtonRipple"
 
 export default function AttendancePage() {
   const supabase = createClient()
@@ -96,6 +97,12 @@ export default function AttendancePage() {
     return members.filter((m) => m.name.toLowerCase().includes(keyword))
   }, [members, debouncedSearch])
 
+  const isAllSelected =
+    filteredMembers.length > 0 &&
+    filteredMembers.every((m) => checked.includes(m.id))
+
+  const isNoneSelected = !filteredMembers.some((m) => checked.includes(m.id))
+
   return (
     <div>
       <h1 className="title04">Điểm danh</h1>
@@ -103,19 +110,19 @@ export default function AttendancePage() {
       <AddMemberButton />
 
       <div className="form02">
-        <div className="input" disabled={isPending}>
+        <div className="input" disabled={isPending || loadingMembers}>
           <input
             placeholder="Tìm kiếm thành viên theo tên..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            disabled={isPending}
+            disabled={isPending || loadingMembers}
           />
           {search && (
             <button
               aria-label="Reset input tìm kiếm"
               className="search__reset"
               onClick={() => setSearch("")}
-              disabled={isPending}
+              disabled={isPending || loadingMembers}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -134,13 +141,20 @@ export default function AttendancePage() {
           )}
         </div>
 
-        <button className="button01" onClick={checkAll} disabled={isPending}>
+        <ButtonRipple
+          className="button01"
+          onClick={checkAll}
+          disabled={isPending || isAllSelected || loadingMembers}
+        >
           Chọn tất cả
-        </button>
-
-        <button className="button01" onClick={uncheckAll} disabled={isPending}>
+        </ButtonRipple>
+        <ButtonRipple
+          className="button01"
+          onClick={uncheckAll}
+          disabled={isPending || isNoneSelected || loadingMembers}
+        >
           Bỏ chọn tất cả
-        </button>
+        </ButtonRipple>
       </div>
       <p className="mb-[1rem]">
         Ngày <span className="badge">{formatDate(date, "vi")}</span> có{" "}
@@ -151,22 +165,26 @@ export default function AttendancePage() {
       </p>
 
       <div className="form02">
-        <div className="input input--date" disabled={isPending}>
+        <div
+          className="input input--date"
+          disabled={isPending || loadingMembers}
+        >
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            disabled={isPending}
+            disabled={isPending || loadingMembers}
           />
         </div>
-        <button
-          className="button01 button01--type01"
+
+        <ButtonRipple
+          className="button01 button01--info"
           onClick={saveAttendance}
-          disabled={isPending}
+          disabled={isPending || isNoneSelected || loadingMembers}
         >
           {isPending ? `Đang lưu điểm danh ngày... ` : `Lưu điểm danh ngày `}
           {formatDate(date, "vi")}
-        </button>
+        </ButtonRipple>
       </div>
 
       {loadingMembers && <CardSkeleton />}
@@ -212,7 +230,7 @@ export default function AttendancePage() {
                   {/* <div className="card__control">
                     <Link
                       href={`/admin/members/${createMemberSlug(member?.name, member?.id)}`}
-                      className="button01 button01--type01"
+                      className="button01 button01--info"
                     >
                       Chi tiết
                     </Link>

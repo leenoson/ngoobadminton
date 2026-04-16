@@ -1,26 +1,20 @@
-export function slugify(str) {
-  return str
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/đ/g, "d")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-")
+// =========================
+// Create URL
+// =========================
+export function createMemberUrl(id) {
+  if (!id) return ""
+  return `${id}`
 }
 
-export function createMemberSlug(name, id) {
-  return `${slugify(name)}--${id}`
-}
+// =========================
+// Extract ID từ params
+// =========================
+export function getMemberId(param) {
+  if (!param) return null
 
-export function extractIdFromSlug(slug) {
-  if (!slug) return null
+  const value = Array.isArray(param) ? param[0] : param
 
-  if (Array.isArray(slug)) slug = slug[0]
+  if (typeof value !== "string") return null
 
-  if (typeof slug !== "string") return null
-
-  const parts = slug.split("--")
-
-  return parts[1] || null
+  return value.trim() || null
 }

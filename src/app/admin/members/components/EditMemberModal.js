@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useTransition } from "react"
+import { useState, useRef, useTransition, useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { toast } from "react-toastify"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -10,6 +10,7 @@ import { compressImage } from "@/lib/image/compressImage"
 import useModal from "@/hooks/useModal"
 import { memberSchema } from "@/schemas/member.schema"
 import { getToday, formatDate } from "@/lib/date"
+import ButtonRipple from "@/components/ButtonRipple"
 
 export default function EditMemberModal({ member, onClose }) {
   const avatarDefault = member?.avatar || "/images/noimg.png"
@@ -30,7 +31,7 @@ export default function EditMemberModal({ member, onClose }) {
       name: member?.name || "",
       nickname: member?.nickname || "",
       level: member?.level || "",
-      joined_at: formatDate(member?.joined_at) || getToday(),
+      joined_at: formatDate(member?.joined_at, "en") || getToday(),
     },
   })
 
@@ -40,6 +41,12 @@ export default function EditMemberModal({ member, onClose }) {
   })
 
   const preview = avatar?.preview || avatarDefault
+
+  useEffect(() => {
+    return () => {
+      if (avatar?.preview) URL.revokeObjectURL(avatar.preview)
+    }
+  }, [avatar])
 
   const handleResetAvatar = () => {
     setAvatar(null)
@@ -56,9 +63,12 @@ export default function EditMemberModal({ member, onClose }) {
 
     const compressed = await compressImage(file)
 
-    setAvatar({
-      file: compressed,
-      preview: URL.createObjectURL(file),
+    setAvatar((prev) => {
+      if (prev?.preview) URL.revokeObjectURL(prev.preview)
+      return {
+        file: compressed,
+        preview: URL.createObjectURL(file),
+      }
     })
   }
 
@@ -116,7 +126,7 @@ export default function EditMemberModal({ member, onClose }) {
       role="dialog"
     >
       <div className="modal__dialog" onClick={(e) => e.stopPropagation()}>
-        <button type="button" className="modal__close" onClick={onClose}>
+        <button type="button" className="modal__close" onClick={handleClose}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -205,28 +215,37 @@ export default function EditMemberModal({ member, onClose }) {
                 </div>
               </label>
 
-              <button
-                disabled={isPending || !avatar}
-                type="button"
-                className="button01 mt-(--spac)"
-                onClick={handleResetAvatar}
-              >
-                Giữ avatar cũ
-              </button>
+              {avatar && (
+                <ButtonRipple
+                  disabled={isPending || !avatar}
+                  type="button"
+                  className="button01 mt-(--spac)"
+                  onClick={handleResetAvatar}
+                  noRipple
+                >
+                  Xóa avatar mới
+                </ButtonRipple>
+              )}
             </div>
 
             <div className="modal__footer">
-              <button
+              <ButtonRipple
                 disabled={isPending}
                 type="button"
                 className="button01 button01--cancel"
-                onClick={onClose}
+                onClick={handleClose}
+                noRipple
               >
                 Hủy
-              </button>
-              <button disabled={isPending} type="submit" className="button01">
+              </ButtonRipple>
+
+              <ButtonRipple
+                disabled={isPending}
+                type="submit"
+                className="button01"
+              >
                 {isPending ? "Lưu..." : "Lưu"}
-              </button>
+              </ButtonRipple>
             </div>
           </form>
         </div>

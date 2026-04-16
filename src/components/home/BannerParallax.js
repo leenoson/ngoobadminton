@@ -7,6 +7,8 @@ import { useDevice } from "@/hooks/useDevice"
 import clsx from "clsx"
 import VideoHero from "./VideoHero"
 import ImgAvatar from "../ImgAvatar"
+import { Icons } from "../Icons"
+import ButtonRipple from "../ButtonRipple"
 
 export default function BannerParallax({ image }) {
   const [offsetY, setOffsetY] = useState(0)
@@ -66,20 +68,24 @@ export default function BannerParallax({ image }) {
           />
         </span>
       </div>
-      {/* <div className="absolute z-8 bottom-4 right-4">
-        <div
-          className="rounded-[50%] bg-[#000] text-white w-10 h-10 cursor-pointer text-xs"
-          onClick={() =>
-            openModal(
-              <div>
-                <VideoHero />
-              </div>,
-            )
-          }
-        >
-          Xem clip
-        </div>
-      </div> */}
+      <button
+        className="button03"
+        onClick={() =>
+          openModal(
+            <div>
+              <VideoHero />
+              <ButtonRipple
+                className="button01"
+                onClick={() => console.log("click btn")}
+              >
+                click
+              </ButtonRipple>
+            </div>,
+          )
+        }
+      >
+        <Icons.Play />
+      </button>
     </section>
   )
 }

@@ -1,7 +1,6 @@
 import ImgAvatar from "@/components/ImgAvatar"
 import { notFound, redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { slugify, extractIdFromSlug } from "@/lib/slugify"
 import { getMember } from "@/lib/db/member"
 import Image from "next/image"
 import { Icons } from "@/components/Icons"
@@ -9,20 +8,15 @@ import ButtonEditMember from "@/components/ButtonEditMember"
 import ButtonDeleteMember from "@/components/ButtonDeleteMember"
 
 export default async function MemberDetail({ params }) {
-  const { slug } = await params
   const supabase = await createClient()
-  const id = extractIdFromSlug(slug)
+
+  const { id } = await params
 
   if (!id) return notFound()
 
-  const member = await getMember(slug)
+  const member = await getMember(id)
 
   if (!member) return notFound()
-
-  const correctSlug = `${slugify(member.name)}--${member.id}`
-  if (slug !== correctSlug) {
-    redirect(`/members/${correctSlug}`)
-  }
 
   const { data: attendanceList = [] } = await supabase
     .from("attendance")
@@ -103,7 +97,7 @@ export default async function MemberDetail({ params }) {
             </div>
           </div>
           <figure className="member__avatar">
-            <ImgAvatar src={member.avatar} alt={member.name} />
+            <ImgAvatar src={member.avatar} alt={member.name} priority />
             <figcaption>
               <em>Hình ảnh do chính chủ cung cấp</em>
             </figcaption>

@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 import { deleteMember } from "@/app/actions/memberActions"
 import useModal from "@/hooks/useModal"
 import { useRouter } from "next/navigation"
+import ButtonRipple from "@/components/ButtonRipple"
 
 export default function DeleteMemberModal({
   member,
@@ -48,9 +49,11 @@ export default function DeleteMemberModal({
   return (
     <div
       className="modal modal--small"
-      // onClick={() => {
-      //   if (!isPending) onClose()
-      // }}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget && !isPending) {
+          handleClose()
+        }
+      }}
       role="dialog"
     >
       <div className="modal__dialog" onClick={(e) => e.stopPropagation()}>
@@ -79,14 +82,21 @@ export default function DeleteMemberModal({
             <strong className="text-(--color-l-1)">{member.name}</strong>?
           </div>
           <div className="modal__footer">
-            <button
+            {/* <button
               disabled={isPending}
               onClick={handleDelete}
               className="button01"
               type="button"
             >
               {isPending ? "Xóa..." : "Xóa"}
-            </button>
+            </button> */}
+            <ButtonRipple
+              disabled={isPending}
+              className="button01"
+              onClick={handleDelete}
+            >
+              {isPending ? "Xóa..." : "Xóa"}
+            </ButtonRipple>
             <button
               disabled={isPending}
               className="button01 button01--cancel"
