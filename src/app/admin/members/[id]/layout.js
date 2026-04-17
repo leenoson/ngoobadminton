@@ -1,3 +1,4 @@
+import AutoScrollTop from "@/components/AutoScrollTop"
 import BackButton from "@/components/ButtonBack"
 import { getMember } from "@/lib/db/member"
 
@@ -57,6 +58,7 @@ export async function generateMetadata({ params }) {
 export default function AdminMemberLayout({ children }) {
   return (
     <>
+      <AutoScrollTop />
       <BackButton href="/admin/members" title="Danh sách NGOO dân" />
       {children}
     </>

@@ -6,6 +6,10 @@ import NoResultSearchMember from "./components/NoResultSearchMember"
 import { getMembers } from "@/services/members/getMembers"
 import Pagination from "@/components/Pagination"
 import { getNewestMember, getTopAttendance } from "@/app/actions/memberActions"
+import Link from "next/link"
+import { createMemberUrl } from "@/lib/slugify"
+import { Icons } from "@/components/Icons"
+import AutoScrollTop from "@/components/AutoScrollTop"
 
 export default async function MembersPage({ searchParams }) {
   const params = await searchParams
@@ -38,7 +42,9 @@ export default async function MembersPage({ searchParams }) {
   const bestMember = await getTopAttendance()
 
   return (
-    <div>
+    <section>
+      <AutoScrollTop />
+
       <h1 className="title04">Danh sách NGOO dân</h1>
 
       <AddMemberButton />
@@ -47,26 +53,40 @@ export default async function MembersPage({ searchParams }) {
         <li className="box__item">
           <div className="box__box">
             <p>Tổng số NGOO</p>
-            <strong className="box__number">{totalMembers}</strong>
+            <strong className="box__content">{totalMembers}</strong>
           </div>
         </li>
         <li className="box__item">
-          <div className="box__box">
+          <Link
+            href={`/admin/members/${createMemberUrl(newestMember.id)}`}
+            className="box__box"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <p>Thành viên mới</p>
             {newestMember ? (
-              <span className="box__number">{newestMember?.name}</span>
+              <span className="box__content">{newestMember?.name}</span>
             ) : (
               "Chưa có thành viên"
             )}
-          </div>
+            <Icons.Blank />
+          </Link>
         </li>
         <li className="box__item">
-          <div className="box__box">
+          <Link
+            className="box__box"
+            href={`/admin/members/${createMemberUrl(bestMember[0]?.id)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <p>Thành viên hot</p>
-            <strong className="box__number">
-              {bestMember.length ? bestMember[0]?.name : "Chưa có ai hot"}
-            </strong>
-          </div>
+            {bestMember.length ? (
+              <span className="box__content">{bestMember[0]?.name}</span>
+            ) : (
+              "Chưa có ai hot"
+            )}
+            <Icons.Blank />
+          </Link>
         </li>
       </ul>
 
@@ -89,6 +109,6 @@ export default async function MembersPage({ searchParams }) {
         <>{search ? <NoResultSearchMember /> : <p>Chưa có NGOO nào</p>}</>
       )}
       <Pagination totalPages={totalPages} currentPage={page} />
-    </div>
+    </section>
   )
 }

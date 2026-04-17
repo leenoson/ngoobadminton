@@ -10,7 +10,7 @@ export const getNewestMember = async () => {
 
   const { data, error } = await supabase
     .from("members")
-    .select("name")
+    .select("id, name")
     .order("joined_at", { ascending: false })
     .limit(1)
     .maybeSingle()
@@ -65,6 +65,7 @@ export const getTopAttendance = unstable_cache(
   },
   ["top-attendance"],
   {
+    tags: ["top-attendance"],
     revalidate: 60,
   },
 )

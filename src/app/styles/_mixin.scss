@@ -1,3 +1,9 @@
+@mixin pc {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
 @mixin sp {
   @media (max-width: 767px) {
     @content;
@@ -40,7 +46,7 @@
     );
   }
 
-  &:hover {
+  @include hover {
     &:before {
       opacity: 1;
     }
@@ -64,5 +70,50 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@mixin lineclamp($line) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+  overflow: hidden;
+}
+
+@mixin hover {
+  @include pc {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin scrollbar {
+  /* toàn bộ scrollbar */
+  &::-webkit-scrollbar {
+    width: 8px; /* dọc */
+    height: 8px; /* ngang */
+  }
+
+  /* track (background) */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  /* thumb (cục kéo) */
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  /* hover thumb */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* góc giữa scrollbar ngang + dọc */
+  &::-webkit-scrollbar-corner {
+    background: transparent;
   }
 }

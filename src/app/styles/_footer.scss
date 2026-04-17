@@ -82,7 +82,7 @@
     right: 2rem;
   }
 
-  &:hover {
+  @include m.hover {
     background-color: var(--color-l-2-hover);
   }
 

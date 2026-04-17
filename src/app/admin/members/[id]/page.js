@@ -1,5 +1,5 @@
 import ImgAvatar from "@/components/ImgAvatar"
-import { notFound, redirect } from "next/navigation"
+import { notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { getMember } from "@/lib/db/member"
 import Image from "next/image"
@@ -108,7 +108,7 @@ export default async function MemberDetail({ params }) {
       <article className="member__history">
         <h2 className="title04">Lịch sử tham gia</h2>
 
-        <div className="flex justify-center">
+        <div className="history">
           {sortedYears.length > 0 ? (
             <ul className="list02">
               {sortedYears.map((year) => {

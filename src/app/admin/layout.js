@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import AdminLayout from "./components/AdminLayout"
+import AutoScrollTop from "@/components/AutoScrollTop"
 
 export const metadata = {
   title: "Admin",

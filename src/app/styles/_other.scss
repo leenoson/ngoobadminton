@@ -451,7 +451,7 @@
   margin-inline: auto;
   position: relative;
 
-  &:hover {
+  @include m.hover {
     &:after {
       transform: scaleX(1);
       opacity: 1;

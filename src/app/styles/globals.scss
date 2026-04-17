@@ -143,6 +143,7 @@ body {
   font-size: 1.6rem;
   letter-spacing: 0.3px;
   font-weight: 300;
+  word-wrap: break-word;
 }
 
 html {
@@ -201,22 +202,25 @@ img {
   pointer-events: none;
 }
 
+// .member .
 .member {
   display: grid;
   grid-template-columns: 5fr 5fr;
   gap: var(--spac);
   max-width: 1400px;
   margin-inline: auto;
+  width: 100%;
 
-  @include m.sp {
+  @include m.tab {
     display: block;
   }
 
+  // .member__action .
   &__action {
     display: flex;
     gap: var(--spac);
 
-    @include m.sp {
+    @include m.tab {
       margin-bottom: var(--spac);
     }
   }
@@ -229,8 +233,10 @@ img {
     margin-bottom: var(--spac-s);
   }
 
+  // .member__avatar .
   &__avatar {
     text-align: center;
+    max-width: 100%;
 
     img {
       margin-bottom: var(--spac-xs);
@@ -339,6 +345,30 @@ img {
   }
 }
 
+.list04 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spac);
+
+  // .list04__link .
+  &__link {
+    display: flex;
+    gap: var(--spac-s);
+    align-items: center;
+    transition: 0.3s ease;
+    position: relative;
+
+    @include m.hover {
+      top: calc(var(--spac-2xs) * -1);
+      box-shadow: 0 0 var(--spac) rgba($color: #fff, $alpha: 0.3);
+    }
+  }
+
+  &__text {
+    color: var(--color-l-1);
+  }
+}
+
 .list03 {
   display: flex;
   gap: var(--spac);
@@ -416,7 +446,7 @@ img {
     cursor: pointer;
     transition: 0.3s ease;
 
-    &:hover {
+    @include m.hover {
       background-color: var(--color-d-6);
     }
 
@@ -454,7 +484,7 @@ img {
     width: 312px;
     flex-shrink: 0;
 
-    @include m.sp {
+    @include m.tab {
       width: 100%;
     }
   }
@@ -468,6 +498,7 @@ img {
       position: sticky;
       top: var(--spac);
       z-index: 7;
+      min-width: 100%;
     }
   }
 }
@@ -544,7 +575,7 @@ img {
       outline-color: var(--color-l-1);
     }
 
-    &:hover {
+    @include m.hover {
       border-color: var(--color-l-7);
     }
 
@@ -570,7 +601,7 @@ img {
   cursor: pointer;
   transition: 0.3s ease;
 
-  &:hover {
+  @include m.hover {
     background-color: var(--color-l-1-hover);
   }
 
@@ -587,7 +618,7 @@ img {
   &--info {
     background-color: var(--color-l-3);
 
-    &:hover {
+    @include m.hover {
       background-color: var(--color-l-3-hover);
     }
   }
@@ -595,7 +626,7 @@ img {
   &--cancel {
     background-color: var(--color-error);
 
-    &:hover {
+    @include m.hover {
       background-color: var(--color-error-hover);
     }
   }
@@ -659,12 +690,13 @@ img {
   text-decoration-thickness: 1px;
   cursor: pointer;
 
-  &:hover {
+  @include m.hover {
     text-decoration: none;
   }
 }
 
 .box {
+  margin-bottom: var(--spac);
   display: flex;
   flex-wrap: wrap;
   gap: var(--spac);
@@ -674,19 +706,38 @@ img {
   }
 
   &__box {
-    margin-bottom: var(--margin);
+    height: 100%;
     border-radius: var(--radius-m);
     border: 1px solid var(--color-d-6);
     width: 200px;
     padding: var(--spac);
+    position: relative;
+    display: block;
 
     @include m.sp {
       width: 100%;
     }
+
+    &[href] {
+      transition: 0.3s ease;
+
+      @include m.hover {
+        top: calc(var(--spac-2xs) * -1);
+        box-shadow: 0 0 var(--spac) 0 rgba($color: #fff, $alpha: 0.3);
+      }
+    }
+
+    .icon {
+      position: absolute;
+      top: var(--spac-s);
+      right: var(--spac-s);
+    }
   }
 
-  &__number {
+  // .box__content .
+  &__content {
     color: var(--color-l-1);
+    @include m.lineclamp(2);
   }
 }
 
@@ -769,7 +820,7 @@ img {
     justify-content: center;
     align-items: center;
 
-    &:hover {
+    @include m.hover {
       background-color: rgba($color: #e7edf5, $alpha: 0.3);
     }
   }
@@ -1118,7 +1169,7 @@ img {
       width: 100%;
     }
 
-    &:hover {
+    @include m.hover {
       border-color: var(--color-l-1);
     }
   }
@@ -1220,7 +1271,7 @@ img {
     }
   }
 
-  &:hover {
+  @include m.hover {
     .card {
       &__img {
         transform: scale(1.1);
@@ -1251,6 +1302,7 @@ img {
     font-size: var(--fs-xl);
     color: var(--color-l-1);
     line-height: 1.3;
+    @include m.lineclamp(2);
   }
 
   &__join {
@@ -1319,7 +1371,7 @@ img {
       font-size: 1.2rem;
     }
 
-    &:hover {
+    @include m.hover {
       background-color: transparent;
     }
 
@@ -1377,7 +1429,7 @@ img {
     border-radius: var(--radius-m);
     transition: 0.3s ease;
 
-    &:hover {
+    @include m.hover {
       background-color: #fff;
     }
   }
@@ -1429,5 +1481,47 @@ img {
   to {
     transform: scale(4);
     opacity: 0;
+  }
+}
+
+.page-error {
+  padding-block: var(--spac-2xl);
+  text-align: center;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spac);
+    width: max-content;
+    max-width: 100%;
+  }
+}
+
+.history {
+  $mask: 5rem;
+  padding-block: var(--spac-xl);
+  padding-right: var(--spac);
+  width: 60%;
+  max-height: 60vh;
+  overflow: auto;
+  margin-inline: auto;
+  @include m.scrollbar;
+  position: relative;
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-d-5) $mask,
+    var(--color-d-5) calc(100% - $mask),
+    transparent
+  );
+
+  @include m.tab {
+    width: 80%;
+  }
+
+  @include m.sp {
+    width: 100%;
   }
 }

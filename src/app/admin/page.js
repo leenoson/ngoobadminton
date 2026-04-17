@@ -1,10 +1,11 @@
-"use client"
-
-import ToastProvider from "@/components/ToastProvider"
+import AutoScrollTop from "@/components/AutoScrollTop"
 import DashboardPage from "./dashboard/page"
-import Navbar from "./components/NavbarAdmin"
-import Link from "next/link"
 
 export default function AdminDashboard() {
-  return <DashboardPage />
+  return (
+    <>
+      <AutoScrollTop />
+      <DashboardPage />
+    </>
+  )
 }
