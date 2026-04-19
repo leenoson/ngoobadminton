@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import AdminLayout from "./components/AdminLayout"
-import AutoScrollTop from "@/components/AutoScrollTop"
+import ToastProvider from "@/components/ToastProvider"
 
 export const metadata = {
   title: "Admin",
@@ -16,5 +16,10 @@ export default async function Layout({ children }) {
   if (!user) {
     redirect("/login")
   }
-  return <AdminLayout>{children}</AdminLayout>
+  return (
+    <AdminLayout>
+      {children}
+      <ToastProvider />
+    </AdminLayout>
+  )
 }

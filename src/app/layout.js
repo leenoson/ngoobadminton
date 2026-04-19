@@ -10,8 +10,8 @@ import "swiper/css/navigation"
 import "./styles/globals.scss"
 import "nprogress/nprogress.css"
 import { lexend } from "@/lib/fonts"
-import AOSProvider from "@/components/animations/AOSProvider"
 import ProviderMUI from "@/components/ProviderMUI"
+import { ThemeProviders } from "@/components/ThemeProvider"
 
 // import ScrollToTop from "@/components/ScrollToTop"
 // import ToastProvider from "@/components/ToastProvider"
@@ -131,7 +131,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="vi">
+    <html lang="vi" suppressHydrationWarning>
       <body className={clsx(`${lexend.className}`)}>
         {/* <TopLoader /> */}
         <NavigationProgress />
@@ -141,7 +141,7 @@ export default function RootLayout({ children }) {
           </Suspense>
           {/* <ProviderMUI> */}
           <ModalProvider>
-            <AOSProvider>{children}</AOSProvider>
+            <ThemeProviders>{children}</ThemeProviders>
           </ModalProvider>
           {/* </ProviderMUI> */}
           {/* <PageTransitionWrapper>{children}</PageTransitionWrapper> */}

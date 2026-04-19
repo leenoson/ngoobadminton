@@ -1,10 +1,9 @@
-// import Navbar from "@/components/Navbar"
 import ScrollToTop from "@/components/home/ScrollToTop"
-// import Link from "next/link"
+import AOSProvider from "@/components/animations/AOSProvider"
 
 export default function MainLayout({ children, header, footer }) {
   return (
-    <>
+    <AOSProvider>
       {header}
       <main className="mainhome">
         <div className="bg-global-01" />
@@ -13,6 +12,6 @@ export default function MainLayout({ children, header, footer }) {
       </main>
       {footer}
       <ScrollToTop />
-    </>
+    </AOSProvider>
   )
 }

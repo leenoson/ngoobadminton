@@ -52,7 +52,7 @@
       top: 0;
       right: 0;
       content: "";
-      z-index: 2;
+      z-index: 0;
 
       @include m.sp {
         background-size: 80px;
@@ -81,6 +81,7 @@
     display: flex;
     column-gap: 1.6rem;
     justify-self: center;
+    margin-right: auto;
 
     // .header__menu.is-mobile .
     &.is-mobile {
@@ -111,6 +112,10 @@
       font-size: 1.4rem;
       letter-spacing: 0.3px;
     }
+
+    // @variant dark {
+    //   color: #fff;
+    // }
 
     &:after {
       content: "";

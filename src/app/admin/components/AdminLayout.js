@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import ToastProvider from "@/components/ToastProvider"
 import Navbar from "./NavbarAdmin"
 import clsx from "clsx"
 import ImgAvatar from "@/components/ImgAvatar"
@@ -109,7 +108,6 @@ function AdminLayout({ children }) {
             &copy; All rights reserved by Cactus aka Tarot Reader.
           </footer>
         </main>
-        <ToastProvider />
       </div>
     </>
   )

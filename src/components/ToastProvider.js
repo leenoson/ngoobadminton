@@ -4,6 +4,8 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
 export default function ToastProvider() {
+  const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+  console.log(theme)
   return (
     <ToastContainer
       position="bottom-right"
@@ -15,7 +17,7 @@ export default function ToastProvider() {
       pauseOnFocusLoss
       draggable
       pauseOnHover={false}
-      theme="light"
+      theme={theme ? "dark" : "light"}
     />
   )
 }

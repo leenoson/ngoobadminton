@@ -9,6 +9,7 @@ import { useDevice } from "@/hooks/useDevice"
 import useScrollToSection from "@/hooks/useScrollToSection"
 import useScrollSpy from "@/hooks/useScrollSpy"
 import Logo from "./Logo"
+import ThemeToggle from "../ThemeToggle"
 // import AnimatedLink from "@/components/AnimatedLink"
 
 export default function Navbar() {
@@ -17,6 +18,23 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const scrollTo = useScrollToSection()
   const isDevelopment = process.env.NODE_ENV
+
+  const customStyledButtonAdmin = {
+    backgroundColor: "var(--color-l-2)",
+    color: "var(--color-l-4)",
+    "&:hover": {
+      backgroundColor: "var(--color-l-2-hover)",
+    },
+    border: "1px solid var(--color-l-4)",
+    transition: "0.3s ease",
+    borderRadius: "var(--radius-m)",
+    width: "max-content",
+    padding: "var(--spac-s)",
+    textTransform: "uppercase",
+    textAlign: "center",
+    fontWeight: 500,
+    zIndex: 2,
+  }
 
   useScrollSpy({
     sectionIds: ["about", "event", "contact"],
@@ -37,6 +55,7 @@ export default function Navbar() {
         <div className="menu__logo">
           <Logo />
         </div>
+
         <ul
           className={clsx(`header__menu`, {
             "is-mobile": isMobileDevice || isSmallScreen,
@@ -92,31 +111,16 @@ export default function Navbar() {
             </span>
           </li>
         </ul>
+
+        <ThemeToggle />
+
         {isDevelopment === "development" && (
           <Button
             aria-label="Truy cập admin"
             data-no-progress
             component={Link}
             href={isLoggedIn ? "/admin" : "/login"}
-            sx={{
-              backgroundColor: "var(--color-l-2)",
-              color: "var(--color-l-4)",
-              "&:hover": {
-                backgroundColor: "var(--color-l-2-hover)",
-              },
-              border: "1px solid var(--color-l-4)",
-              transition: "0.3s ease",
-              borderRadius: "var(--radius-m)",
-              width: "max-content",
-              padding: "8px",
-              fontSize: "12px",
-              marginLeft: "auto",
-              textTransform: "uppercase",
-              textAlign: "center",
-              fontWeight: 500,
-              zIndex: 2,
-              // display: "none",
-            }}
+            sx={customStyledButtonAdmin}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

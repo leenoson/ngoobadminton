@@ -9,12 +9,6 @@ function ButtonDeleteMember({ member, redirectAfterDelete = false }) {
 
   return (
     <>
-      {/* <button
-        className="button01 button01--cancel"
-        onClick={() => setDeletingMember(member)}
-      >
-        Xóa
-      </button> */}
       <ButtonRipple
         className="button01 button01--cancel"
         onClick={() => setDeletingMember(member)}
