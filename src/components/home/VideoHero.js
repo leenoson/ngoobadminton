@@ -20,7 +20,6 @@ function VideoHero() {
         </figcaption>
       </figure>
 
-      {/* Structured Data cho SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
