@@ -387,6 +387,7 @@
     box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.1);
 
     @include m.sp {
+      text-align: center;
       border-radius: var(--radius-l);
       max-width: calc(100% - 32px);
       padding: 0 16px 16px;
@@ -398,6 +399,18 @@
     bottom: 2rem;
     right: 2rem;
     position: absolute;
+  }
+
+  &__subtitle {
+    margin-top: -1.2rem;
+    margin-bottom: 8px;
+    color: var(--color-d-7);
+    font-weight: 500;
+    letter-spacing: 2rem;
+
+    @include m.sp {
+      letter-spacing: 1rem;
+    }
   }
 }
 

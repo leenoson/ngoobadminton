@@ -39,17 +39,12 @@ export default function BannerParallax({ image }) {
       />
 
       <div className="banner__bg" />
-      <div
-        className="banner__content text-center md:text-left"
-        data-aos="fade-up"
-      >
-        <h1 className="title01" data-aos="fade-up" data-aos-delay="600">
+      <div className="banner__content">
+        <h1 className="title01">
           NGOO.
-          <p className="-mt-4 text-white font-medium banner__subtitle tracking-[10px] md:tracking-[20px] mb-2">
-            #Badminton
-          </p>
+          <p className="banner__subtitle">#Badminton</p>
         </h1>
-        <p className="banner__text" data-aos="fade-up" data-aos-delay="700">
+        <p className="banner__text">
           Xin chào!
           <br className="pc-hidden" /> Chúng mình vừa NGOO,{" "}
           <br className="pc-hidden" />
