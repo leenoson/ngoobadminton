@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useTransition } from "react"
-import { useForm, useWatch } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import { toast } from "react-toastify"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { compressImage } from "@/lib/image/compressImage"
@@ -9,12 +9,31 @@ import { addMember } from "@/app/actions/memberActions"
 import ImgAvatar from "@/components/ImgAvatar"
 import useModal from "@/hooks/useModal"
 import { memberSchema } from "@/schemas/member.schema"
-import { getToday } from "@/lib/date"
+import { formatDateToDB, getToday } from "@/lib/date"
+import { LineSpinner } from "ldrs/react"
+import DatePicker from "react-datepicker"
+import { getYear, getMonth } from "date-fns"
 
 export default function AddMemberModal({ isOpen, onClose }) {
   const [avatar, setAvatar] = useState(null)
 
   const [isPending, startTransition] = useTransition()
+
+  const years = Array.from({ length: 30 }, (_, i) => 2000 + i)
+  const months = [
+    "Tháng 1",
+    "Tháng 2",
+    "Tháng 3",
+    "Tháng 4",
+    "Tháng 5",
+    "Tháng 6",
+    "Tháng 7",
+    "Tháng 8",
+    "Tháng 9",
+    "Tháng 10",
+    "Tháng 11",
+    "Tháng 12",
+  ]
 
   const {
     register,
@@ -28,7 +47,8 @@ export default function AddMemberModal({ isOpen, onClose }) {
       name: "",
       nickname: "",
       level: "",
-      joined_at: getToday(),
+      joined_at: new Date(),
+      // joined_at: getToday(),
     },
   })
 
@@ -62,7 +82,12 @@ export default function AddMemberModal({ isOpen, onClose }) {
   const appendFormData = (formData, data) => {
     Object.entries(data).forEach(([key, value]) => {
       if (value === undefined || value === null) return
-      formData.set(key, value)
+
+      if (value instanceof Date) {
+        formData.set(key, formatDateToDB(value))
+      } else {
+        formData.set(key, value)
+      }
     })
   }
 
@@ -87,7 +112,12 @@ export default function AddMemberModal({ isOpen, onClose }) {
   }
 
   const handleClose = () => {
-    reset()
+    reset({
+      name: "",
+      nickname: "",
+      level: "",
+      joined_at: new Date(),
+    })
     if (avatar?.preview) URL.revokeObjectURL(avatar.preview)
     setAvatar(null)
     onClose()
@@ -176,13 +206,79 @@ export default function AddMemberModal({ isOpen, onClose }) {
                 </label>
                 <label className="form03__control">
                   <span className="form03__text">Ngày tham gia</span>
-                  <input
+                  <Controller
+                    control={control}
+                    name="joined_at"
+                    render={({ field }) => (
+                      <DatePicker
+                        selected={field.value}
+                        onChange={field.onChange}
+                        dateFormat="dd/MM/yyyy"
+                        className="form03__input"
+                        // calendarClassName="custom-class"
+                        renderCustomHeader={({
+                          date,
+                          changeYear,
+                          changeMonth,
+                          decreaseMonth,
+                          increaseMonth,
+                          prevMonthButtonDisabled,
+                          nextMonthButtonDisabled,
+                        }) => (
+                          <div className="flex items-center justify-between px-2 py-2">
+                            {/* Prev */}
+                            <button
+                              onClick={decreaseMonth}
+                              disabled={prevMonthButtonDisabled}
+                              className="px-2 py-1 rounded hover:bg-gray-200"
+                            >
+                              ◀
+                            </button>
+
+                            {/* Year */}
+                            <select
+                              value={getYear(date)}
+                              onChange={(e) => changeYear(+e.target.value)}
+                            >
+                              {years.map((y) => (
+                                <option key={y} value={y}>
+                                  {y}
+                                </option>
+                              ))}
+                            </select>
+
+                            {/* Month */}
+                            <select
+                              value={getMonth(date)}
+                              onChange={(e) => changeMonth(+e.target.value)}
+                            >
+                              {months.map((m, i) => (
+                                <option key={i} value={i}>
+                                  {m}
+                                </option>
+                              ))}
+                            </select>
+                            {/* Next */}
+                            <button
+                              onClick={increaseMonth}
+                              disabled={nextMonthButtonDisabled}
+                              className="px-2 py-1 rounded hover:bg-gray-200"
+                            >
+                              ▶
+                            </button>
+                          </div>
+                        )}
+                      />
+                    )}
+                  />
+
+                  {/* <input
                     {...register("joined_at")}
                     type="date"
                     className="form03__input"
                     disabled={isPending}
                     aria-label="Ngày tham gia"
-                  />
+                  /> */}
                   {errors.joined_at && (
                     <span className="form__error">
                       {errors.joined_at.message}
@@ -219,7 +315,10 @@ export default function AddMemberModal({ isOpen, onClose }) {
                 Hủy
               </button>
               <button disabled={isPending} type="submit" className="button01">
-                {isPending ? "Thêm..." : "Thêm"}
+                {isPending && (
+                  <LineSpinner size="24" stroke="1" speed="1" color="#fff" />
+                )}{" "}
+                Thêm
               </button>
             </div>
           </form>

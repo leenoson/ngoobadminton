@@ -69,7 +69,7 @@ export default function Navbar({ onToggle }) {
         </li>
       </ul>
       <div className="admin__bottom">
-        <ButtonRipple className="button01" onClick={logout}>
+        <ButtonRipple className="button01 button01--cancel" onClick={logout}>
           <Icons.Power />
           <span className="button01__text">Khắc xuất</span>
         </ButtonRipple>

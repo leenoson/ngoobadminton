@@ -1,0 +1,13 @@
+@use "./mixin" as m;
+
+.react {
+  &-datepicker {
+    &-wrapper {
+      width: 100%;
+    }
+
+    &-popper {
+      font-size: 1.6rem;
+    }
+  }
+}

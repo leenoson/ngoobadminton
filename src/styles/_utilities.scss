@@ -1,0 +1,15 @@
+@use "./mixin" as m;
+
+.sp-hidden {
+  @include m.sp {
+    display: none;
+  }
+}
+
+.pc-hidden {
+  display: none;
+
+  @include m.sp {
+    display: block;
+  }
+}

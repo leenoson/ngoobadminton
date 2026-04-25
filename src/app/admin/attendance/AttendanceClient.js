@@ -66,6 +66,8 @@ function AttendanceClient() {
 
       const checkedIds = attendanceData?.map((a) => a.member_id) || []
 
+      console.log("membersData", membersData)
+
       setMembers(membersData || [])
       setChecked(checkedIds)
     })

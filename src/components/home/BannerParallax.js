@@ -9,12 +9,14 @@ import VideoHero from "./VideoHero"
 import ImgAvatar from "../ImgAvatar"
 import { Icons } from "../Icons"
 import ButtonRipple from "../ButtonRipple"
+import { useElementSizeStore } from "@/stores/useElementSizeStore"
 
 export default function BannerParallax({ image }) {
   const [offsetY, setOffsetY] = useState(0)
   const { isMobileDevice, isSmallScreen } = useDevice()
   const { openModal, closeModal } = useModal()
   const scrollTo = useScrollToSection()
+  const navbarSize = useElementSizeStore((s) => s.sizes["navbar"])
 
   useEffect(() => {
     const handleScroll = () => setOffsetY(window.scrollY)
@@ -74,12 +76,6 @@ export default function BannerParallax({ image }) {
           openModal(
             <div>
               <VideoHero />
-              <ButtonRipple
-                className="button01"
-                onClick={() => console.log("click btn")}
-              >
-                click
-              </ButtonRipple>
             </div>,
           )
         }

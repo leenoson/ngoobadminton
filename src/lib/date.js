@@ -11,3 +11,21 @@ export const formatDate = (dateStr, type = "en") => {
 
   return type === "en" ? `${year}-${month}-${day}` : `${day}/${month}/${year}`
 }
+
+export const parseDate = (dateStr) => {
+  if (!dateStr) return new Date()
+
+  const d = new Date(dateStr)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+export const formatDateToDB = (date) => {
+  if (!date) return null
+
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+
+  return `${year}-${month}-${day}`
+}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 import clsx from "clsx"
 import Button from "@mui/material/Button"
@@ -10,6 +10,7 @@ import useScrollToSection from "@/hooks/useScrollToSection"
 import useScrollSpy from "@/hooks/useScrollSpy"
 import Logo from "./Logo"
 import ThemeToggle from "../ThemeToggle"
+import useElementCssVar from "@/hooks/useElementCssVar"
 // import AnimatedLink from "@/components/AnimatedLink"
 
 export default function Navbar() {
@@ -18,6 +19,11 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const scrollTo = useScrollToSection()
   const isDevelopment = process.env.NODE_ENV
+
+  // const navbarRef = useRef(null)
+  // const menuRef = useRef(null)
+  // useElementCssVar(navbarRef, "navbar")
+  // useElementCssVar(menuRef, "navbarmenu")
 
   const customStyledButtonAdmin = {
     backgroundColor: "var(--color-l-2)",
@@ -28,8 +34,9 @@ export default function Navbar() {
     border: "1px solid var(--color-l-4)",
     transition: "0.3s ease",
     borderRadius: "var(--radius-m)",
-    width: "max-content",
-    padding: "var(--spac-s)",
+    width: "40px",
+    minWidth: "40px",
+    padding: "3px 0",
     textTransform: "uppercase",
     textAlign: "center",
     fontWeight: 500,

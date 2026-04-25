@@ -9,6 +9,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { createClient } from "@/lib/supabase/client"
+import { loginWithEmail } from "@/lib/auth/login"
 
 const schema = z.object({
   email: z
@@ -69,29 +70,52 @@ export default function LoginPage() {
     setLoading(true)
     setServerError("")
 
-    if (data.remember) {
-      localStorage.setItem("remember_email", data.email)
-    } else {
-      localStorage.removeItem("remember_email")
-    }
+    try {
+      if (data.remember) {
+        localStorage.setItem("remember_email", data.email)
+      } else {
+        localStorage.removeItem("remember_email")
+      }
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    })
+      await loginWithEmail(supabase, data)
 
-    if (error) {
+      router.refresh()
+      router.replace("/admin")
+    } catch (err) {
       setError("password", {
         type: "server",
         message: "Email hoặc mật khẩu không đúng",
       })
       setFocus("email")
+    } finally {
       setLoading(false)
-      return
     }
+    // setLoading(true)
+    // setServerError("")
 
-    router.refresh()
-    router.replace("/admin")
+    // if (data.remember) {
+    //   localStorage.setItem("remember_email", data.email)
+    // } else {
+    //   localStorage.removeItem("remember_email")
+    // }
+
+    // const { error } = await supabase.auth.signInWithPassword({
+    //   email: data.email,
+    //   password: data.password,
+    // })
+
+    // if (error) {
+    //   setError("password", {
+    //     type: "server",
+    //     message: "Email hoặc mật khẩu không đúng",
+    //   })
+    //   setFocus("email")
+    //   setLoading(false)
+    //   return
+    // }
+
+    // router.refresh()
+    // router.replace("/admin")
   }
 
   return (

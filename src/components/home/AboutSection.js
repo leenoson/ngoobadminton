@@ -15,7 +15,7 @@ function AboutSection() {
           />
         </figure>
         <h2 id="about-title" className="title02" data-aos="fade-up">
-          Nhóm cầu lông lớn thứ 2 Thủ Dầu Một
+          NGOO Badminton
         </h2>
         <ul className="block01s">
           <li className="block01__item">

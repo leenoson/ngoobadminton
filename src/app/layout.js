@@ -1,17 +1,20 @@
 import { Suspense } from "react"
-import { GoogleAnalytics } from "@next/third-parties/google"
 import clsx from "clsx"
+import { GoogleAnalytics } from "@next/third-parties/google"
+import { lexend } from "@/lib/fonts"
 import AuthProvider from "@/context/AuthProvider"
 import AnalyticsTracker from "@/components/admin/AnalyticsTracker"
 import { ModalProvider } from "@/components/ModalProvider"
 import NavigationProgress from "@/components/NavigationProgress"
 import "swiper/css"
 import "swiper/css/navigation"
-import "./styles/globals.scss"
+import "@/styles/globals.scss"
 import "nprogress/nprogress.css"
-import { lexend } from "@/lib/fonts"
+import "ldrs/react/LineSpinner.css"
+import "react-datepicker/dist/react-datepicker.css"
 import ProviderMUI from "@/components/ProviderMUI"
 import { ThemeProviders } from "@/components/ThemeProvider"
+import AOSProvider from "@/components/animations/AOSProvider"
 
 // import ScrollToTop from "@/components/ScrollToTop"
 // import ToastProvider from "@/components/ToastProvider"
@@ -20,10 +23,10 @@ import { ThemeProviders } from "@/components/ThemeProvider"
 // import "swiper/css/pagination"
 // import "swiper/css/scrollbar"
 
-const TITLE =
-  "NGOO – Nhóm Cầu Lông Lớn Thứ 2 Thủ Dầu Một, Cộng Đồng Tập Luyện Năng Động"
+const TITLE = "NGOO Badminton – Nhóm Cầu Lông Thủ Dầu Một | Sân Thắng Lợi"
 const DESCRIPTION =
-  "Tham gia NGOO – nhóm cầu lông lớn thứ 2 Thủ Dầu Một. Luyện tập Thứ 2-4-6 từ 17:30 – 19:30, kết nối đam mê cầu lông, nâng cao kỹ năng và trải nghiệm cộng đồng thân thiện."
+  "NGOO Badminton là nhóm cầu lông tại Thủ Dầu Một, chơi tại sân Thắng Lợi Bình Dương. Nhận newbie, giao lưu, luyện tập và chơi cầu lông vãng lai"
+// "Tìm nhóm cầu lông Thủ Dầu Một? NGOO Badminton chơi tại sân cầu lông Thắng Lợi, Bình Dương. Nhận newbie, giao lưu, luyện tập và chơi cầu lông vãng lai."
 const KEYWS = [
   "ngoobadminton",
   "ngoo",
@@ -54,6 +57,8 @@ const KEYWS = [
   "nhóm cầu lông chấp nhận newbie",
   "luyện tập cầu lông",
   "luyện tập cl",
+  "vãng lai cl",
+  "vãng lai cầu lông",
 ]
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
@@ -135,17 +140,19 @@ export default function RootLayout({ children }) {
       <body className={clsx(`${lexend.className}`)}>
         {/* <TopLoader /> */}
         <NavigationProgress />
-        <AuthProvider>
-          <Suspense fallback={null}>
-            <AnalyticsTracker />
-          </Suspense>
-          {/* <ProviderMUI> */}
-          <ModalProvider>
-            <ThemeProviders>{children}</ThemeProviders>
-          </ModalProvider>
-          {/* </ProviderMUI> */}
-          {/* <PageTransitionWrapper>{children}</PageTransitionWrapper> */}
-        </AuthProvider>
+        <AOSProvider>
+          <AuthProvider>
+            <Suspense fallback={null}>
+              <AnalyticsTracker />
+            </Suspense>
+            {/* <ProviderMUI> */}
+            <ModalProvider>
+              <ThemeProviders>{children}</ThemeProviders>
+            </ModalProvider>
+            {/* </ProviderMUI> */}
+            {/* <PageTransitionWrapper>{children}</PageTransitionWrapper> */}
+          </AuthProvider>
+        </AOSProvider>
       </body>
 
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

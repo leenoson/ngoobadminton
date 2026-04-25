@@ -11,7 +11,6 @@ export default function FilterBar() {
   const params = useSearchParams()
   const [isPending, startTransition] = useTransition()
 
-  // 👉 source of truth = URL
   const urlSort = params.get("sort") || "joined"
   const urlOrder = params.get("order") || "desc"
   const searchParam = params.get("search") || ""
@@ -48,7 +47,7 @@ export default function FilterBar() {
   const pushParams = (updates) => {
     const newParams = updateQueryParams(params, {
       ...updates,
-      page: 1, // 🔥 luôn reset page
+      page: 1,
     })
 
     startTransition(() => {

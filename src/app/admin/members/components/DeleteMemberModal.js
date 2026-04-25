@@ -6,6 +6,7 @@ import { deleteMember } from "@/app/actions/memberActions"
 import useModal from "@/hooks/useModal"
 import { useRouter } from "next/navigation"
 import ButtonRipple from "@/components/ButtonRipple"
+import { LineSpinner } from "ldrs/react"
 
 export default function DeleteMemberModal({
   member,
@@ -39,7 +40,7 @@ export default function DeleteMemberModal({
   const handleClose = () => onClose()
 
   useModal({
-    isOpen: open,
+    isOpen: !!member,
     onClose,
     isPending,
   })
@@ -82,21 +83,17 @@ export default function DeleteMemberModal({
             <strong className="text-(--color-l-1)">{member.name}</strong>?
           </div>
           <div className="modal__footer">
-            {/* <button
-              disabled={isPending}
-              onClick={handleDelete}
-              className="button01"
-              type="button"
-            >
-              {isPending ? "Xóa..." : "Xóa"}
-            </button> */}
             <ButtonRipple
               disabled={isPending}
               className="button01"
               onClick={handleDelete}
             >
-              {isPending ? "Xóa..." : "Xóa"}
+              {isPending && (
+                <LineSpinner size="24" stroke="1" speed="1" color="#fff" />
+              )}{" "}
+              Xóa
             </ButtonRipple>
+
             <button
               disabled={isPending}
               className="button01 button01--cancel"

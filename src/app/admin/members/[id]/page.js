@@ -21,7 +21,7 @@ export default async function MemberDetail({ params }) {
   const { data: attendanceList = [] } = await supabase
     .from("attendance")
     .select("attend_date")
-    .eq("member_id", member.id)
+    .eq("member_id", member?.id)
     .order("attend_date", { ascending: false })
 
   const attendanceCount = attendanceList.length
@@ -40,8 +40,8 @@ export default async function MemberDetail({ params }) {
 
   const sortedYears = Object.keys(grouped).sort((a, b) => b - a)
 
-  const joinedDate = member.joined_at
-    ? new Date(member.joined_at).toLocaleDateString("vi-VN")
+  const joinedDate = member?.joined_at
+    ? new Date(member?.joined_at).toLocaleDateString("vi-VN")
     : "N/A"
 
   return (
@@ -51,9 +51,9 @@ export default async function MemberDetail({ params }) {
 
         <div className="member">
           <div className="member__content">
-            <h1 className="title01">{member.name}</h1>
+            <h1 className="title01">{member?.name}</h1>
             <h4 className="title03">
-              ({member.nickname || "Chưa có nickname"})
+              ({member?.nickname || "Chưa có nickname"})
             </h4>
             <p className="flex items-center gap-(--spac-xs) mb-(--spac-s)">
               <Icons.Join />
@@ -70,23 +70,23 @@ export default async function MemberDetail({ params }) {
             </p>
             <p className="flex items-center gap-(--spac-xs) mb-(--spac-s)">
               <Icons.Phone />
-              Sdt: {member.phone || "0***"}
+              Sdt: {member?.phone || "0***"}
             </p>
             <p className="flex items-center gap-(--spac-xs) mb-(--spac-s)">
               <Icons.Email />
-              Email: {member.email || "**@.com"}
+              Email: {member?.email || "**@.com"}
             </p>
             <p className="flex items-center gap-(--spac-xs) mb-(--spac-s)">
               <Icons.Address />
-              Địa chỉ: {member.address || "** ** Việt Nam"}
+              Địa chỉ: {member?.address || "** ** Việt Nam"}
             </p>
             <p className="flex items-center gap-(--spac-xs) mb-(--spac-s)">
               <Icons.Dob />
-              Sinh nhật: {member.dob || "**/**/****"}
+              Sinh nhật: {member?.dob || "**/**/****"}
             </p>
             <p className="flex items-center gap-(--spac-xs) mb-(--spac-s)">
               <Icons.Level />
-              Trình là gì: {member.level || "*"}
+              Trình là gì: {member?.level || "*"}
             </p>
             <div className="member__action">
               <ButtonEditMember member={member} />
@@ -97,7 +97,7 @@ export default async function MemberDetail({ params }) {
             </div>
           </div>
           <figure className="member__avatar">
-            <ImgAvatar src={member.avatar} alt={member.name} priority />
+            <ImgAvatar src={member?.avatar} alt={member?.name} priority />
             <figcaption>
               <em>Hình ảnh do chính chủ cung cấp</em>
             </figcaption>

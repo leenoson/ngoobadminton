@@ -1,0 +1,170 @@
+@use "./mixin" as m;
+
+.header {
+  // .header__navbar .
+  &__navbar {
+    padding: 1.6rem;
+    width: 100%;
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    @include m.sp {
+      padding: var(--spac-s) var(--spac);
+    }
+  }
+
+  // .header__container .
+  &__container {
+    & > ul {
+      z-index: 1;
+    }
+
+    position: relative;
+    padding: 12px 16px;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    display: flex;
+    column-gap: 1.6rem;
+    align-items: center;
+
+    @include m.sp {
+      padding: 8px;
+    }
+
+    &.is-scrolled {
+      box-shadow: 0 0 40px 10px rgba(31, 32, 35, 0.4);
+
+      &:after {
+        background: rgba(254, 119, 67, 0.65);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+      }
+    }
+
+    &:before {
+      pointer-events: none;
+      width: 50%;
+      height: 100%;
+      background: url("/images/common/racket.svg") no-repeat right center /
+        116px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      content: "";
+      z-index: 0;
+
+      @include m.sp {
+        background-size: 80px;
+      }
+    }
+
+    &:after {
+      z-index: 0;
+      transition: 0.3s ease;
+      background-color: var(--color-l-1);
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      @include m.sp {
+        border-radius: var(--radius-m);
+      }
+    }
+  }
+
+  // .header__menu .
+  &__menu {
+    display: flex;
+    column-gap: 1.6rem;
+    justify-self: center;
+    margin-inline: auto;
+
+    // .header__menu.is-mobile .
+    &.is-mobile {
+      box-shadow: 0 -2px 10px rgba($color: #000, $alpha: 0.3);
+      column-gap: 1rem;
+      position: fixed;
+      width: 100%;
+      justify-content: center;
+      padding: 1rem;
+      bottom: 0;
+      left: 0;
+      background: rgba(254, 119, 67, 0.65);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+    }
+  }
+}
+
+.menu {
+  // .menu__text .
+  &__text {
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 1.6rem;
+
+    @include m.sp {
+      font-size: 1.4rem;
+      letter-spacing: 0.3px;
+    }
+
+    // @variant dark {
+    //   color: #fff;
+    // }
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      height: 2px;
+      left: 0;
+      transform: scaleX(0);
+      width: 100%;
+      transition: 0.3s ease;
+      background-color: currentColor;
+
+      @include m.sp {
+        height: 1px;
+        bottom: -3px;
+      }
+    }
+
+    &:hover,
+    &.is-active {
+      &:after {
+        transform: scaleX(100%);
+      }
+    }
+  }
+
+  // .menu__logo .
+  &__logo {
+    border-radius: var(--radius-m);
+    overflow: hidden;
+    width: 4rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+
+    @include m.sp {
+      margin-right: auto;
+      border-radius: var(--radius-s);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &-item {
+    font-weight: 500;
+  }
+}

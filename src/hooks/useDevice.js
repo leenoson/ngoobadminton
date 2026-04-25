@@ -9,18 +9,31 @@ export function useDevice() {
   useEffect(() => {
     const detectMobile = () => {
       const ua = navigator.userAgent || navigator.vendor || window.opera
-      const mobileDevice = /android|iPhone|iPad|iPod/i.test(ua)
-      setIsMobileDevice(mobileDevice)
+      return /android|iPhone|iPad|iPod/i.test(ua)
     }
 
-    detectMobile()
+    const checkScreen = () => window.innerWidth <= 768
 
-    const checkScreen = () => setIsSmallScreen(window.innerWidth <= 768)
+    const update = () => {
+      const mobile = detectMobile()
+      const small = checkScreen()
 
-    checkScreen()
-    window.addEventListener("resize", checkScreen)
+      setIsMobileDevice(mobile)
+      setIsSmallScreen(small)
 
-    return () => window.removeEventListener("resize", checkScreen)
+      // 🔥 xử lý class tại đây luôn
+      if (mobile || small) {
+        document.body.classList.add("is-mobile")
+      } else {
+        document.body.classList.remove("is-mobile")
+      }
+    }
+
+    update()
+
+    window.addEventListener("resize", update)
+
+    return () => window.removeEventListener("resize", update)
   }, [])
 
   return { isMobileDevice, isSmallScreen }

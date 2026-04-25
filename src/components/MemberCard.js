@@ -1,18 +1,20 @@
 "use client"
 
-import Link from "next/link"
 import ImgAvatar from "@/components/ImgAvatar"
 import { createMemberUrl } from "@/lib/slugify"
 import ButtonEditMember from "./ButtonEditMember"
 import ButtonDeleteMember from "./ButtonDeleteMember"
 import ButtonRipple from "./ButtonRipple"
+import { memo, useMemo } from "react"
 
-export default function MemberCard({ member, isAdmin }) {
+function MemberCard({ member, isAdmin }) {
   const attendanceCount = member?.attendance_count ?? 0
 
-  const joinedDate = member?.joined_at
-    ? new Date(member?.joined_at).toLocaleDateString("vi-VN")
-    : "N/A"
+  const joinedDate = useMemo(() => {
+    member?.joined_at
+      ? new Date(member?.joined_at).toLocaleDateString("vi-VN")
+      : "N/A"
+  }, [member?.joined_at])
 
   return (
     <>
@@ -62,3 +64,5 @@ export default function MemberCard({ member, isAdmin }) {
     </>
   )
 }
+
+export default memo(MemberCard)

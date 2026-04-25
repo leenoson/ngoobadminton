@@ -13,7 +13,6 @@ export default function TabsSection() {
   const { activeId, activeTab, isActive, selectTab } = useTabs(tabs, "t1")
 
   const handleActiveTab = (id) => {
-    console.log(activeId)
     selectTab(id)
   }
 

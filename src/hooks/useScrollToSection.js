@@ -12,8 +12,6 @@ export default function useScrollToSection() {
     const navbar = document.querySelector("#mainnav")
     const navbarHeight = navbar?.offsetHeight || 0
 
-    console.log(navbarHeight)
-
     const targetY =
       el.getBoundingClientRect().top + window.scrollY - navbarHeight - offset
 
