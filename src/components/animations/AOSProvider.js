@@ -7,12 +7,18 @@ import "aos/dist/aos.css"
 
 export default function AOSProvider({ children }) {
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-      easing: "ease-in-out-quart",
-      anchorPlacement: "center-bottom",
-    })
+    const timer = setTimeout(() => {
+      AOS.init({
+        duration: 1000,
+        once: true,
+        easing: "ease",
+        anchorPlacement: "bottom-bottom",
+      })
+
+      AOS.refresh()
+    }, 500)
+
+    return () => clearTimeout(timer)
   }, [])
 
   return children

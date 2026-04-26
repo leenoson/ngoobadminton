@@ -40,7 +40,7 @@ function ContactSection() {
             <div data-aos="fade-up">
               <p className="block02__text">
                 <Icons.Phone />
-                Sdt(Zalo): <strong>03521xx1xx</strong>
+                Sdt(Zalo): <strong>0352171104</strong>
               </p>
               <p className="block02__text">
                 <Icons.Email />

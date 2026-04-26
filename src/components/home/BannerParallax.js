@@ -8,8 +8,8 @@ import clsx from "clsx"
 import VideoHero from "./VideoHero"
 import ImgAvatar from "../ImgAvatar"
 import { Icons } from "../Icons"
-import ButtonRipple from "../ButtonRipple"
 import { useElementSizeStore } from "@/stores/useElementSizeStore"
+import BannerTitle from "./BannerTitle"
 
 export default function BannerParallax({ image }) {
   const [offsetY, setOffsetY] = useState(0)
@@ -39,18 +39,7 @@ export default function BannerParallax({ image }) {
       />
 
       <div className="banner__bg" />
-      <div className="banner__content">
-        <h1 className="title01">
-          NGOO.
-          <p className="banner__subtitle">#Badminton</p>
-        </h1>
-        <p className="banner__text">
-          Xin chào!
-          <br className="pc-hidden" /> Chúng mình vừa NGOO,{" "}
-          <br className="pc-hidden" />
-          vừa thân thiện.
-        </p>
-      </div>
+      <BannerTitle />
       <div
         className="banner__button"
         onClick={() => scrollTo("about", { duration: 1000 })}

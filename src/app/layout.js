@@ -140,19 +140,19 @@ export default function RootLayout({ children }) {
       <body className={clsx(`${lexend.className}`)}>
         {/* <TopLoader /> */}
         <NavigationProgress />
-        <AOSProvider>
-          <AuthProvider>
-            <Suspense fallback={null}>
-              <AnalyticsTracker />
-            </Suspense>
-            {/* <ProviderMUI> */}
-            <ModalProvider>
-              <ThemeProviders>{children}</ThemeProviders>
-            </ModalProvider>
-            {/* </ProviderMUI> */}
-            {/* <PageTransitionWrapper>{children}</PageTransitionWrapper> */}
-          </AuthProvider>
-        </AOSProvider>
+        <AuthProvider>
+          <Suspense fallback={null}>
+            <AnalyticsTracker />
+          </Suspense>
+          {/* <ProviderMUI> */}
+          <ModalProvider>
+            <ThemeProviders>
+              <AOSProvider>{children}</AOSProvider>
+            </ThemeProviders>
+          </ModalProvider>
+          {/* </ProviderMUI> */}
+          {/* <PageTransitionWrapper>{children}</PageTransitionWrapper> */}
+        </AuthProvider>
       </body>
 
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
