@@ -1436,14 +1436,15 @@ img {
 
 .modal {
   position: fixed;
+  color: red;
   z-index: 999;
   background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   inset: 0;
   padding: var(--spac-xl) var(--spac);
   overflow-x: hidden;
   overflow-y: auto;
+
+  @include m.backdropfilter(1rem);
 
   @include m.sp {
     padding: var(--spac-md) var(--spac);

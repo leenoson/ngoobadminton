@@ -5,6 +5,52 @@ import { randomUUID } from "crypto"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 
+export async function deleteAllMembers() {
+  const supabase = await createClient()
+
+  try {
+    // 1. Lấy toàn bộ avatar
+    const { data: members, error: fetchError } = await supabase
+      .from("members")
+      .select("avatar")
+
+    if (fetchError) {
+      throw new Error("Không lấy được danh sách members")
+    }
+
+    const paths =
+      members?.map((m) => m.avatar?.split("/avatars/")[1]).filter(Boolean) || []
+
+    if (paths.length > 0) {
+      const { error: storageError } = await supabase.storage
+        .from("avatars")
+        .remove(paths)
+
+      if (storageError) {
+        console.warn("Lỗi xóa avatars:", storageError.message)
+      }
+    }
+
+    // 4. Xóa toàn bộ members
+    const { error: deleteError } = await supabase
+      .from("members")
+      .delete()
+      .neq("id", 0)
+
+    await supabase.from("attendance").delete().neq("id", 0)
+
+    if (deleteError) {
+      throw new Error("Xóa members thất bại")
+    }
+
+    revalidatePath("/admin/members")
+
+    return { success: true }
+  } catch (err) {
+    throw err
+  }
+}
+
 export const getNewestMember = async () => {
   const supabase = createAdminClient()
 

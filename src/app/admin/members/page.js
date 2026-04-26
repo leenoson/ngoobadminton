@@ -10,6 +10,7 @@ import Link from "next/link"
 import { createMemberUrl } from "@/lib/slugify"
 import { Icons } from "@/components/Icons"
 import AutoScrollTop from "@/components/AutoScrollTop"
+import ButtonDeleteAllMembers from "@/components/admin/ButtonDeleteAllMembers"
 
 export default async function MembersPage({ searchParams }) {
   const params = await searchParams
@@ -48,6 +49,10 @@ export default async function MembersPage({ searchParams }) {
       <h1 className="title04">Danh sách NGOO dân</h1>
 
       <AddMemberButton />
+
+      <div className="mb-3">
+        <ButtonDeleteAllMembers />
+      </div>
 
       <ul className="box">
         <li className="box__item">

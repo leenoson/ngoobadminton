@@ -380,8 +380,7 @@
   &__content {
     padding: 1.6rem 3.2rem 3.2rem;
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    @include m.backdropfilter(2px);
     border-radius: var(--radius-xl);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.1);

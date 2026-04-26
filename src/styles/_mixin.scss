@@ -16,6 +16,11 @@
   }
 }
 
+@mixin backdropfilter($blur) {
+  -webkit-backdrop-filter: blur($blur);
+  backdrop-filter: blur($blur);
+}
+
 @mixin imgcover {
   position: absolute;
   top: 0;

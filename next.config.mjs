@@ -20,7 +20,10 @@ const nextConfig = {
         pathname: "/storage/v1/object/public/**",
       },
     ],
-  }
-};
+  },
+  experimental: {
+    optimizeCss: false,
+  },
+}
 
-export default nextConfig;
+export default nextConfig
