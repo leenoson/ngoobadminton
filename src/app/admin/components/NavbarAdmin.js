@@ -73,7 +73,13 @@ export default function Navbar({ onToggle }) {
           <Icons.Power />
           <span className="button01__text">Khắc xuất</span>
         </ButtonRipple>
-        <Link href="/" className="admin__logo" data-no-progress>
+        <Link
+          href="/"
+          className="admin__logo"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-no-progress
+        >
           <figure>
             <Image
               src={"/images/common/logo.webp"}

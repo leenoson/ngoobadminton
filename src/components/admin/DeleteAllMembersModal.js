@@ -19,7 +19,7 @@ export default function DeleteAllMembersModal({ isOpen, onClose }) {
     startTransition(async () => {
       await toast.promise(deleteAllMembers(), {
         pending: "Đang xóa toàn bộ NGOO...",
-        success: "Đã xóa sạch 🧹",
+        success: "Đã xóa sạch toàn bộ NGOO",
         error: "Xóa thất bại ❌",
       })
 
@@ -55,11 +55,11 @@ export default function DeleteAllMembersModal({ isOpen, onClose }) {
               Hành động này <strong>KHÔNG THỂ HOÀN TÁC</strong>
             </p>
             <p className="mb-2">
-              Nhập <strong>&quot;xóa hết&quot;</strong> để xác nhận:
+              Nhập <strong>&quot;xóa hết&quot;</strong> để xác nhận
             </p>
 
             <input
-              className="input"
+              className="form03__input"
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
               disabled={isPending}

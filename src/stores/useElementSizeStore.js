@@ -1,4 +1,3 @@
-// stores/useElementSizeStore.js
 import { create } from "zustand"
 
 export const useElementSizeStore = create((set) => ({

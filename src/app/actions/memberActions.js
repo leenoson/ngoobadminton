@@ -6,10 +6,9 @@ import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 
 export async function deleteAllMembers() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   try {
-    // 1. Lấy toàn bộ avatar
     const { data: members, error: fetchError } = await supabase
       .from("members")
       .select("avatar")
@@ -18,29 +17,31 @@ export async function deleteAllMembers() {
       throw new Error("Không lấy được danh sách members")
     }
 
+    const { error: attendanceError } = await supabase
+      .from("attendance")
+      .delete()
+      .not("id", "is", null)
+
+    if (attendanceError) {
+      console.error("ATTENDANCE ERROR:", attendanceError)
+      throw new Error(attendanceError.message)
+    }
+
+    const { error: deleteError } = await supabase
+      .from("members")
+      .delete()
+      .not("id", "is", null)
+
+    if (deleteError) {
+      throw new Error("Xóa members thất bại")
+    }
+
     const paths =
       members?.map((m) => m.avatar?.split("/avatars/")[1]).filter(Boolean) || []
 
     if (paths.length > 0) {
-      const { error: storageError } = await supabase.storage
-        .from("avatars")
-        .remove(paths)
-
-      if (storageError) {
-        console.warn("Lỗi xóa avatars:", storageError.message)
-      }
-    }
-
-    // 4. Xóa toàn bộ members
-    const { error: deleteError } = await supabase
-      .from("members")
-      .delete()
-      .neq("id", 0)
-
-    await supabase.from("attendance").delete().neq("id", 0)
-
-    if (deleteError) {
-      throw new Error("Xóa members thất bại")
+      const { error } = await supabase.storage.from("avatars").remove(paths)
+      if (error) console.warn("Storage error:", error)
     }
 
     revalidatePath("/admin/members")
@@ -117,7 +118,7 @@ export const getTopAttendance = unstable_cache(
 )
 
 export async function addMember(formData) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   try {
     const name = formData.get("name")
@@ -184,7 +185,7 @@ export async function addMember(formData) {
 }
 
 export async function updateMember(formData) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   try {
     const id = formData.get("id")
@@ -281,7 +282,7 @@ export async function updateMember(formData) {
 
 export async function deleteMember(id, avatar, path) {
   try {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
 
     if (avatar) {
       const path = avatar.split("/avatars/")[1]

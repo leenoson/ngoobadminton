@@ -50,7 +50,7 @@ export default async function MembersPage({ searchParams }) {
 
       <AddMemberButton />
 
-      <div className="mb-3">
+      <div className="mb-(--spac)">
         <ButtonDeleteAllMembers />
       </div>
 
@@ -62,36 +62,50 @@ export default async function MembersPage({ searchParams }) {
           </div>
         </li>
         <li className="box__item">
-          <Link
-            href={`/admin/members/${createMemberUrl(newestMember.id)}`}
-            className="box__box"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <p>Thành viên mới</p>
-            {newestMember ? (
-              <span className="box__content">{newestMember?.name}</span>
-            ) : (
-              "Chưa có thành viên"
-            )}
-            <Icons.Blank />
-          </Link>
+          {newestMember ? (
+            <Link
+              href={`/admin/members/${createMemberUrl(newestMember.id)}`}
+              className="box__box"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <p>Thành viên mới</p>
+              {newestMember ? (
+                <span className="box__content">{newestMember?.name}</span>
+              ) : (
+                "Chưa có thành viên"
+              )}
+              <Icons.Blank />
+            </Link>
+          ) : (
+            <div className="box__box">
+              <p>Thành viên mới</p>
+              <span className="box__content">Chưa có thành viên</span>
+            </div>
+          )}
         </li>
         <li className="box__item">
-          <Link
-            className="box__box"
-            href={`/admin/members/${createMemberUrl(bestMember[0]?.id)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <p>Thành viên hot</p>
-            {bestMember.length ? (
-              <span className="box__content">{bestMember[0]?.name}</span>
-            ) : (
-              "Chưa có ai hot"
-            )}
-            <Icons.Blank />
-          </Link>
+          {bestMember.length > 0 ? (
+            <Link
+              className="box__box"
+              href={`/admin/members/${createMemberUrl(bestMember[0]?.id)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <p>Thành viên hot</p>
+              {bestMember.length ? (
+                <span className="box__content">{bestMember[0]?.name}</span>
+              ) : (
+                "Chưa có ai hot"
+              )}
+              <Icons.Blank />
+            </Link>
+          ) : (
+            <div className="box__box">
+              <p>Thành viên hot</p>
+              <span className="box__content">Chưa có ai hot</span>
+            </div>
+          )}
         </li>
       </ul>
 
@@ -111,7 +125,10 @@ export default async function MembersPage({ searchParams }) {
           ))}
         </ul>
       ) : (
-        <>{search ? <NoResultSearchMember /> : <p>Chưa có NGOO nào</p>}</>
+        <>
+          {search ? <NoResultSearchMember /> : <p>Chưa có NGOO nào</p>}
+          <AddMemberButton />
+        </>
       )}
       <Pagination totalPages={totalPages} currentPage={page} />
     </section>

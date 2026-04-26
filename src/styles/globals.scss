@@ -712,6 +712,7 @@ img {
     position: absolute;
     inset: 0;
     border: 2px solid var(--color-d-3);
+    pointer-events: none;
   }
 }
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useTransition } from "react"
 import { createClient } from "@/lib/supabase/client"
+import { createAdminClient } from "@/lib/supabase/admin"
 import ImgAvatar from "@/components/ImgAvatar"
 import useDebounce from "@/hooks/useDebounce"
 import clsx from "clsx"
@@ -47,8 +48,12 @@ function AttendanceClient() {
 
   async function saveAttendance() {
     startSaving(async () => {
-      await saveAttendanceAction(date, checked)
-      await fetchAttendance()
+      try {
+        await saveAttendanceAction(date, checked)
+        await fetchAttendance()
+      } catch (err) {
+        console.error("SAVE ERROR:", err)
+      }
     })
   }
 
