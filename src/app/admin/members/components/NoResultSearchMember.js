@@ -1,4 +1,5 @@
 import Image from "next/image"
+import AddMemberButton from "./AddMemberButton"
 
 function NoResultSearchMember() {
   return (
@@ -12,6 +13,7 @@ function NoResultSearchMember() {
           alt="Không tìm thấy NGOO nào"
         />
       </figure>
+      <AddMemberButton />
     </div>
   )
 }

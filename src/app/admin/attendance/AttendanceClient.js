@@ -10,6 +10,7 @@ import CardSkeleton from "@/components/Skeleton"
 import { formatDate, getToday } from "@/lib/date"
 import ButtonRipple from "@/components/ButtonRipple"
 import { saveAttendanceAction } from "@/app/actions/saveAttendance"
+import { Icons } from "@/components/Icons"
 
 function AttendanceClient() {
   const supabase = createClient()
@@ -133,6 +134,7 @@ function AttendanceClient() {
           onClick={checkAll}
           disabled={isSaving || isFetching || isAllSelected}
         >
+          <Icons.CheckAll />
           Chọn tất cả
         </ButtonRipple>
         <ButtonRipple
@@ -140,6 +142,7 @@ function AttendanceClient() {
           onClick={uncheckAll}
           disabled={isSaving || isFetching || isNoneSelected}
         >
+          <Icons.UnCheckAll />
           Bỏ chọn tất cả
         </ButtonRipple>
       </div>

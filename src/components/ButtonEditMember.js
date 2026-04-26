@@ -2,6 +2,7 @@
 
 import EditMemberModal from "@/app/admin/members/components/EditMemberModal"
 import { useState } from "react"
+import { Icons } from "./Icons"
 
 function ButtonEditMember({ member }) {
   const [selectedMember, setSelectedMember] = useState(null)
@@ -9,6 +10,7 @@ function ButtonEditMember({ member }) {
   return (
     <>
       <button className="button01" onClick={() => setSelectedMember(member)}>
+        <Icons.Edit />
         Sửa
       </button>
 

@@ -6,6 +6,7 @@ import ButtonEditMember from "./ButtonEditMember"
 import ButtonDeleteMember from "./ButtonDeleteMember"
 import ButtonRipple from "./ButtonRipple"
 import { memo, useMemo } from "react"
+import { Icons } from "./Icons"
 
 function MemberCard({ member, isAdmin }) {
   const attendanceCount = member?.attendance_count ?? 0
@@ -52,6 +53,7 @@ function MemberCard({ member, isAdmin }) {
               href={`/admin/members/${createMemberUrl(member.id)}`}
               className="button01 button01--info"
             >
+              <Icons.Info />
               Chi tiết
             </ButtonRipple>
             <div className="card__control">

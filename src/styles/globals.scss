@@ -1601,10 +1601,24 @@ input[type="date"] {
     width: 34rem;
     font-family: var(--font-lexend);
 
+    &__triangle {
+      top: 0;
+    }
+
+    // .react-datepicker__header .
     &__header {
       padding-block: var(--spac-xs);
       border-color: var(--color-l-2);
       border-top-right-radius: var(--spac-s);
+
+      button {
+        cursor: pointer;
+
+        @include m.hover {
+          background-color: var(--color-l-2);
+          color: var(--color-d-7);
+        }
+      }
     }
 
     &__month-container {
@@ -1633,6 +1647,12 @@ input[type="date"] {
       &--selected {
         color: var(--color-d-7);
         background-color: var(--color-l-1);
+        border-radius: var(--radius-s);
+      }
+
+      &--today {
+        background-color: rgba($color: #273f4f, $alpha: 0.3);
+        border-radius: var(--radius-s);
       }
     }
 
@@ -1652,8 +1672,11 @@ input[type="date"] {
       width: 100%;
     }
 
+    // .react-datepicker-popper .
     &-popper {
-      font-size: 1.6rem;
+      border-radius: var(--radius-m);
+      overflow: hidden;
+      padding-top: var(--spac);
     }
 
     // .react-datepicker__month .
@@ -1661,8 +1684,10 @@ input[type="date"] {
       margin-top: var(--spac-s);
     }
 
+    // .react-datepicker select .
     select {
       font-size: 1.6rem;
+      cursor: pointer;
     }
   }
 }

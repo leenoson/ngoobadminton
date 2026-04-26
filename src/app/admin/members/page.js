@@ -11,6 +11,7 @@ import { createMemberUrl } from "@/lib/slugify"
 import { Icons } from "@/components/Icons"
 import AutoScrollTop from "@/components/AutoScrollTop"
 import ButtonDeleteAllMembers from "@/components/admin/ButtonDeleteAllMembers"
+import NoMember from "./components/NoMember"
 
 export default async function MembersPage({ searchParams }) {
   const params = await searchParams
@@ -125,10 +126,7 @@ export default async function MembersPage({ searchParams }) {
           ))}
         </ul>
       ) : (
-        <>
-          {search ? <NoResultSearchMember /> : <p>Chưa có NGOO nào</p>}
-          <AddMemberButton />
-        </>
+        <>{search ? <NoResultSearchMember /> : <NoMember />}</>
       )}
       <Pagination totalPages={totalPages} currentPage={page} />
     </section>
