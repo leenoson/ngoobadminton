@@ -3,17 +3,27 @@
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { uploadMedia } from "@/app/actions/mediaActions"
+import { useModal } from "@/components/ModalProvider"
 
 export default function UploadZone() {
   const inputRef = useRef(null)
   const [uploading, setUploading] = useState(false)
   const router = useRouter()
+  const { openModal, closeModal } = useModal()
+
+  const modalWarning = () =>
+    openModal({
+      content: (
+        <p className="p-(--spac) text-center">Chỉ được upload tối đa 10 file</p>
+      ),
+      className: "modal--small",
+    })
 
   const handleFiles = async (files) => {
     if (!files.length) return
 
     if (files.length > 10) {
-      alert("Chỉ được upload tối đa 10 file mỗi lần")
+      modalWarning()
       return
     }
 
@@ -45,7 +55,7 @@ export default function UploadZone() {
         const files = e.dataTransfer.files
 
         if (files.length > 10) {
-          alert("Tối đa 10 file")
+          modalWarning()
           return
         }
 

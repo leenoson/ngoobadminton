@@ -1742,10 +1742,14 @@ input[type="date"] {
   &__box {
     display: flex;
     justify-content: center;
+    height: 100%;
+    align-items: start;
+  }
 
-    @include m.hover {
-      .gallery__controls {
-      }
+  .skeleton {
+    &--avatar {
+      margin-bottom: 0;
+      height: 100%;
     }
   }
 }

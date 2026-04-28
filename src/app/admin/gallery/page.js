@@ -1,30 +1,23 @@
 import AutoScrollTop from "@/components/AutoScrollTop"
 import { getMedia } from "@/app/actions/mediaActions"
 import UploadZone from "./UploadZone"
-import MediaItem from "./MediaItem"
-import NoResultSearchMember from "../members/components/NoResultSearchMember"
+import MediaList from "./MediaList"
+import { Suspense } from "react"
+import LoadingMediaList from "./LoadingMediaList"
 
 export const metadata = {
   title: "Admin quản lý media",
 }
 
 async function GalleryAdmin() {
-  const media = await getMedia()
-
   return (
     <section>
       <AutoScrollTop />
       <h1 className="title04">Gallery</h1>
       <UploadZone />
-      {media.length ? (
-        <ul className="gallery">
-          {media.map((item) => (
-            <MediaItem key={item.id} item={item} />
-          ))}
-        </ul>
-      ) : (
-        <NoResultSearchMember text="Chưa có hình/video nào cả" />
-      )}
+      <Suspense fallback={<LoadingMediaList />}>
+        <MediaList />
+      </Suspense>
     </section>
   )
 }

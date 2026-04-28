@@ -11,11 +11,10 @@ function BannerButtonModal() {
     <button
       className="button03"
       onClick={() =>
-        openModal(
-          <div>
-            <VideoHero />
-          </div>,
-        )
+        openModal({
+          content: <VideoHero />,
+          hideFooter: true,
+        })
       }
     >
       <Icons.Play />

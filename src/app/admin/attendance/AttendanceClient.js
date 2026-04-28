@@ -222,21 +222,13 @@ function AttendanceClient() {
                       <span className="badge badge--type01">0</span>
                     )}
                   </p>
-                  {/* <div className="card__control">
-                    <Link
-                      href={`/admin/members/${createMemberSlug(member?.name, member?.id)}`}
-                      className="button01 button01--info"
-                    >
-                      Chi tiết
-                    </Link>
-                  </div> */}
                 </div>
               </label>
             </li>
           ))}
 
           {members.length > 0 && filteredMembers.length === 0 && (
-            <div className="">Chưa có NGOO nào tên này</div>
+            <p>Chưa có NGOO nào tên này</p>
           )}
         </ul>
       )}

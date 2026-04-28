@@ -2,22 +2,29 @@
 
 import { createContext, useContext, useState, useEffect } from "react"
 import { lockScroll, unlockScroll } from "@/lib/scrollLock"
+import { Icons } from "./Icons"
+import clsx from "clsx"
 
 const ModalContext = createContext()
 
 export function ModalProvider({ children }) {
-  const [content, setContent] = useState(null)
+  const [modal, setModal] = useState(null)
 
-  const openModal = (modalContent) => {
-    setContent(modalContent)
+  const openModal = ({
+    content,
+    title,
+    className = "",
+    hideFooter = false,
+  }) => {
+    setModal({ content, title, className, hideFooter })
   }
 
   const closeModal = () => {
-    setContent(null)
+    setModal(null)
   }
 
   useEffect(() => {
-    if (!content) {
+    if (!modal) {
       unlockScroll()
       return
     }
@@ -36,15 +43,15 @@ export function ModalProvider({ children }) {
       window.removeEventListener("keydown", handleEsc)
       unlockScroll()
     }
-  }, [content])
+  }, [modal])
 
   return (
     <ModalContext.Provider value={{ openModal, closeModal }}>
       {children}
 
-      {content && (
+      {modal && (
         <div
-          className="modal"
+          className={clsx(`modal ${modal.className}`)}
           role="dialog"
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) {
@@ -54,23 +61,26 @@ export function ModalProvider({ children }) {
         >
           <div className="modal__dialog" onClick={(e) => e.stopPropagation()}>
             <button className="modal__close" onClick={closeModal}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-8"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
+              <Icons.Close />
             </button>
             <div className="modal__content">
-              <div className="modal01__body">{content}</div>
+              {modal.title && (
+                <div className="modal__header">
+                  <p className="modal__title">{modal.title}</p>
+                </div>
+              )}
+              <div className="modal01__body">{modal.content}</div>
+              {!modal.hideFooter && (
+                <div className="modal__footer">
+                  <button
+                    className="button01 button01--info"
+                    onClick={closeModal}
+                  >
+                    <Icons.Info />
+                    Đã hiểu
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
