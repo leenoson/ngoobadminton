@@ -18,9 +18,9 @@ export default function DeleteMediaModal({ media, onClose }) {
 
     startTransition(async () => {
       await toast.promise(deleteMedia([media.id]), {
-        pending: "Đang cho đứa NGOO cook...",
-        success: "Một đứa NGOO bị cook!",
-        error: "Xóa thất bại ❌",
+        pending: "Đang xóa",
+        success: "Xóa thành công",
+        error: "Xóa thất bại",
       })
 
       onClose()

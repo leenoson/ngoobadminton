@@ -12,17 +12,41 @@ export default function UploadZone() {
   const router = useRouter()
   const { openModal } = useModal()
 
-  const [uploading, setUploading] = useState(false)
-  const [progress, setProgress] = useState(0)
+  const [uploads, setUploads] = useState([])
+  const [stats, setStats] = useState({
+    total: 0,
+    success: 0,
+    failed: 0,
+  })
 
   const modalWarning = () =>
     openModal({
-      content: <p className="p-(--spac)">Chỉ được tối đa 10 file</p>,
+      content: (
+        <p className="p-(--spac) text-center">Chỉ được tối đa 10 file</p>
+      ),
       className: "modal--small",
     })
 
-  // 🔥 upload 1 file (có progress)
-  const uploadSingleFile = (file, index, total) => {
+  const updateUpload = (id, data) => {
+    setUploads((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...data } : item)),
+    )
+  }
+
+  const uploadSingleFile = (file) => {
+    const id = crypto.randomUUID()
+
+    setUploads((prev) => [
+      ...prev,
+      {
+        id,
+        name: file.name,
+        progress: 0,
+        status: "uploading",
+        errorMessage: "",
+      },
+    ])
+
     return new Promise((resolve, reject) => {
       const ext = file.name.split(".").pop()
       const fileName = `${crypto.randomUUID()}.${ext}`
@@ -37,7 +61,6 @@ export default function UploadZone() {
         `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/media/${path}`,
       )
 
-      // ✅ headers chuẩn
       xhr.setRequestHeader(
         "Authorization",
         `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
@@ -45,49 +68,72 @@ export default function UploadZone() {
       xhr.setRequestHeader("apikey", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
       xhr.setRequestHeader("Content-Type", file.type)
 
-      // ✅ progress realtime
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
-          const percentFile = e.loaded / e.total
-          const totalPercent = ((index + percentFile) / total) * 100
+          const percent = Math.round((e.loaded / e.total) * 100)
 
-          setProgress(Math.round(totalPercent))
+          updateUpload(id, { progress: percent })
         }
       }
 
-      xhr.onload = () => {
+      xhr.onload = async () => {
         if (xhr.status === 200) {
-          resolve({
-            name: file.name,
-            url: data.publicUrl,
-            type: file.type.startsWith("video") ? "video" : "image",
-            caption: "",
-          })
+          try {
+            await fetch("/api/media", {
+              method: "POST",
+              body: JSON.stringify([
+                {
+                  name: file.name,
+                  url: data.publicUrl,
+                  type: file.type.startsWith("video") ? "video" : "image",
+                  caption: "",
+                },
+              ]),
+            })
+
+            updateUpload(id, { status: "done", progress: 100 })
+
+            setStats((prev) => ({
+              ...prev,
+              success: prev.success + 1,
+            }))
+
+            setTimeout(() => {
+              setUploads((prev) => prev.filter((item) => item.id !== id))
+            }, 1000)
+
+            resolve()
+          } catch (err) {
+            updateUpload(id, {
+              status: "error",
+              errorMessage: "Lỗi khi lưu DB",
+            })
+            setStats((prev) => ({
+              ...prev,
+              failed: prev.failed + 1,
+            }))
+            reject(err)
+          }
         } else {
+          updateUpload(id, { status: "error", errorMessage: "Upload thất bại" })
+          setStats((prev) => ({
+            ...prev,
+            failed: prev.failed + 1,
+          }))
           reject(xhr.response)
         }
       }
 
-      xhr.onerror = reject
+      xhr.onerror = () => {
+        updateUpload(id, { status: "error", errorMessage: "Lỗi mạng" })
+        setStats((prev) => ({
+          ...prev,
+          failed: prev.failed + 1,
+        }))
+        reject()
+      }
 
-      // ❗ quan trọng: gửi raw file
       xhr.send(file)
-    })
-  }
-
-  // 🔥 upload nhiều file
-  const uploadFiles = async (files) => {
-    const uploads = []
-
-    for (let i = 0; i < files.length; i++) {
-      const result = await uploadSingleFile(files[i], i, files.length)
-      uploads.push(result)
-    }
-
-    // insert DB
-    await fetch("/api/media", {
-      method: "POST",
-      body: JSON.stringify(uploads),
     })
   }
 
@@ -99,54 +145,117 @@ export default function UploadZone() {
       return
     }
 
-    setUploading(true)
-    setProgress(0)
+    const fileArray = Array.from(files)
+
+    setStats({
+      total: fileArray.length,
+      success: 0,
+      failed: 0,
+    })
+
+    const toastId = toast.loading(`Đang upload ${fileArray.length} file...`)
 
     try {
-      await toast.promise(uploadFiles(files), {
-        pending: "Đang upload file...",
-        success: "Upload thành công",
-        error: "Upload thất bại ❌",
+      const results = await Promise.allSettled(fileArray.map(uploadSingleFile))
+
+      const successCount = results.filter(
+        (r) => r.status === "fulfilled",
+      ).length
+
+      const failCount = results.length - successCount
+
+      toast.update(toastId, {
+        render:
+          failCount === 0
+            ? `Upload thành công ${successCount} file`
+            : `${successCount} thành công - ${failCount} thất bại`,
+        type: failCount === 0 ? "success" : "warning",
+        isLoading: false,
+        autoClose: 3000,
       })
+
       router.refresh()
     } catch (err) {
-      console.error("UPLOAD FAIL:", err)
+      toast.update(toastId, {
+        render: "❌ Upload thất bại",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      })
     }
-
-    setUploading(false)
   }
 
+  const hasError = uploads.some((i) => i.status === "error")
+  const isAllFinished = uploads.every(
+    (i) => i.status === "done" || i.status === "error",
+  )
+
   return (
-    <div
-      onClick={() => inputRef.current.click()}
-      onDragOver={(e) => e.preventDefault()}
-      onDrop={(e) => {
-        e.preventDefault()
-        handleFiles(e.dataTransfer.files)
-      }}
-      className="uploadfile"
-    >
-      <input
-        type="file"
-        multiple
-        hidden
-        ref={inputRef}
-        onChange={(e) => handleFiles(e.target.files)}
-      />
-
-      {!uploading && "Drag & drop hoặc click"}
-
-      {uploading && (
-        <div className="w-full">
-          <p className="text-sm mb-2">Uploading... {progress}%</p>
-
-          <div className="w-full h-2 bg-gray-200 rounded">
-            <div
-              className="h-2 bg-green-500 rounded transition-all"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+    <div>
+      {uploads.length === 0 && (
+        <div
+          onClick={() => inputRef.current.click()}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault()
+            handleFiles(e.dataTransfer.files)
+          }}
+          className="uploadfile mb-(--spac-md)"
+        >
+          <input
+            type="file"
+            multiple
+            hidden
+            ref={inputRef}
+            onChange={(e) => handleFiles(e.target.files)}
+          />
+          Drag & drop hoặc click
         </div>
+      )}
+
+      {uploads.length > 0 && (
+        <>
+          <h2 className="title05">Danh sách các file đang upload</h2>
+          <div className="upload-status">
+            <p className="upload__total">Tổng file upload: {stats.total}</p>
+            <p className="upload__success">Thành công: {stats.success}</p>
+            <p className="upload__fail">Thất bại: {stats.failed}</p>
+          </div>
+          {isAllFinished && hasError && (
+            <div className="upload-actions">
+              <button className="button01" onClick={() => setUploads([])}>
+                Thử lại
+              </button>
+            </div>
+          )}
+          <ul className="upload-list">
+            {uploads.map((item) => (
+              <li key={item.id} className="upload-item">
+                {item.status === "error" && (
+                  <p className="upload-item__error">{item.errorMessage}</p>
+                )}
+                <div className="upload-item__info">
+                  <span className="upload-item__name">{item.name}</span>
+                  <span className="upload-item__percent">
+                    {item.status !== "error" ? `${item.progress}%` : "❌"}
+                  </span>
+                </div>
+
+                <div className="upload-barwrap">
+                  <div className="upload-bar">
+                    <div
+                      className={`upload-bar__inner
+                        ${item.status === "done" ? "is-done" : ""}
+                        ${item.status === "error" ? "is-error" : ""}
+                      `}
+                      style={{ width: `${item.progress}%` }}
+                    />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   )
