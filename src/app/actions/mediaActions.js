@@ -3,6 +3,7 @@
 
 import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
+import { revalidatePath } from "next/cache"
 
 export async function getMedia() {
   const supabase = await createClient()
@@ -66,32 +67,56 @@ export async function uploadMedia(formData) {
 export async function deleteMedia(ids) {
   const supabase = createAdminClient()
 
-  const { data, error } = await supabase
-    .from("media")
-    .select("url")
-    .in("id", ids)
+  // get files
+  const { data } = await supabase.from("media").select("url").in("id", ids)
+
+  // delete DB
+  const { error } = await supabase.from("media").delete().in("id", ids)
 
   if (error) throw error
 
-  const paths = data.map(
-    (item) => item.url.split("/storage/v1/object/public/media/")[1],
-  )
+  // delete storage
+  const paths =
+    data?.map((m) => m.url.split("/media/")[1]).filter(Boolean) || []
 
   if (paths.length) {
-    const { error: storageError } = await supabase.storage
-      .from("media")
-      .remove(paths)
-
-    if (storageError) throw storageError
+    await supabase.storage.from("media").remove(paths)
   }
 
-  const { error: deleteError } = await supabase
-    .from("media")
-    .delete()
-    .in("id", ids)
+  revalidatePath("/admin/gallery")
 
-  if (deleteError) throw deleteError
+  return { success: true }
 }
+
+// export async function deleteMedia(ids) {
+//   const supabase = createAdminClient()
+
+//   const { data, error } = await supabase
+//     .from("media")
+//     .select("url")
+//     .in("id", ids)
+
+//   if (error) throw error
+
+//   const paths = data.map(
+//     (item) => item.url.split("/storage/v1/object/public/media/")[1],
+//   )
+
+//   if (paths.length) {
+//     const { error: storageError } = await supabase.storage
+//       .from("media")
+//       .remove(paths)
+
+//     if (storageError) throw storageError
+//   }
+
+//   const { error: deleteError } = await supabase
+//     .from("media")
+//     .delete()
+//     .in("id", ids)
+
+//   if (deleteError) throw deleteError
+// }
 
 export async function updateCaption(id, caption) {
   const supabase = await createClient()

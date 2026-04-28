@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { useModal } from "@/components/ModalProvider"
 import { toast } from "react-toastify"
+import { Icons } from "@/components/Icons"
+import { useDevice } from "@/hooks/useDevice"
 
 export default function UploadZone() {
   const supabase = createClient()
   const inputRef = useRef(null)
   const router = useRouter()
   const { openModal } = useModal()
+  const { isMobileDevice, isSmallScreen } = useDevice()
 
   const [uploads, setUploads] = useState([])
   const [stats, setStats] = useState({
@@ -209,7 +212,13 @@ export default function UploadZone() {
             ref={inputRef}
             onChange={(e) => handleFiles(e.target.files)}
           />
-          Drag & drop hoặc click
+          <div className="uploadfile__text">
+            <Icons.AddMedia />
+
+            {isMobileDevice && isSmallScreen
+              ? "Click để upload file"
+              : "Drag & drop hoặc click để upload file"}
+          </div>
         </div>
       )}
 
@@ -237,7 +246,7 @@ export default function UploadZone() {
                 <div className="upload-item__info">
                   <span className="upload-item__name">{item.name}</span>
                   <span className="upload-item__percent">
-                    {item.status !== "error" ? `${item.progress}%` : "❌"}
+                    {item.status !== "error" ? `${item.progress}%` : ""}
                   </span>
                 </div>
 

@@ -9,32 +9,34 @@ import { LineSpinner } from "ldrs/react"
 import { Icons } from "@/components/Icons"
 import { deleteMedia } from "@/app/actions/mediaActions"
 
-export default function DeleteMediaModal({ ids, onClose, onSuccess }) {
+export default function DeleteMediaModal({ media, onClose }) {
   const [isPending, startTransition] = useTransition()
-  // const router = useRouter()
+  const router = useRouter()
 
   const handleDelete = () => {
+    if (isPending) return
+
     startTransition(async () => {
-      await toast.promise(deleteMedia(ids), {
-        pending: "Đang xóa...",
+      await toast.promise(deleteMedia([media.id]), {
+        pending: "Đang xóa",
         success: "Xóa thành công",
         error: "Xóa thất bại",
       })
 
-      onSuccess?.()
       onClose()
+      router.refresh()
     })
   }
 
   const handleClose = () => onClose()
 
   useModal({
-    isOpen: !!ids,
+    isOpen: !!media,
     onClose,
     isPending,
   })
 
-  if (!ids) return null
+  if (!media) return null
 
   return (
     <div
@@ -66,9 +68,6 @@ export default function DeleteMediaModal({ ids, onClose, onSuccess }) {
         <div className="modal__content">
           <div className="modal__header">
             <p className="modal__title">Xóa file này</p>
-          </div>
-          <div className="modal__body">
-            Hành động xóa này không thể hoàn tác
           </div>
           <div className="modal__footer">
             <ButtonRipple
