@@ -4,6 +4,10 @@ import UploadZone from "./UploadZone"
 import MediaItem from "./MediaItem"
 import NoResultSearchMember from "../members/components/NoResultSearchMember"
 
+export const metadata = {
+  title: "Admin quản lý media",
+}
+
 async function GalleryAdmin() {
   const media = await getMedia()
 
@@ -13,7 +17,11 @@ async function GalleryAdmin() {
       <h1 className="title04">Gallery</h1>
       <UploadZone />
       {media.length ? (
-        media.map((item) => <MediaItem key={item.id} item={item} />)
+        <ul className="gallery">
+          {media.map((item) => (
+            <MediaItem key={item.id} item={item} />
+          ))}
+        </ul>
       ) : (
         <NoResultSearchMember text="Chưa có hình/video nào cả" />
       )}

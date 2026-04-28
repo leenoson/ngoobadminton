@@ -1,6 +1,7 @@
 // app/actions/mediaActions.js
 "use server"
 
+import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 
 export async function getMedia() {
@@ -63,6 +64,8 @@ export async function uploadMedia(formData) {
 }
 
 export async function deleteMedia(ids) {
+  const supabase = createAdminClient()
+
   const { data, error } = await supabase
     .from("media")
     .select("url")

@@ -13,6 +13,10 @@ import AutoScrollTop from "@/components/AutoScrollTop"
 import ButtonDeleteAllMembers from "@/components/admin/ButtonDeleteAllMembers"
 import NoMember from "./components/NoMember"
 
+export const metadata = {
+  title: "Admin quản lý member",
+}
+
 export default async function MembersPage({ searchParams }) {
   const params = await searchParams
 
@@ -128,7 +132,10 @@ export default async function MembersPage({ searchParams }) {
       ) : (
         <>
           {search ? (
-            <NoResultSearchMember text="Không tìm thấy NGOO nào" />
+            <NoResultSearchMember
+              text="Không tìm thấy NGOO nào"
+              isAddMemberButton
+            />
           ) : (
             <NoMember />
           )}

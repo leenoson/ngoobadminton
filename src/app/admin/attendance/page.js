@@ -3,6 +3,10 @@ import AutoScrollTop from "@/components/AutoScrollTop"
 import TopMemberAttendance from "./TopMemberAttendance"
 import AttendanceClient from "./AttendanceClient"
 
+export const metadata = {
+  title: "Admin quản lý điểm danh",
+}
+
 export default function AttendancePage() {
   return (
     <section>

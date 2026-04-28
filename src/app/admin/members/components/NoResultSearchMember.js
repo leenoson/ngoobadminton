@@ -1,7 +1,7 @@
 import Image from "next/image"
 import AddMemberButton from "./AddMemberButton"
 
-function NoResultSearchMember({ text }) {
+function NoResultSearchMember({ text, isAddMemberButton }) {
   return (
     <div className="noresult">
       <p>{text}</p>
@@ -13,7 +13,7 @@ function NoResultSearchMember({ text }) {
           alt={text}
         />
       </figure>
-      <AddMemberButton />
+      {isAddMemberButton && <AddMemberButton />}
     </div>
   )
 }

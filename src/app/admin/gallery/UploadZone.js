@@ -26,7 +26,7 @@ export default function UploadZone() {
     setUploading(true)
 
     try {
-      await uploadMedia(formData) // ✅ gọi server action trực tiếp
+      await uploadMedia(formData)
       router.refresh()
     } catch (err) {
       console.error("UPLOAD FAIL:", err)
@@ -51,7 +51,7 @@ export default function UploadZone() {
 
         handleFiles(e.dataTransfer.files)
       }}
-      className="border-2 border-dashed p-10 text-center cursor-pointer"
+      className="uploadfile mb-(--spac-md)"
     >
       <input
         type="file"
