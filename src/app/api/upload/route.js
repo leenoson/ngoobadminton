@@ -18,7 +18,7 @@ export async function POST(req) {
     const filePath = `media/${fileName}`
 
     const { error: uploadError } = await supabase.storage
-      .from("media") // tên bucket
+      .from("media")
       .upload(filePath, file, {
         contentType: file.type,
       })
