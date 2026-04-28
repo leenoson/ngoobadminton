@@ -139,7 +139,7 @@ export default function RootLayout({ children }) {
     <html lang="vi" suppressHydrationWarning>
       <body className={clsx(`${lexend.className}`)}>
         {/* <TopLoader /> */}
-        <NavigationProgress />
+        {/* <NavigationProgress /> */}
         <AuthProvider>
           <Suspense fallback={null}>
             <AnalyticsTracker />

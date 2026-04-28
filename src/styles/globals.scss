@@ -123,7 +123,7 @@
   }
 
   // MAX WIDTH
-  --max-width: calc(1200px + var(--padding-inline) * 2);
+  --max-width: calc(1024px + var(--padding-inline) * 2);
 
   // Font Size Scale
   --fs-default: 1.6rem;
@@ -1704,4 +1704,46 @@ input[type="date"] {
 }
 
 .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spac);
+
+  @include m.sp {
+    grid-template-columns: repeat(auto-fit, minmax(40vw, 1fr));
+  }
+
+  a {
+    cursor: pointer;
+  }
+
+  &__item {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    aspect-ratio: 1;
+    width: 100%;
+  }
+
+  &__img {
+    @include m.imgcover;
+  }
+
+  &__controls {
+    position: absolute;
+    bottom: 0;
+    transform: translateY(100%);
+    transition: 0.3s ease;
+    width: 100%;
+    display: flex;
+    gap: var(--spac);
+    padding: var(--spac-s);
+  }
+
+  &__box {
+    @include m.hover {
+      .gallery__controls {
+        transform: translateY(0);
+      }
+    }
+  }
 }

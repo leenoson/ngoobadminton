@@ -494,7 +494,8 @@
 }
 
 .icon {
-  width: 30px;
+  max-width: 30px;
+  width: auto;
   height: auto;
 
   &--xl {

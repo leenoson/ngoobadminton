@@ -1,16 +1,16 @@
 import Image from "next/image"
 import AddMemberButton from "./AddMemberButton"
 
-function NoResultSearchMember() {
+function NoResultSearchMember({ text }) {
   return (
     <div className="noresult">
-      <p>Không tìm thấy NGOO nào</p>
+      <p>{text}</p>
       <figure className="noresult__img">
         <Image
           src={"/images/common/noresult.png"}
           width={640}
           height={640}
-          alt="Không tìm thấy NGOO nào"
+          alt={text}
         />
       </figure>
       <AddMemberButton />

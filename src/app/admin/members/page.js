@@ -126,7 +126,13 @@ export default async function MembersPage({ searchParams }) {
           ))}
         </ul>
       ) : (
-        <>{search ? <NoResultSearchMember /> : <NoMember />}</>
+        <>
+          {search ? (
+            <NoResultSearchMember text="Không tìm thấy NGOO nào" />
+          ) : (
+            <NoMember />
+          )}
+        </>
       )}
       <Pagination totalPages={totalPages} currentPage={page} />
     </section>

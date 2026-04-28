@@ -23,6 +23,9 @@ const nextConfig = {
   },
   experimental: {
     optimizeCss: false,
+    serverActions: {
+      bodySizeLimit: "100mb",
+    },
   },
 }
 

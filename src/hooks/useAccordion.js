@@ -1,10 +1,10 @@
 "use client"
+
 import { useState, useCallback, useEffect, useRef } from "react"
 
 export function useAccordion(data = [], { multiple = false } = {}) {
   const [openItems, setOpenItems] = useState(multiple ? [] : null)
 
-  // 🔥 tránh re-init mỗi lần re-render
   const initializedRef = useRef(false)
 
   useEffect(() => {
@@ -12,7 +12,6 @@ export function useAccordion(data = [], { multiple = false } = {}) {
 
     const initialOpen = data.filter((item) => item.open).map((item) => item.id)
 
-    // 👉 chỉ init lần đầu hoặc khi data thay đổi hoàn toàn
     const handleSetOpenItems = () => {
       setOpenItems(multiple ? initialOpen : (initialOpen[0] ?? null))
       initializedRef.current = true

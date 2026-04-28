@@ -67,6 +67,19 @@ export default function Navbar({ onToggle }) {
             <span className="admin__text"> Điểm danh</span>
           </ButtonRipple>
         </li>
+        <li>
+          <ButtonRipple
+            href="/admin/gallery"
+            className={clsx(`admin__link`, {
+              "is-active":
+                pathname === "/admin/gallery" ||
+                pathname.startsWith("/admin/gallery/"),
+            })}
+          >
+            <Icons.Media />
+            <span className="admin__text">Gallery</span>
+          </ButtonRipple>
+        </li>
       </ul>
       <div className="admin__bottom">
         <ButtonRipple className="button01 button01--cancel" onClick={logout}>

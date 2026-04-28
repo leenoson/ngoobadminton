@@ -13,8 +13,6 @@ export default async function Home() {
       <div className="main-content">
         {/* <MemberSection /> */}
 
-        <GallerySection />
-
         <AboutSection />
 
         <EventSection />
@@ -22,6 +20,8 @@ export default async function Home() {
         <TopAttendance />
 
         <ContactSection />
+
+        <GallerySection />
       </div>
     </>
   )
