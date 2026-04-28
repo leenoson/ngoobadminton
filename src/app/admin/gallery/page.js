@@ -1,5 +1,4 @@
 import AutoScrollTop from "@/components/AutoScrollTop"
-import { getMedia } from "@/app/actions/mediaActions"
 import UploadZone from "./UploadZone"
 import MediaList from "./MediaList"
 import { Suspense } from "react"

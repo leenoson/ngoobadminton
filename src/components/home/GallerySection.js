@@ -1,9 +1,9 @@
 import Image from "next/image"
-import { getImages } from "@/lib/getImages"
 import GalleryClient from "./GalleryClient"
+import { getMedia } from "@/app/actions/mediaActions"
 
-function GallerySection() {
-  const images = getImages()
+async function GallerySection() {
+  const media = await getMedia()
 
   return (
     <section className="px-(--spac)">
@@ -19,7 +19,7 @@ function GallerySection() {
         Gallery
       </h2>
 
-      <GalleryClient images={images} />
+      <GalleryClient media={media} />
     </section>
   )
 }
